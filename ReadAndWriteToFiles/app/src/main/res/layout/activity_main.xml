@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/etDataInput"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@color/purple_200"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:hint="Type Here" />
+    <TextView
+        android:id="@+id/tvHeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:text="Read and Write to Files"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:id="@+id/btSendData"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etDataInput"
+        android:layout_centerHorizontal="true"
+        android:text="Send Data"/>
+    <Button
+        android:id="@+id/btGetData"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btSendData"
+        android:layout_centerHorizontal="true"
+        android:text="Get Data"/>
+    <TextView
+        android:id="@+id/tvData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:layout_below="@+id/btGetData"
+        android:text="Data:"
+        android:layout_marginTop="20dp"/>
+
+</RelativeLayout>
