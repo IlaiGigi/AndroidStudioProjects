@@ -2,6 +2,7 @@ package com.example.firsttest;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.util.Size;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,9 +25,11 @@ public class Board extends LinearLayout implements View.OnClickListener {
     private Tile[][] boardMatrix;
     private Tile selectedTile;
     private Tools t1;
+    private Context context;
     public Board(Context context) {
         super(context);
         this.t1 = new Tools(context);
+        this.context = context;
         this.setOrientation(VERTICAL);
         this.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         this.player = 1; // Player 1 starts playing first
@@ -45,6 +50,7 @@ public class Board extends LinearLayout implements View.OnClickListener {
         }
         this.selectedTile = null;
         this.locateSoldiersOnBoard(this.readSoldiersFromFile("soldiers_positions", context));
+        hideAllForeign(2);
     }
     private int getScreenWidth(Context context)
     {
@@ -86,7 +92,8 @@ public class Board extends LinearLayout implements View.OnClickListener {
                         else if (tile.getSoldier().getTeamNumber() != player){
                             Soldier soldier1 = this.selectedTile.getSoldier();
                             Soldier soldier2 = tile.getSoldier();
-                            if (Math.abs(tile.getPosition().x - this.selectedTile.getPosition().x) != 1 && Math.abs(tile.getPosition().y - this.selectedTile.getPosition().y) != 1){
+                            if ((Math.abs(tile.getPosition().x - this.selectedTile.getPosition().x) != 1 && Math.abs(tile.getPosition().y - this.selectedTile.getPosition().y) != 1) ||
+                                    (Math.abs(tile.getPosition().x - this.selectedTile.getPosition().x) == 1 && Math.abs(tile.getPosition().y - this.selectedTile.getPosition().y) == 1)){
                                 t1.createToast("Please select a different tile");
                             }
                             else{
@@ -107,6 +114,7 @@ public class Board extends LinearLayout implements View.OnClickListener {
                                     this.player = 1;
                                 this.selectedTile.deselect();
                                 this.selectedTile = null;
+                                createAlertDialog("Switch Players", "Give the phone to player number "+this.player, this.player);
                             }
                         }
                     }
@@ -114,11 +122,51 @@ public class Board extends LinearLayout implements View.OnClickListener {
             }
         }
     }
+    public void createAlertDialog(String title, String message, int player){
+        new AlertDialog.Builder(this.context)
+                .setTitle(title)
+                .setMessage(message)
+
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (player == 1){
+                            hideAllForeign(2);
+                            revealAllKnown(1);
+                        }
+                        else{
+                            hideAllForeign(1);
+                            revealAllKnown(2);
+                        }
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+    public void revealAllKnown(int teamNum){
+        for (int i=0; i<12; i++){
+            for (int j=0; j<8; j++){
+                this.boardMatrix[i][j].revealSoldier(teamNum);
+            }
+        }
+    }
+    public void hideAllForeign(int teamNum){
+        for (int i=0; i<12; i++){
+            for (int j=0; j<8; j++){
+                this.boardMatrix[i][j].hideSoldier(teamNum);
+            }
+        }
+    }
     public void moveSoldier(Tile fromTile, Tile newTile){
         Point oldPos = fromTile.getPosition();
         Point newPos = newTile.getPosition();
-        if (Math.abs(oldPos.x - newPos.x) != 1 && Math.abs(oldPos.y - newPos.y) != 1){
+        if ((Math.abs(oldPos.x - newPos.x) != 1 && Math.abs(oldPos.y - newPos.y) != 1) ||
+                (Math.abs(oldPos.x - newPos.x) == 1 && Math.abs(oldPos.y - newPos.y) == 1)){
             t1.createToast("Please select a different tile");
+            return;
         }
         else{
             Soldier s1 = fromTile.getSoldier();
@@ -132,6 +180,7 @@ public class Board extends LinearLayout implements View.OnClickListener {
         }
         else
             this.player = 1;
+        createAlertDialog("Switch Players", "Give the phone to player number "+this.player, this.player);
     }
     private ArrayList<Soldier> readSoldiersFromFile(String filename, Context context){
         File f1 = new File(context.getExternalFilesDir(null).toString(), filename);

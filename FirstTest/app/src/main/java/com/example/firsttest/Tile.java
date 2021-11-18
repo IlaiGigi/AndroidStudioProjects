@@ -17,6 +17,18 @@ public class Tile extends androidx.appcompat.widget.AppCompatImageView {
         Drawable background = getResources().getDrawable(R.drawable.tile);
         this.setBackground(background);
     }
+    public void hideSoldier(int teamNum){
+        if (!this.hasSoldier() || this.getSoldier().getTeamNumber() != teamNum){
+            return;
+        }
+        this.setImageResource(R.drawable.shield);
+    }
+    public void revealSoldier(int teamNum){
+        if (!this.hasSoldier() || this.getSoldier().getTeamNumber() != teamNum){
+            return;
+        }
+        this.setSoldier(this.getSoldier());
+    }
     public void setSoldier(Soldier soldier){
         this.soldier = soldier;
         soldier.setPosition(this.position);

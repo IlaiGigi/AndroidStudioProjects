@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <shape android:shape="oval">
+            <size
+                android:width="70dp"
+                android:height="70dp"
+                />
+            <stroke
+                android:width="1dp"/>
+            <gradient
+                android:endColor="#573A0B"
+                android:startColor="#D59225"
+                android:angle="270"/>
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/shield"
+        />
+</layer-list>
