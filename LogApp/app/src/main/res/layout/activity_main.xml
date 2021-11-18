@@ -15,17 +15,17 @@
         android:textColor="@color/black"
         android:layout_centerHorizontal="true"
         android:text="Log File"/>
+
     <Button
         android:id="@+id/btnRon"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        android:text="Ron"
         android:layout_below="@+id/tvHeadline"
-        android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
-        />
+        android:layout_marginTop="30dp"
+        android:text="Ron"
+        android:textColor="@color/black"
+        android:textSize="25sp" />
     <Button
         android:id="@+id/btnIvy"
         android:layout_width="100dp"

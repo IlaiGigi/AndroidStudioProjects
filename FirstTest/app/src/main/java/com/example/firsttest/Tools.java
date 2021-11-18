@@ -3,6 +3,7 @@ package com.example.firsttest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,8 +36,7 @@ public class Tools {
         return pixels;
     }
     public File createFile(String fileName){
-        File externalDirectory = new File(this.context.getExternalFilesDir(null).toString());
-        return new File(externalDirectory, fileName);
+        return new File(fileName);
     }
     public void writeToFile(File file, String text){
         try {
@@ -117,7 +117,7 @@ public class Tools {
     public void createToast(String text){
         Toast toast = Toast.makeText(this.context,
                 text,
-                Toast.LENGTH_LONG);
+                Toast.LENGTH_SHORT);
         toast.show();
     }
     public void createAlertDialog(String title, String message){

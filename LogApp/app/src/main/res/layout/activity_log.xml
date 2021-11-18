@@ -14,14 +14,15 @@
         android:text="Log Data"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"/>
+
     <TextView
         android:id="@+id/tvData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="15sp"
+        android:layout_below="@+id/tvHeadline"
         android:text="Data:"
-        android:layout_below="@+id/tvHeadline"/>
+        android:textColor="@color/black"
+        android:textSize="15sp" />
     <Button
         android:id="@+id/btnGoBack"
         android:layout_width="wrap_content"
