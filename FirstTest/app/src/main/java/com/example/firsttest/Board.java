@@ -78,7 +78,7 @@ public class Board extends LinearLayout implements View.OnClickListener {
                         selectedTile = this.boardMatrix[i][j];
                     }
                 }
-                if (view == this.boardMatrix[i][j] && this.selectedTile != null && (Tile)view != this.selectedTile){
+                else if (view == this.boardMatrix[i][j] && this.selectedTile != null && (Tile)view != this.selectedTile){
                     Tile tile = (Tile)view;
                     if (!tile.hasSoldier()){
                         moveSoldier(this.selectedTile, tile);
@@ -92,8 +92,9 @@ public class Board extends LinearLayout implements View.OnClickListener {
                         else if (tile.getSoldier().getTeamNumber() != player){
                             Soldier soldier1 = this.selectedTile.getSoldier();
                             Soldier soldier2 = tile.getSoldier();
-                            if ((Math.abs(tile.getPosition().x - this.selectedTile.getPosition().x) != 1 && Math.abs(tile.getPosition().y - this.selectedTile.getPosition().y) != 1) ||
-                                    (Math.abs(tile.getPosition().x - this.selectedTile.getPosition().x) == 1 && Math.abs(tile.getPosition().y - this.selectedTile.getPosition().y) == 1)){
+                            Point oldPos = tile.getPosition();
+                            Point newPos = this.selectedTile.getPosition();
+                            if ((Math.abs(oldPos.x - newPos.x) == 1 && Math.abs(oldPos.y - newPos.y) == 1) || (Math.abs(oldPos.x-newPos.x) > 1) || (Math.abs(oldPos.y- newPos.y) > 1)){
                                 t1.createToast("Please select a different tile");
                             }
                             else{
@@ -163,8 +164,8 @@ public class Board extends LinearLayout implements View.OnClickListener {
     public void moveSoldier(Tile fromTile, Tile newTile){
         Point oldPos = fromTile.getPosition();
         Point newPos = newTile.getPosition();
-        if ((Math.abs(oldPos.x - newPos.x) != 1 && Math.abs(oldPos.y - newPos.y) != 1) ||
-                (Math.abs(oldPos.x - newPos.x) == 1 && Math.abs(oldPos.y - newPos.y) == 1)){
+        Log.d("yosi", (Math.abs(oldPos.x - newPos.x) != 1 && Math.abs(oldPos.y - newPos.y) != 1)+"");
+        if ((Math.abs(oldPos.x - newPos.x) == 1 && Math.abs(oldPos.y - newPos.y) == 1) || (Math.abs(oldPos.x-newPos.x) > 1) || (Math.abs(oldPos.y- newPos.y) > 1)){
             t1.createToast("Please select a different tile");
             return;
         }
