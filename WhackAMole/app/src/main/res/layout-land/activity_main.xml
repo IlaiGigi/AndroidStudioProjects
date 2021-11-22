@@ -8,6 +8,40 @@
     android:background="@drawable/garden"
     android:id="@+id/MainLayout">
 
+    <TextView
+        android:id="@+id/tvScore"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:text="Score: 0"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+    <ImageView
+        android:id="@+id/heart1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/heart"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        />
+    <ImageView
+        android:id="@+id/heart2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/heart"
+        android:layout_toLeftOf="@id/heart1"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
+    <ImageView
+        android:id="@+id/heart3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/heart"
+        android:layout_toLeftOf="@id/heart2"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
+
     <com.example.whackamole.Hole
         android:id="@+id/hole1"
         android:layout_width="70dp"

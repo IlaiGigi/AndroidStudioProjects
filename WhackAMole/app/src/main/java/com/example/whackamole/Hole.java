@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 public class Hole extends androidx.appcompat.widget.AppCompatImageView implements Runnable, View.OnClickListener {
     private boolean hasMole;
+    public static int numOfActiveMoles = 0;
     public Hole(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.hasMole = false;
@@ -20,21 +21,24 @@ public class Hole extends androidx.appcompat.widget.AppCompatImageView implement
 
     @Override
     public void run() {
-
+        
     }
     public boolean doesHaveMole(){return this.hasMole;}
     public void showMole(){
         this.setBackgroundResource(R.drawable.mole_only);
         this.hasMole = true;
+        numOfActiveMoles++;
     }
     public void hideMole(){
         this.setBackgroundResource(0);
         this.hasMole = false;
+        numOfActiveMoles--;
     }
 
     @Override
     public void onClick(View view) {
-        if (this.hasMole)
-            hideMole();
+        if (this.hasMole){
+
+        }
     }
 }
