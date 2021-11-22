@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/garden"
+    android:id="@+id/MainLayout">
+
+    <com.example.whackamole.Hole
+        android:id="@+id/hole1"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="200dp" />
+    <com.example.whackamole.Hole
+        android:id="@+id/hole2"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_toRightOf="@+id/hole1"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="10dp"/>
+    <com.example.whackamole.Hole
+        android:id="@+id/hole3"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_toRightOf="@id/hole2"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="10dp"/>
+
+    <com.example.whackamole.Hole
+        android:id="@+id/hole4"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/hole1"
+        android:layout_marginLeft="350dp"/>
+    <com.example.whackamole.Hole
+        android:id="@+id/hole5"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_toRightOf="@id/hole4"
+        android:layout_below="@id/hole1"
+        android:layout_marginLeft="10dp"/>
+    <com.example.whackamole.Hole
+        android:id="@+id/hole6"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/hole1"
+        android:layout_toRightOf="@id/hole5"
+        android:layout_marginLeft="10dp"/>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/mole_in_hole"
+        android:layout_marginTop="190dp"
+        android:layout_marginLeft="120dp"/>
+
+</RelativeLayout>
