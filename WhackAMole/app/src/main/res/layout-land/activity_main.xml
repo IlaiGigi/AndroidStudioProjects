@@ -33,56 +33,63 @@
         android:layout_toLeftOf="@id/heart1"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"/>
+
     <ImageView
         android:id="@+id/heart3"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/heart"
-        android:layout_toLeftOf="@id/heart2"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/heart2"
+        android:background="@drawable/heart" />
 
     <com.example.whackamole.Hole
         android:id="@+id/hole1"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginLeft="300dp"
-        android:layout_marginTop="200dp" />
+        android:layout_marginTop="200dp"
+        android:tag="1"/>
     <com.example.whackamole.Hole
         android:id="@+id/hole2"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_toRightOf="@+id/hole1"
         android:layout_marginTop="200dp"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:tag="2"/>
     <com.example.whackamole.Hole
         android:id="@+id/hole3"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_toRightOf="@id/hole2"
         android:layout_marginTop="200dp"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:tag="3"/>
 
     <com.example.whackamole.Hole
         android:id="@+id/hole4"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_below="@id/hole1"
-        android:layout_marginLeft="350dp"/>
+        android:layout_marginLeft="350dp"
+        android:tag="4"/>
     <com.example.whackamole.Hole
         android:id="@+id/hole5"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_toRightOf="@id/hole4"
         android:layout_below="@id/hole1"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:tag="5"/>
     <com.example.whackamole.Hole
         android:id="@+id/hole6"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_below="@id/hole1"
         android:layout_toRightOf="@id/hole5"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:tag="6"/>
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
