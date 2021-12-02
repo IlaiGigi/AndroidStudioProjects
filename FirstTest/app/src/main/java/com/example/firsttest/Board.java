@@ -142,7 +142,7 @@ public class Board extends LinearLayout implements View.OnClickListener {
                         }
                     }
                 })
-
+                .setCancelable(false)
                 // A null listener allows the button to dismiss the dialog and take no further action.
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
