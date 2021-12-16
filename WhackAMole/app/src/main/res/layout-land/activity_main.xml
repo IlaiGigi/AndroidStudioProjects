@@ -49,7 +49,7 @@
         android:layout_height="70dp"
         android:layout_marginLeft="300dp"
         android:layout_marginTop="200dp"
-        android:tag="1"/>
+        android:tag="1" />
     <com.example.whackamole.Hole
         android:id="@+id/hole2"
         android:layout_width="70dp"

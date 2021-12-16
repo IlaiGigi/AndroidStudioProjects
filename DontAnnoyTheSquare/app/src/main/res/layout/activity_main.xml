@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/black">
+    android:background="@color/black"
+    android:id="@+id/layout">
 
     <TextView
         android:id="@+id/tvScore"
@@ -25,12 +26,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="250dp"
         android:text="Don't annoy the square!"/>
-    <ImageView
+
+    <com.example.dontannoythesquare.Square
         android:id="@+id/ivSquare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/whitesquare"
-        android:layout_centerInParent="true"/>
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true" />
 
     <ImageView
         android:id="@+id/ivRedOval"

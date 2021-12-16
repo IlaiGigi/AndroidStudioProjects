@@ -64,8 +64,6 @@ public class Tile extends androidx.appcompat.widget.AppCompatImageView {
         this.setBackground(background);
         this.isSelected = false;
     }
-    // public void select
-    // public void deselect
     public Soldier getSoldier(){return this.soldier;}
     public Point getPosition(){return this.position;}
 }
