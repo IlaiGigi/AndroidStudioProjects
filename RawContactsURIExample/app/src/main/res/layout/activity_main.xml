@@ -15,20 +15,28 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="Raw Contacts"/>
+
     <EditText
         android:id="@+id/etInput"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:hint="Type Contact Name"
         android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:layout_marginTop="100dp"/>
-
+        android:layout_marginTop="100dp"
+        android:hint="Type Contact Name"
+        android:textAlignment="center" />
+    <EditText
+        android:id="@+id/etPhoneNumber"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/etInput"
+        android:layout_centerHorizontal="true"
+        android:hint="Phone Number"
+        android:textAlignment="center" />
     <EditText
         android:id="@+id/etNewContactName"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/etInput"
+        android:layout_below="@+id/etPhoneNumber"
         android:layout_centerHorizontal="true"
         android:hint="New Contact Name"
         android:textAlignment="center" />
@@ -50,13 +58,23 @@
         android:textSize="20sp"
         android:text="Delete Contact"
         android:layout_centerHorizontal="true"/>
+
     <Button
         android:id="@+id/btUpdateContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/deleteContact"
         android:layout_centerHorizontal="true"
+        android:text="Update Contact"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+    <Button
+        android:id="@+id/btSearchContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btUpdateContact"
         android:textSize="20sp"
         android:textColor="@color/white"
-        android:text="Update Contact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_centerHorizontal="true"
+        android:text="Search Contact"/>
 </RelativeLayout>
