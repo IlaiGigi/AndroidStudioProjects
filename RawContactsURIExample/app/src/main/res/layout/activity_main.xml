@@ -1,18 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
+    tools:context=".MainActivity"
+    android:background="@color/teal_200">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Raw Contacts"/>
+    <EditText
+        android:id="@+id/etInput"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:hint="Type Contact Name"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:layout_marginTop="100dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/etNewContactName"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/etInput"
+        android:layout_centerHorizontal="true"
+        android:hint="New Contact Name"
+        android:textAlignment="center" />
+    <Button
+        android:id="@+id/btAddContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etNewContactName"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:text="Add Contact"
+        android:textSize="20sp"/>
+    <Button
+        android:id="@+id/deleteContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btAddContact"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:text="Delete Contact"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:id="@+id/btUpdateContact"
+        android:layout_below="@id/deleteContact"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:text="Update Contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>
