@@ -1,18 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:checkedButton="@id/rbThunder"
+        />
+        <RadioButton
+            android:id="@+id/rbSunny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/sunny" />
+        <RadioButton
+            android:id="@+id/rbCloudy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="170dp"
+            android:drawableLeft="@drawable/cloudy" />
+        <RadioButton
+            android:id="@+id/rbSnowing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="310dp"
+            android:drawableLeft="@drawable/snowing" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RadioButton
+            android:id="@+id/rbPartlyCloudy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/rbSunny"
+            android:drawableLeft="@drawable/partly_cloudy" />
+        <RadioButton
+            android:layout_marginTop="20sp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/rbRaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rbPartlyCloudy"
+            android:layout_toRightOf="@id/rbSunny"
+            android:drawableLeft="@drawable/raining"/>
+        <RadioButton
+            android:id="@+id/rbThunder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rbRaining"
+            android:layout_toRightOf="@+id/rbSunny"
+            android:drawableLeft="@drawable/thunder"/>
+
+        <Button
+            android:id="@+id/btSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/rbThunder"
+            android:layout_marginTop="30dp"
+            android:text="Push Weather"/>
+
+
+</RelativeLayout>
