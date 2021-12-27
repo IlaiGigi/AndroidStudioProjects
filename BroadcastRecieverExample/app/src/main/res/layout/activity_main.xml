@@ -12,6 +12,12 @@
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:textColor="@color/black"
-        android:text="Output:"/>
+        android:text="Today's Weather:"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
 </RelativeLayout>
