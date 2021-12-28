@@ -6,15 +6,108 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btSend"
+    <TextView
+        android:id="@+id/tvHeadline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="Today's Weather"
+        android:layout_centerHorizontal="true"/>
+
+
+    <RadioGroup
+        android:id="@+id/mainRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvHeadline"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="35dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/rbSunny"
+                android:tag="Sunny"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/sunny"/>
+
+            <RadioButton
+                android:id="@+id/rbPartlyCloudy"
+                android:tag="Partly Cloudy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/partly_cloudy"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/middle_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/rbCloudy"
+                android:tag="Cloudy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/cloudy"/>
+
+            <RadioButton
+                android:id="@+id/rbRainy"
+                android:tag="Rainy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/raining"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/rbSnowy"
+                android:tag="Snowy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/snowing"/>
+
+            <RadioButton
+                android:id="@+id/rbThunder"
+                android:tag="Thunder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/thunder"/>
+        </LinearLayout>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btSend"
+        android:tag="1"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/mainRadioGroup"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Send Message"/>
+        android:backgroundTint="@android:color/darker_gray"
+        android:text="Send Message"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
 
     <EditText
         android:id="@+id/etInput"
