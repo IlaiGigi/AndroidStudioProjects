@@ -13,13 +13,10 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("com.example.broadcastrecieveexample.WEATHERCHANGE")){
-            Log.d("yosi", "got in");
-            String message = intent.getStringExtra("data");
-//            Drawable image = bytesArrayToDrawable(context, intent.getByteArrayExtra("data"));
-            Log.d("yosi", message);
-//            Log.d("yosi", String.valueOf(""+image==null));
+            String message = intent.getStringExtra("textData");
+            Drawable image = bytesArrayToDrawable(context, intent.getByteArrayExtra("imageData"));
             MainActivity.tvCurrentWeather.setText(message);
-//            MainActivity.ivCurrentWeater.setBackground(image);
+            MainActivity.ivCurrentWeather.setBackground(image);
         }
     }
 

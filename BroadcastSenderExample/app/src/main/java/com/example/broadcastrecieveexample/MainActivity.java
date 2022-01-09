@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.unregisterReceiver(receiver);
     }
 
-        private void checkForBroadcast(){
+    private void checkForBroadcast(){
         receiver = new MyBroadcastReceiver();
         filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // implement intent sending
             Intent intent = new Intent();
             intent.setAction("com.example.broadcastrecieveexample.WEATHERCHANGE");
-            intent.putExtra("data", imageBytes);
-            intent.putExtra("data", (String)button.getTag());
+            intent.putExtra("imageData", imageBytes);
+            intent.putExtra("textData", (String)button.getTag());
             sendBroadcast(intent);
         }
     }
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bitmap bitmap =
                 BitmapFactory.decodeResource(MainActivity.this.getResources(), drawableId);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
         return baos.toByteArray();
     }
 

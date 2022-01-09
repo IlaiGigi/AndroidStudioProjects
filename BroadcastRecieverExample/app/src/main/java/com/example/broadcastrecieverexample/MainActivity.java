@@ -11,14 +11,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     static TextView tvCurrentWeather;
-    static ImageView ivCurrentWeater;
+    static ImageView ivCurrentWeather;
     BroadcastReceiver receiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tvCurrentWeather = findViewById(R.id.tvCurrentWeather);
-        ivCurrentWeater = findViewById(R.id.ivCurrentWeather);
+        ivCurrentWeather = findViewById(R.id.ivCurrentWeather);
         receiver = new MyBroadcastReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.example.broadcastrecieveexample.WEATHERCHANGE");
