@@ -37,5 +37,6 @@ public class MyService extends Service {
     public void onCreate() {
         super.onCreate();
         myThread = new MyThread(this);
+        myThread.start();
     }
 }

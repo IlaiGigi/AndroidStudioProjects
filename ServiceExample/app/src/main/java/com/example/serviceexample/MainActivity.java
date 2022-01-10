@@ -1,8 +1,13 @@
 package com.example.serviceexample;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +20,8 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    static NotificationCompat.Builder builder;
+    static NotificationManagerCompat notificationManager;
     TextView tvData;
     MyService myService;
     Button btStartService, btStopService;
@@ -34,6 +41,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btStopService.setOnClickListener(this);
         file = new File(getExternalFilesDir(null), "HumbleFile");
         myService = new MyService();
+        createNotificationChannel();
+        notificationManager = NotificationManagerCompat.from(this);
+        builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentTitle("Writing Data")
+                .setContentText("Writing")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
     }
 
     @Override
@@ -66,5 +81,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
         return null; // In the case of an error, return null
+    }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return;
+        }
+        CharSequence name = getString(R.string.channel_name);
+        String description = getString(R.string.channel_description);
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
+        channel.setDescription(description);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 }
