@@ -6,6 +6,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btStopService = findViewById(R.id.btStopService);
         tvData = findViewById(R.id.tvData);
         intent = new Intent(MainActivity.this, MyService.class);
+        Intent redirectionIntent = new Intent(this, MainActivity.class);
+        redirectionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, redirectionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         btStartService.setOnClickListener(this);
         btStopService.setOnClickListener(this);
         file = new File(getExternalFilesDir(null), "HumbleFile");
@@ -48,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setContentTitle("Writing Data")
                 .setContentText("Writing")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
     }
 
     @Override
