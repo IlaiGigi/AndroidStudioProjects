@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CustomizeActivity">
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tvHeadlineCustomize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:text="Customize"
+        android:textStyle = "bold"/>
+    <ImageView
+        android:id="@+id/imLeft"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cardback"
+        android:layout_marginLeft="20dp"/>
+    <ImageView
+        android:id="@+id/imRight"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cardback"
+        android:layout_toRightOf="@+id/imLeft"
+        android:layout_marginLeft="30dp"/>
+    <TextView
+        android:id="@+id/tvNumPairs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="400dp"
+        android:text="Num of pairs:"/>
+
+    <EditText
+        android:id="@+id/etInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="400dp"
+        android:layout_toRightOf="@+id/tvNumPairs"
+        android:hint="Type Here" />
+    <Button
+        android:id="@+id/btnStartGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_below="@+id/tvNumPairs"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Start Game"/>
+    <TextView
+        android:id="@+id/tvMessages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnStartGame"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="Messages:"
+        android:layout_marginTop="10dp"/>
+
+
+</RelativeLayout>
