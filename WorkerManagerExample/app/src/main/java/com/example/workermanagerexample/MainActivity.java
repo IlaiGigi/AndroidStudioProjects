@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void initializeRepetitiveWork(int delay){
         WorkRequest myWorkRequest =
-                new PeriodicWorkRequest.Builder(MyWorker.class, 3, TimeUnit.MINUTES)
+                new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES)
                         .setInitialDelay(delay, TimeUnit.MINUTES)
                         .build();
         WorkManager
