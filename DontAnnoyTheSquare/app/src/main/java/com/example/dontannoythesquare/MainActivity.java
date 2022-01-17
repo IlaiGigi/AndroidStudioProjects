@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements Runnable, View.On
     public static TextView tvScore;
     RelativeLayout layout;
     String[] sentences = {"Don't annoy the square", "Annoy the square"};
-    TextView tvInstruction;
+    public static TextView tvInstruction;
     ImageView ivRedOval, ivGreenOval, ivBlueOval, ivSquare;
     Thread switchSentences, squareThread;
     Handler handler;
@@ -35,25 +36,19 @@ public class MainActivity extends AppCompatActivity implements Runnable, View.On
         ivRedOval = findViewById(R.id.ivRedOval);
         ivGreenOval = findViewById(R.id.ivGreenOval);
         ivBlueOval = findViewById(R.id.ivBlueOval);
+        tvScore = findViewById(R.id.tvScore);
         ivRedOval.setOnClickListener(this);
         ivGreenOval.setOnClickListener(this);
         ivBlueOval.setOnClickListener(this);
+        tvScore.setOnClickListener(this);
         switchSentences = new Thread(this);
         handler = new Handler();
         switchSentences.start();
         random = new Random();
         score = 0;
-        squareThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
+        squareThread = new Thread(() -> handler.post(() -> {
 
-                    }
-                });
-            }
-        });
+        }));
     }
 
     @Override
@@ -65,14 +60,11 @@ public class MainActivity extends AppCompatActivity implements Runnable, View.On
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (tvInstruction.getText().toString().equals(sentences[0]))
-                        tvInstruction.setText(sentences[1]);
-                    else
-                        tvInstruction.setText(sentences[0]);
-                }
+            handler.post(() -> {
+                if (tvInstruction.getText().toString().equals(sentences[0]))
+                    tvInstruction.setText(sentences[1]);
+                else
+                    tvInstruction.setText(sentences[0]);
             });
         }
     }
@@ -80,38 +72,50 @@ public class MainActivity extends AppCompatActivity implements Runnable, View.On
     @Override
     public void onClick(View view) {
         if (view == ivRedOval)
-            switchColor(Color.parseColor("#FF0000"));
+            switchColor(Color.RED);
         if (view == ivGreenOval)
-            switchColor(Color.parseColor("#00FF00"));
+            switchColor(Color.GREEN);
         if (view == ivBlueOval)
-            switchColor(Color.parseColor("#0000FF"));
+            switchColor(Color.BLUE);
         if (view == tvScore){
             animateScore();
         }
     }
     public void switchColor(int color){
-        int scoreColor = tvScore.getCurrentTextColor();
-        ValueAnimator animator = ValueAnimator.ofInt(scoreColor, color);
+        int initialColor;
+        if (color == Color.RED){
+            initialColor = Color.parseColor("#ffcccb");
+            Log.d("yosi", initialColor+"");
+        }
+        else if (color == Color.BLUE)
+            initialColor = Color.parseColor("#ADD8E6");
+        else
+            initialColor = Color.parseColor("#90ee90");
+        tvScore.setTextColor(initialColor);
+        tvInstruction.setTextColor(initialColor);
+        ValueAnimator animator = ValueAnimator.ofInt(Math.min(color, initialColor), Math.max(color, initialColor));
         animator.setDuration(1500);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (int)valueAnimator.getAnimatedValue();
-                tvScore.setTextColor(val);
-                tvInstruction.setTextColor(val);
-            }
+        animator.addUpdateListener(valueAnimator -> {
+            int val = (int)valueAnimator.getAnimatedValue();
+            tvScore.setTextColor(val);
+            tvInstruction.setTextColor(val);
         });
         animator.start();
     }
     public void animateScore(){
-        ValueAnimator animator = ValueAnimator.ofInt(0, score);
-        animator.setDuration(1000);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (int)valueAnimator.getAnimatedValue();
-                tvScore.setText(String.format("Score: %d", score));
+        String grabScore = tvScore.getText().toString();
+        StringBuilder buildScore = new StringBuilder();
+        for (int i=grabScore.length()-1; i>=0; i--){
+            if (grabScore.charAt(i) == ' '){
+                break;
             }
+            buildScore.append(grabScore.charAt(i));
+        }
+        ValueAnimator animator = ValueAnimator.ofInt(0, Integer.parseInt(String.valueOf(buildScore)));
+        animator.setDuration(1000);
+        animator.addUpdateListener(valueAnimator -> {
+            int val = (int)valueAnimator.getAnimatedValue();
+            tvScore.setText(String.format("Score: %d", val));
         });
         animator.start();
     }

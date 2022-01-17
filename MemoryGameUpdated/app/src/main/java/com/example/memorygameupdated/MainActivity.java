@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -60,13 +61,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             picList.add(cardPics[i]);
             for (int j=0; j<2; j++){
                 ImageView imageView = new ImageView(this);
-                imageView.setImageDrawable(cardPics[i]);
+                imageView.setTag(cardPics[i]);
+                imageView.setImageDrawable(getDrawable(R.drawable.cardback));
                 imageView.setOnClickListener(this);
                 imageView.setLayoutParams(imageParams);
                 cards[i*2+j] = imageView;
                 layouts[(int) Math.floor(i/2)].addView(imageView);
             }
         }
+        randomizeImages();
+        cards[0].setImageDrawable((Drawable) cards[0].getTag());
+        cards[1].setImageDrawable((Drawable) cards[1].getTag());
     }
 
     public int convertDpToPx(int dp) {
@@ -86,5 +91,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void randomizeImages(){
         ArrayList<Integer> randomized = new ArrayList<>();
+        Random random = new Random();
+        for (int i=0; i<numOfPairs; i++){
+            int num1 = -1;
+            int num2 = -1;
+            while (randomized.contains(num1) && num1 < 0){
+                num1 = random.nextInt(numOfPairs*2);
+            }
+            randomized.add(num1);
+            while (randomized.contains(num2) && num2 < 0){
+                num2 = random.nextInt(numOfPairs*2);
+            }
+            randomized.add(num2);
+            switchImages(num1, num2);
+        }
+    }
+
+    public void switchImages(int index1, int index2){
+        cards[index1].setTag(cards[index2].getTag());
+        cards[index2].setTag(cards[index1].getTag());
+    }
+
+    public boolean validateImages(int index1, int index2){
+        return cards[index1].getTag().equals(cards[index2].getTag());
     }
 }

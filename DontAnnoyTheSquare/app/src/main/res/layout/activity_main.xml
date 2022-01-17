@@ -12,11 +12,13 @@
         android:id="@+id/tvScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textColor="@color/white"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Score: 0"/>
+        android:text="Score: 0"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:clickable="true"
+        android:focusable="true" />
     <TextView
         android:id="@+id/tvInstruction"
         android:layout_width="wrap_content"

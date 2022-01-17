@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/Task7/app/src/main/res/drawable/minus.xml" value="0.21927083333333333" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/Task7/app/src/main/res/drawable/plus.xml" value="0.3490740740740741" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/Task7/app/src/main/res/drawable/whiterect.xml" value="0.3490740740740741" />
         <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/Task7/app/src/main/res/layout/activity_main.xml" value="0.22" />
       </map>
     </option>

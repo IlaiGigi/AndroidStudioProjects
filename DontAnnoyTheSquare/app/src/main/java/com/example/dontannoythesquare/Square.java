@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.os.Handler;
 import android.view.ViewGroup;
@@ -61,16 +62,13 @@ public class Square extends androidx.appcompat.widget.AppCompatImageView impleme
     @Override
     public void onClick(View view) {
         if (view == this){
-            if (!this.isMoving){
+            if (!this.isMoving && MainActivity.tvInstruction.getText().toString().equals("Annoy the square")){
                 this.score++;
             }
             else{
                 this.score--;
             }
             MainActivity.tvScore.setText(String.format("Score: %d", this.score));
-        }
-        if (view == MainActivity.tvScore){
-            animateScore();
         }
     }
     private int[] getScreenDimensions(Context context)
@@ -80,18 +78,6 @@ public class Square extends androidx.appcompat.widget.AppCompatImageView impleme
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
         return new int[]{height, width};
-    }
-    private void animateScore(){
-        ValueAnimator animator = ValueAnimator.ofInt(0, this.score);
-        animator.setDuration(1000);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (int)valueAnimator.getAnimatedValue();
-                MainActivity.tvScore.setText(String.format("Score: %d", val));
-            }
-        });
-        animator.start();
     }
     public RelativeLayout.LayoutParams getParams(){
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
