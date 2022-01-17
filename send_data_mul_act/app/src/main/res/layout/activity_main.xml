@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/red"
+    android:id="@+id/layout1">
+
+    <TextView
+        android:id="@+id/tvHeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activity 1"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        />
+
+    <EditText
+        android:id="@+id/etData"
+        android:layout_width="390dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvHeadline"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="80dp"
+        android:background="@color/purple_200"
+        android:hint="Type here"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/btSendData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Data"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/etData"
+        android:layout_marginTop="30dp"
+        />
+
+    <TextView
+        android:id="@+id/tvDataDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="350dp"
+        android:text="Data: "
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/btnSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SwitchActivity"
+        android:layout_below="@+id/btSendData"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"/>
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkedButton="@id/rbRed"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="400dp">
+        <RadioButton
+            android:id="@+id/rbRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Red"
+            android:padding="10dp"/>
+        <RadioButton
+            android:id="@+id/rbBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Blue"
+            android:padding="10dp"/>
+        <RadioButton
+            android:id="@+id/rbGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Green"
+            android:padding="10dp"/>
+    </RadioGroup>
+
+
+
+
+</RelativeLayout>

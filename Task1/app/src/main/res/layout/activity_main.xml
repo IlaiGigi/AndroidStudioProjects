@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/red">
+
+    <TextView
+        android:id="@+id/tvHeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="First Task"/>
+
+    <EditText
+        android:id="@+id/etInput"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:hint="Type Here"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvHeadline"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/btSendData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etInput"
+        android:layout_centerHorizontal="true"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:text="Send Data"/>
+
+    <TextView
+        android:id="@+id/tvData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:layout_below="@id/btSendData"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Data: "/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkedButton="@id/rbRed"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvData"
+        android:layout_marginTop="60dp">
+        <RadioButton
+            android:id="@+id/rbRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Red"
+            android:padding="10dp"/>
+    <RadioButton
+        android:id="@+id/rbBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blue"
+        android:padding="10dp"/>
+    <RadioButton
+        android:id="@+id/rbYellow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Yellow"
+        android:padding="10dp"/>
+    </RadioGroup>
+
+</RelativeLayout>
