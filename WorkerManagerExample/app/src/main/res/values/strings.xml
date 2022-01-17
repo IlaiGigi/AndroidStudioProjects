@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">WorkerManagerExample</string>
+    <string name="channel_name">GigiNotification</string>
+    <string name="channel_description">GigiNotification</string>
+    <string name="snooze">GigiNotification</string>
 </resources>
