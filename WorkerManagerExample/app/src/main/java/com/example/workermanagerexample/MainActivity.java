@@ -44,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Date date = Calendar.getInstance().getTime();
         int currentMinute = date.getMinutes();
         int currentHour = date.getHours();
-        int minDiff = minute > currentMinute ? minute - currentMinute : currentHour - minute;
-        return Math.abs(currentHour - hour) * 60 + minDiff;
+        return Math.abs(currentHour - hour) * 60 + minute - currentMinute;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
