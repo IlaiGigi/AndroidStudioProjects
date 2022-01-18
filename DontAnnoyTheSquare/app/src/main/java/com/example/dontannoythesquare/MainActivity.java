@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements Runnable, View.On
     Handler handler;
     Random random;
     Square square;
+    int currentColor;
     int score;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements Runnable, View.On
         handler = new Handler();
         switchSentences.start();
         random = new Random();
+        currentColor = Color.WHITE;
         score = 0;
         squareThread = new Thread(() -> handler.post(() -> {
 
@@ -71,34 +73,27 @@ public class MainActivity extends AppCompatActivity implements Runnable, View.On
 
     @Override
     public void onClick(View view) {
-        if (view == ivRedOval)
+        if (view == ivRedOval){
             switchColor(Color.RED);
-        if (view == ivGreenOval)
+        }
+        if (view == ivGreenOval){
             switchColor(Color.GREEN);
-        if (view == ivBlueOval)
+        }
+        if (view == ivBlueOval){
             switchColor(Color.BLUE);
+        }
         if (view == tvScore){
             animateScore();
         }
     }
     public void switchColor(int color){
-        int initialColor;
-        if (color == Color.RED){
-            initialColor = Color.parseColor("#ffcccb");
-            Log.d("yosi", initialColor+"");
-        }
-        else if (color == Color.BLUE)
-            initialColor = Color.parseColor("#ADD8E6");
-        else
-            initialColor = Color.parseColor("#90ee90");
-        tvScore.setTextColor(initialColor);
-        tvInstruction.setTextColor(initialColor);
-        ValueAnimator animator = ValueAnimator.ofInt(Math.min(color, initialColor), Math.max(color, initialColor));
+        ValueAnimator animator = ValueAnimator.ofArgb(currentColor, color);
         animator.setDuration(1500);
         animator.addUpdateListener(valueAnimator -> {
             int val = (int)valueAnimator.getAnimatedValue();
             tvScore.setTextColor(val);
             tvInstruction.setTextColor(val);
+            currentColor = val;
         });
         animator.start();
     }
