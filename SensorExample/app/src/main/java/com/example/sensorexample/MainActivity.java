@@ -8,6 +8,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Size;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Sensor acceleratorSensor;
     View square;
     float deltaX, deltaY, deltaZ;
+    Size size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         square = findViewById(R.id.ivSquare);
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         acceleratorSensor = manager.getDefaultSensor(SensorManager.SENSOR_DELAY_GAME);
+        size = getScreenDimensions();
     }
 
     @Override
@@ -51,8 +55,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             deltaY = sensorEvent.values[1];
             deltaZ = sensorEvent.values[2];
             if (square != null){
-                square.setX(square.getX() - deltaX);
-                square.setY(square.getY() + deltaY);
+                float movX = square.getX() - deltaX;
+                float movY = square.getY() + deltaY;
+                if (isValidX(movX))
+                    square.setX(movX);
+                if (isValidY(movY))
+                    square.setY(movY);
             }
         }
     }
@@ -60,5 +68,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    public boolean isValidX(float val){
+        return val < size.getWidth() - square.getWidth() && val > 0;
+    }
+
+    public boolean isValidY(float val){
+        return val < size.getHeight() - square.getHeight() - dpToPx(55) && val > 0;
+    }
+
+    public int dpToPx(int dps) {
+        // Get the screen's density scale
+        final float scale =
+                getApplicationContext().getResources().getDisplayMetrics().density;
+        // Convert the dps to pixels, based on density scale
+        int pixels = (int) (dps * scale + 0.5f);
+        return pixels;
+    }
+
+    public Size getScreenDimensions(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        return new Size(width, height);
     }
 }
