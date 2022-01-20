@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TimePicker picker;
     Button btPushWork;
     CheckBox cbRepetitive;
     TextView tvSwitchActivity;
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        picker = findViewById(R.id.timePicker1);
         btPushWork = findViewById(R.id.btPushWork);
         cbRepetitive = findViewById(R.id.cbRepetitive);
         tvSwitchActivity = findViewById(R.id.tvSwitchActivity);
