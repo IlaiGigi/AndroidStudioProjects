@@ -1,5 +1,6 @@
 package com.example.workermanagerexample;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.OneTimeWorkRequest;
@@ -7,6 +8,8 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.time.LocalTime;
@@ -25,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TimePicker picker;
     Button btPushWork;
     CheckBox cbRepetitive;
+    TextView tvSwitchActivity;
+    int LAUNCH_SECOND_ACTIVITY;
+    int scheduleHour, scheduleMinute;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -35,8 +42,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         picker = findViewById(R.id.timePicker1);
         btPushWork = findViewById(R.id.btPushWork);
         cbRepetitive = findViewById(R.id.cbRepetitive);
+        tvSwitchActivity = findViewById(R.id.tvSwitchActivity);
 
         btPushWork.setOnClickListener(this);
+        tvSwitchActivity.setOnClickListener(this);
+
+        LAUNCH_SECOND_ACTIVITY = 1;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -51,13 +62,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == btPushWork){
-            int scheduleHour = picker.getCurrentHour();
-            int scheduleMinute = picker.getCurrentMinute();
             int delay = calcDelay(scheduleHour, scheduleMinute);
             if (!cbRepetitive.isChecked())
                 initializeOneTimeWork(delay);
             else
                 initializeRepetitiveWork(delay);
+        }
+        if (view == tvSwitchActivity){
+            Intent intent = new Intent(this, TimeSelectActivity.class);
+            startActivityForResult(intent, LAUNCH_SECOND_ACTIVITY);
         }
     }
 
@@ -79,5 +92,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         WorkManager
                 .getInstance(this)
                 .enqueue(myWorkRequest);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LAUNCH_SECOND_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
+                assert data != null;
+                int[] timestamp = data.getIntArrayExtra("result");
+                scheduleHour = timestamp[0];
+                scheduleMinute = timestamp[1];
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                // Write your code if there's no result
+            }
+        }
     }
 }
