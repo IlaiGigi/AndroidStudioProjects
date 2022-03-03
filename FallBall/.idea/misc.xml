@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/blackoval.xml" value="0.275" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/blueoval.xml" value="0.275" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/redoval.xml" value="0.275" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/yellowoval.xml" value="0.275" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/layout/activity_main.xml" value="0.2625" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
