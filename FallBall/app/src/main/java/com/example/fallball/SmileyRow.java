@@ -116,6 +116,14 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         animator.start();
     }
 
+    public void pauseAnimation(){
+        this.animator.pause();
+    }
+
+    public void resumeAnimation(){
+        this.animator.resume();
+    }
+
     public int dpToPx(int dp) {
         // Get the screen's density scale
         final float scale = getResources().getDisplayMetrics().density;
