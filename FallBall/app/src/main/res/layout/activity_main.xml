@@ -1,12 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:id="@+id/mainLayout"
-    android:orientation="vertical">
+    android:id="@+id/main_layout"
+    android:background="@drawable/light_background">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#BFFFFFFF"
+        android:id="@+id/topBar">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ניקוד: "
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp">
+
+            <ImageView
+                android:id="@+id/heart1"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/big_heart"/>
+
+            <ImageView
+                android:id="@+id/heart2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/big_heart"/>
+
+            <ImageView
+                android:id="@+id/heart3"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/big_heart"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rowsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/border"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:src="@drawable/rope"
+        android:scaleType="fitXY"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="155dp"
+        android:elevation="7dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="105dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/bottomBar">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+
+            <!--android:layout_width="160dp"-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:src="@drawable/board" />
+
+            <TextView
+                android:id="@+id/authorizedSmileys"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:onClick="onClick"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>
