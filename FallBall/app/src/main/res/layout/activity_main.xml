@@ -80,11 +80,11 @@
         android:id="@+id/border"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:src="@drawable/rope"
-        android:scaleType="fitXY"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="155dp"
-        android:elevation="7dp" />
+        android:elevation="7dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/rope" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -109,11 +109,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:onClick="onClick"
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="30dp"
-                android:textStyle="bold"
-                android:onClick="onClick"/>
+                android:textStyle="bold" />
 
         </RelativeLayout>
 

@@ -1,18 +1,16 @@
 package com.example.fallball;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
@@ -22,32 +20,34 @@ import java.util.Random;
 
 public class SmileyRow extends RelativeLayout implements View.OnClickListener {
 
-    private final Smiley[] smileysArray;
-    private int smileysNum;
-    private ValueAnimator animator;
-    private final Random random;
     private final ArrayList<Integer> takenIndexes;
+    private final ValueAnimator animator;
+    private final Smiley[] smileysArray;
+    private final Random random;
+    private final Context context;
+    private int smileysNum;
 
     public SmileyRow(Context context) {
         super(context);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT); // The row cannot be longer than the screen itself
         this.setLayoutParams(params);
-        this.setX((getScreenSizePx(context).getWidth() - 8 * dpToPx(40)) / 2); // Center the row in the screen
+        this.setX((Utils.getScreenSizePx(context).getWidth() - 8 * Utils.dpToPx(context,40)) / 2); // Center the row in the screen
 
         this.random = new Random();
+        this.context = context;
         this.smileysNum = random.nextInt(9); // Generate the number of smileys in the row
         Log.d("yosi", String.valueOf(smileysNum));
         this.smileysArray = new Smiley[8];
         this.takenIndexes = new ArrayList<>();
 
-        this.animator = ValueAnimator.ofInt(50, getScreenSizeDp(context).getHeight() - 100); // Leave space at the top, iterate to the bottom of the screen minus the size of the menu bar
+        this.animator = ValueAnimator.ofInt(50, Utils.getScreenSizeDp(context).getHeight() - 100); // Leave space at the top, iterate to the bottom of the screen minus the size of the menu bar
         this.animator.setInterpolator(new LinearInterpolator()); // Set the of the animation to be constant
-        this.animator.setDuration(1000L * (getScreenSizeDp(context).getHeight() / 52)); // Way (OUM - dps) / speed (OUM - 52 dps/s) = time (UOM - sec), multiply by 1000 to cast to milliseconds
+        this.animator.setDuration(1000L * (Utils.getScreenSizeDp(context).getHeight() / 52)); // Way (OUM - dps) / speed (OUM - 52 dps/s) = time (UOM - sec), multiply by 1000 to cast to milliseconds
 
         // Generate smileys and insert them into the row's array
         for (int i=0; i<this.smileysNum; i++){
             Smiley smiley = generateSmiley(context);
-            smiley.setX(smiley.getIndexInRow() * dpToPx(40));
+            smiley.setX(smiley.getIndexInRow() * Utils.dpToPx(context,40));
             smiley.setOnClickListener(this);
             Log.d("yosi", String.valueOf(smiley.getIndexInRow()));
             this.smileysArray[smiley.getIndexInRow()] = smiley;
@@ -72,7 +72,7 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         }
         takenIndexes.add(possIndex);
         // Determine type
-        int type = 4; // (Change from constant later)
+        int type = 0; // (Change from constant later)
         return new Smiley(context, type, possIndex);
     }
 
@@ -86,7 +86,7 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         return smiley;
     }
 
-    public void removeSmiley(int index){
+    private void removeSmiley(int index){
         if (this.smileysArray[index] == null) // If there's no smiley at the requested index, return null
             return;
         new CountDownTimer(3000, 1000) {
@@ -101,17 +101,17 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         }.start();
     }
 
-    public void deallocateIndex(int index){ // Clear a given index of it's smiley
+    private void deallocateIndex(int index){ // Clear a given index of it's smiley
         this.removeView(smileysArray[index]);
         this.smileysArray[index] = null;
         this.takenIndexes.remove((Integer) index);
         this.smileysNum--;
     }
 
-    public void move(){
-        this.animator.addUpdateListener(valueAnimator -> {
+    private void move(){
+        animator.addUpdateListener(valueAnimator -> {
             int val = (int)valueAnimator.getAnimatedValue();
-            this.setY(dpToPx(val));
+            setY(Utils.dpToPx(this.context, val));
         });
         animator.start();
     }
@@ -124,27 +124,39 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         this.animator.resume();
     }
 
-    public int dpToPx(int dp) {
-        // Get the screen's density scale
-        final float scale = getResources().getDisplayMetrics().density;
-        // Convert the dps to pixels, based on density scale
-        return (int) (dp * scale + 0.5f);
-    }
+    public boolean hasSmileys() {return this.takenIndexes.size() != 0;}
 
-    private Size getScreenSizePx(Context context) { // Get the screen's dimensions (UOM - pixels)
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
-        return new Size(width, height);
-    }
+    public SmileyRow getSmileyRow() {return this;}
 
-    private Size getScreenSizeDp(Context context){
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        return new Size((int)dpWidth, (int)dpHeight);
+    public boolean checkSmileyNumber(int authorizedNumber) {
+        if (!this.hasSmileys()){
+            return authorizedNumber == 0;
+        }
+        if (this.smileysNum == authorizedNumber){
+            for (int i=0; i<8; i++){
+                if (this.smileysArray[i] == null)
+                    continue;
+                this.smileysArray[i].changeToHappy();
+                this.smileysArray[i].setClickable(false);
+            }
+        }
+        else{
+            for (int i=0; i<8; i++){
+                if (this.smileysArray[i] == null)
+                    continue;
+                this.smileysArray[i].changeToSad();
+                this.smileysArray[i].setClickable(false);
+            }
+        }
+        new CountDownTimer(300, 1000) {
+            @Override
+            public void onTick(long l) {
+            }
+            @Override
+            public void onFinish() {
+                ((ViewGroup)getParent()).removeView(getSmileyRow());
+            }
+        }.start();
+        return this.smileysNum == authorizedNumber;
     }
-
-    public boolean hasSmileyes() {return this.takenIndexes.size() != 0;}
 }

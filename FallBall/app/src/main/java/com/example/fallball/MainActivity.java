@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +22,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RelativeLayout mainLayout;
     GameThread gameThread;
     Boolean executeOnResume = false;
-    TextView authorizedSmileys;
+    TextView tvAuthorizedSmileys, tvPoints;
+    ImageView borderView;
+    ImageView[] hearts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +38,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
-        mainLayout = findViewById(R.id.main_layout);
-        authorizedSmileys = findViewById(R.id.authorizedSmileys);
+        hearts = new ImageView[3];
 
-        gameThread = new GameThread(mainLayout, this);
+        mainLayout = findViewById(R.id.main_layout);
+        tvAuthorizedSmileys = findViewById(R.id.authorizedSmileys);
+        borderView = findViewById(R.id.border);
+        tvPoints = findViewById(R.id.points);
+        hearts[0] = findViewById(R.id.heart1);
+        hearts[1] = findViewById(R.id.heart2);
+        hearts[2] = findViewById(R.id.heart3);
+
+        gameThread = new GameThread(mainLayout, this, borderView, tvAuthorizedSmileys, tvPoints, hearts);
     }
 
     @Override
@@ -70,8 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view == authorizedSmileys){
-            authorizedSmileys.setText(String.valueOf(gameThread.getNewRandomNumber()));
+        if (view == tvAuthorizedSmileys){
+            tvAuthorizedSmileys.setText(String.valueOf(gameThread.getNewRandomNumber()));
         }
     }
 }
