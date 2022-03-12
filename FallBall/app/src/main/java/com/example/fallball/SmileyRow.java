@@ -130,7 +130,7 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
 
     public boolean checkSmileyNumber(int authorizedNumber) {
         if (!this.hasSmileys()){
-            return authorizedNumber == 0;
+            return true;
         }
         if (this.smileysNum == authorizedNumber){
             for (int i=0; i<8; i++){

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -54,6 +55,7 @@ public class GameThread extends Thread {
         this.currentAuthorizedNumber = this.random.nextInt(9);
         this.tvAuthorizedSmileys.setText(String.valueOf(this.currentAuthorizedNumber));
         this.restartIntent = new Intent(context, MainActivity.class);
+        this.initializeHeartAnimation(R.drawable.heart_beat_animation, -1);
 
         this.start();
     }
@@ -104,9 +106,10 @@ public class GameThread extends Thread {
     }
 
     private void checkRowPass(){
-        // TODO: FIX SPEED (SMILEYS TOO CLOSE TO EACH OTHER) ISSUE, FIX POINTS DOWN ON STARTUP ISSUE
         if (this.smileyRows.get(0).getY() >= this.borderView.getY() && this.smileyRows.size() != 1){
-            boolean valid = this.smileyRows.get(0).checkSmileyNumber(this.currentAuthorizedNumber); // TODO: THIS IS CALLED AFTER THE 3 SECOND DELAY (?)
+            if (!this.smileyRows.get(0).hasSmileys() && this.currentAuthorizedNumber != 0)
+                return;
+            boolean valid = this.smileyRows.get(0).checkSmileyNumber(this.currentAuthorizedNumber);
             this.timesToChangeNumber = 3;
             this.tvAuthorizedSmileys.setText(String.valueOf(this.random.nextInt(9)));
             if (valid) this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) + 1));
@@ -114,8 +117,9 @@ public class GameThread extends Thread {
                 this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) - 1));
                 for (int i = 2; i>=0; i--){
                     if (this.hearts[i] != null){
-                        this.hearts[i].setVisibility(View.INVISIBLE);
+                        this.initializeHeartAnimation(R.drawable.heart_explode_animation, i);
                         this.hearts[i] = null;
+                        this.initializeHeartAnimation(R.drawable.heart_beat_animation, -1);
                         if (i == 0){
                             this.pauseGame();
                             new AlertDialog.Builder(this.context)
@@ -149,5 +153,22 @@ public class GameThread extends Thread {
         gameOverMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         gameOverMessage.setLayoutParams(params);
         return gameOverMessage;
+    }
+
+    private void initializeHeartAnimation(int id, int index){
+        // If the index is valid (>=0) then run the animation on a specific heart, else, run it on all hearts
+        if (index != -1){
+            this.hearts[index].setBackgroundResource(id);
+            AnimationDrawable frameAnimation = (AnimationDrawable) this.hearts[index].getBackground();
+            frameAnimation.start();
+            return;
+        }
+        for (ImageView heart: this.hearts){
+            if (heart == null)
+                continue;
+            heart.setBackgroundResource(id);
+            AnimationDrawable frameAnimation = (AnimationDrawable) heart.getBackground();
+            frameAnimation.start();
+        }
     }
 }
