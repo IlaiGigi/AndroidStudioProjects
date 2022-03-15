@@ -178,5 +178,6 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         this.hearts[GameThread.remainingHearts -1].setBackgroundResource(R.drawable.heart_explode_animation);
         AnimationDrawable frameAnimation = (AnimationDrawable) this.hearts[GameThread.remainingHearts -1].getBackground();
         frameAnimation.start();
+        GameThread.remainingHearts--;
     }
 }

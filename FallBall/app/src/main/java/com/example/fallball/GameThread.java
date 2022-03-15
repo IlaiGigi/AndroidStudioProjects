@@ -107,6 +107,19 @@ public class GameThread extends Thread {
     }
 
     private void checkRowPass(){
+        if (remainingHearts == 0){ // This needs to run constantly, in case the hearts dropped within an external class
+            this.pauseGame();
+            new AlertDialog.Builder(this.context)
+                    .setTitle("Game Over")
+                    .setMessage("Start Over?")
+                    .setCancelable(false)
+                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                    // The dialog is automatically dismissed when a dialog button is clicked.
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> this.context.startActivity(this.restartIntent))
+                    .setNegativeButton(android.R.string.no, (dialog, which) -> this.rowsLayout.addView(this.createGameOverMessage()))
+                    // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setIcon(android.R.drawable.ic_dialog_alert).show();
+            }
         if (smileyRows.get(0).getY() >= this.borderView.getY() && smileyRows.size() != 1){
             boolean valid = smileyRows.get(0).checkSmileyNumber(this.currentAuthorizedNumber);
             this.timesToChangeNumber = 3;
@@ -116,21 +129,8 @@ public class GameThread extends Thread {
                 this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) - 1));
                 this.initializeHeartAnimation(R.drawable.heart_explode_animation, remainingHearts -1);
                 this.hearts[remainingHearts -1] = null;
-                this.initializeHeartAnimation(R.drawable.heart_beat_animation, -1);
                 remainingHearts--;
-                if (remainingHearts == 0){
-                    this.pauseGame();
-                    new AlertDialog.Builder(this.context)
-                            .setTitle("Game Over")
-                            .setMessage("Start Over?")
-                            .setCancelable(false)
-                            // Specifying a listener allows you to take an action before dismissing the dialog.
-                            // The dialog is automatically dismissed when a dialog button is clicked.
-                            .setPositiveButton(android.R.string.yes, (dialog, which) -> this.context.startActivity(this.restartIntent))
-                            .setNegativeButton(android.R.string.no, (dialog, which) -> this.rowsLayout.addView(this.createGameOverMessage()))
-                            // A null listener allows the button to dismiss the dialog and take no further action.
-                            .setIcon(android.R.drawable.ic_dialog_alert).show();
-                }
+
             }
             smileyRows.remove(0);
         }
