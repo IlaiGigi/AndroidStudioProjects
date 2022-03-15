@@ -35,7 +35,6 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
     @SuppressLint("ResourceType")
     public SmileyRow(Context context, ImageView[] hearts) {
         super(context);
-        Log.d("dani", String.valueOf(findViewById(R.drawable.sick_face)));
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT); // The row cannot be longer than the screen itself
         this.setLayoutParams(params);
         this.setX((Utils.getScreenSizePx(context).getWidth() - 8 * Utils.dpToPx(context,40)) / 2); // Center the row in the screen
@@ -43,7 +42,6 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         this.random = new Random();
         this.context = context;
         this.smileysNum = random.nextInt(9); // Generate the number of smileys in the row
-        Log.d("yosi", String.valueOf(smileysNum));
         this.smileysArray = new Smiley[8];
         this.takenIndexes = new ArrayList<>();
         this.hearts = hearts;
@@ -55,9 +53,6 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         // Generate smileys and insert them into the row's array
         for (int i=0; i<this.smileysNum; i++){
             Smiley smiley = generateSmiley(context);
-            if (smiley.getType() == 1){
-                Log.d("dani", String.valueOf(smiley.getBackground()));
-            }
             smiley.setX(smiley.getIndexInRow() * Utils.dpToPx(context,40));
             smiley.setOnClickListener(this);
             this.smileysArray[smiley.getIndexInRow()] = smiley;
@@ -80,17 +75,14 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         }
         else if (smiley.getType() == 2){
             for (Smiley smiley1: this.smileysArray){
-                if (smiley1 != null)
-                    deallocateIndex(smiley1.getIndexInRow());
+                if (smiley1 != null) deallocateIndex(smiley1.getIndexInRow());
             }
         }
         else if (smiley.getType() == 3){
             ArrayList<SmileyRow> smileyRows = GameThread.smileyRows;
             int rowIndex = smileyRows.indexOf(this);
-            if (rowIndex == smileyRows.size() -1)
-                return;
-            if (smileyRows.get(rowIndex+1).getSmileysNum() == 8)
-                return;
+            if (rowIndex == smileyRows.size() -1) return;
+            if (smileyRows.get(rowIndex+1).getSmileysNum() == 8) return;
             deallocateIndex(smiley.getIndexInRow());
             smileyRows.get(rowIndex+1).addSmiley(smiley);
         }
@@ -121,8 +113,7 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
     }
 
     private void removeSmiley(int index){
-        if (this.smileysArray[index] == null) // If there's no smiley at the requested index, return null
-            return;
+        if (this.smileysArray[index] == null) return; // If there's no smiley at the requested index, return null
         new CountDownTimer(300, 1000) {
             @Override
             public void onTick(long l) {
@@ -165,9 +156,12 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
     public int getSmileysNum() {return this.smileysNum;}
 
     public boolean checkSmileyNumber(int authorizedNumber) {
+        for (Smiley smiley: this.smileysArray){
+            if (smiley != null) smiley.setClickable(false);
+        }
+        if (this.smileysNum == 0) return true;
         boolean cond = false;
-        if (this.smileysNum == authorizedNumber)
-            cond = true;
+        if (this.smileysNum == authorizedNumber) cond = true;
         new CountDownTimer(300, 1000) {
             @Override
             public void onTick(long l) {

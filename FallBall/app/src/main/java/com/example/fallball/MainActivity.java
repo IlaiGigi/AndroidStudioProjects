@@ -69,17 +69,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         gameThread.pauseGame();
-        if (lightSensor != null){
-            sensorManager.unregisterListener(this);
-        }
+        if (lightSensor != null) sensorManager.unregisterListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (lightSensor != null){
-            sensorManager.registerListener(this, lightSensor, Sensor.TYPE_LIGHT);
-        }
+        if (lightSensor != null) sensorManager.registerListener(this, lightSensor, Sensor.TYPE_LIGHT);
         if (!executeOnResume){ // This prevents the program from running on resume when it launches
             executeOnResume = true;
             return;
@@ -111,8 +107,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Sensor sensor = sensorEvent.sensor;
         if (sensor.getType() == Sensor.TYPE_LIGHT){
             lux = sensorEvent.values[0];
-            if (lux > 150) mainLayout.setBackgroundResource(R.drawable.light_background);
-            else if (lux <= 150) mainLayout.setBackgroundResource(R.drawable.dark_background);
+            if (lux > 200) mainLayout.setBackgroundResource(R.drawable.light_background);
+            else mainLayout.setBackgroundResource(R.drawable.dark_background);
         }
     }
 
