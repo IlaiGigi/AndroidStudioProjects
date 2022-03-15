@@ -14,5 +14,10 @@
     <color name="inner_blue">#deb501</color>
     <color name="mid_blue">#2388d2</color>
     <color name="outer_blue">#9de3f3</color>
+    <color name="green">#00FF00</color>
+    <color name="cyan">#00FFFF</color>
+    <color name="pink">#FFC0CB</color>
+    <color name="orange">#FFA500</color>
+
 
 </resources>

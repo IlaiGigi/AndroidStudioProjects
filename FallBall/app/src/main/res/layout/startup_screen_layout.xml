@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StartupScreen"
+    android:id="@+id/startup_layout"
+    android:background="@drawable/light_background">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutDirection="ltr"
+        android:layout_marginLeft="10dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:textColor="@color/red"
+            android:text="F"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:textColor="@color/yellow"
+            android:text="a"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:textColor="@color/mid_blue"
+            android:text="l"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:textColor="@color/green"
+            android:text="l"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:text=" "/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:textColor="@color/purple_200"
+            android:text="B"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:textColor="@color/cyan"
+            android:text="a"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:textColor="@color/pink"
+            android:text="l"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:textColor="@color/orange"
+            android:text="l"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutDirection="ltr"
+        android:layout_marginLeft="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="140dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/redoval"
+            android:src="@drawable/sick_face"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/yellowoval"
+            android:src="@drawable/joker_face"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/blackoval"
+            android:src="@drawable/row_bomb_face"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/yellowoval"
+            android:src="@drawable/guard_face"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/yellowoval"
+            android:src="@drawable/up_face"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/yellowoval"
+            android:src="@drawable/down_face"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutDirection="ltr"
+        android:layout_marginLeft="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/blackoval"
+            android:src="@drawable/plus_bomb_face"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/blueoval"
+            android:src="@drawable/frozen_face"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/yellowoval"
+            android:src="@drawable/lock_face"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/yellowoval"
+            android:src="@drawable/king_face"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/yellowoval"
+            android:src="@drawable/princess_face"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ibStartGame"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/yellowoval"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="300dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:text="Start Game"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="300dp"
+        android:clickable="false"/>
+
+    <ImageButton
+        android:id="@+id/ibAboutUs"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/yellowoval"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="400dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:text="About Us"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="400dp"
+        android:clickable="false"/>
+
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/tvAboutUs"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="470dp"
+        android:layout_centerHorizontal="true"
+        android:text="We are a bunch of CS student and this is our final project, inspired by the one and only Roei Amiga operating system. Enjoy!"
+        android:textAlignment="center"/>
+
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/ivAmongUsDrip"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/amongusdrip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="510dp"/>
+
+
+
+</RelativeLayout>
