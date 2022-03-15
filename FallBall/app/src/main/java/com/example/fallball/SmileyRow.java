@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -11,7 +12,9 @@ import android.util.Size;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -26,8 +29,9 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
     private final Random random;
     private final Context context;
     private int smileysNum;
+    private ImageView[] hearts;
 
-    public SmileyRow(Context context) {
+    public SmileyRow(Context context, ImageView[] hearts) {
         super(context);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT); // The row cannot be longer than the screen itself
         this.setLayoutParams(params);
@@ -39,6 +43,7 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         Log.d("yosi", String.valueOf(smileysNum));
         this.smileysArray = new Smiley[8];
         this.takenIndexes = new ArrayList<>();
+        this.hearts = hearts;
 
         this.animator = ValueAnimator.ofInt(50, Utils.getScreenSizeDp(context).getHeight() - 100); // Leave space at the top, iterate to the bottom of the screen minus the size of the menu bar
         this.animator.setInterpolator(new LinearInterpolator()); // Set the of the animation to be constant
@@ -49,7 +54,6 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
             Smiley smiley = generateSmiley(context);
             smiley.setX(smiley.getIndexInRow() * Utils.dpToPx(context,40));
             smiley.setOnClickListener(this);
-            Log.d("yosi", String.valueOf(smiley.getIndexInRow()));
             this.smileysArray[smiley.getIndexInRow()] = smiley;
             this.addView(smiley);
         }
@@ -61,8 +65,26 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
     public void onClick(View view) {
         // No other views other than smileys - we can infer view will always be of type Smiley
         Smiley smiley = (Smiley) view;
-        smiley.smileyClicked();
-        removeSmiley(smiley.getIndexInRow());
+        if (smiley.getType() == 0){
+            removeSmiley(smiley.getIndexInRow());
+        }
+        else if (smiley.getType() == 1){
+            removeHeart();
+            removeSmiley(smiley.getIndexInRow());
+        }
+        else if (smiley.getType() == 2){
+            ((ViewGroup)getParent()).removeView(getSmileyRow());
+        }
+        else if (smiley.getType() == 3){
+            ArrayList<SmileyRow> smileyRows = GameThread.smileyRows;
+            int rowIndex = smileyRows.indexOf(this);
+            if (rowIndex == smileyRows.size() -1)
+                return;
+            if (smileyRows.get(rowIndex+1).getSmileysNum() == 8)
+                return;
+            deallocateIndex(smiley.getIndexInRow());
+            smileyRows.get(rowIndex+1).addSmiley(smiley);
+        }
     }
 
     public Smiley generateSmiley(Context context){ // Generate smiley at an unoccupied index
@@ -72,18 +94,22 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         }
         takenIndexes.add(possIndex);
         // Determine type
-        int type = 0; // (Change from constant later)
+        int type = this.random.nextInt(4); // (Change from constant later)
         return new Smiley(context, type, possIndex);
     }
 
-    public @Nullable Smiley addSmiley(Context context, int index){
+    public void addSmiley(Smiley smiley){
         // If the given index is taken, return null
-        if (takenIndexes.size() == 8 || takenIndexes.contains(index))
-            return null;
-        int type = random.nextInt(4);
-        Smiley smiley = new Smiley(context, type, index);
+        int possIndex = random.nextInt(8); // Search until an empty index is found
+        while (takenIndexes.contains(possIndex)){
+            possIndex = random.nextInt(8);
+        }
+        takenIndexes.add(possIndex);
+        smiley.setIndexInRow(possIndex);
+        smiley.setX(smiley.getIndexInRow() * Utils.dpToPx(context,40));
+        smiley.setOnClickListener(this);
+        this.smileysArray[smiley.getIndexInRow()] = smiley;
         this.addView(smiley);
-        return smiley;
     }
 
     private void removeSmiley(int index){
@@ -128,6 +154,8 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
 
     public SmileyRow getSmileyRow() {return this;}
 
+    public int getSmileysNum() {return this.smileysNum;}
+
     public boolean checkSmileyNumber(int authorizedNumber) {
         if (!this.hasSmileys()){
             return true;
@@ -158,5 +186,11 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
             }
         }.start();
         return this.smileysNum == authorizedNumber;
+    }
+
+    private void removeHeart(){
+        this.hearts[GameThread.remainingHearts -1].setBackgroundResource(R.drawable.heart_explode_animation);
+        AnimationDrawable frameAnimation = (AnimationDrawable) this.hearts[GameThread.remainingHearts -1].getBackground();
+        frameAnimation.start();
     }
 }

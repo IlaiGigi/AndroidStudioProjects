@@ -4,7 +4,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener {
 
     RelativeLayout mainLayout;
     GameThread gameThread;
@@ -25,6 +31,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView tvAuthorizedSmileys, tvPoints;
     ImageView borderView;
     ImageView[] hearts;
+
+    SensorManager sensorManager;
+    Sensor lightSensor;
+    float lux;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +60,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hearts[2] = findViewById(R.id.heart3);
 
         gameThread = new GameThread(mainLayout, this, borderView, tvAuthorizedSmileys, tvPoints, hearts);
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
     }
     @Override
     protected void onPause() {
         super.onPause();
         gameThread.pauseGame();
+        if (lightSensor != null){
+            sensorManager.unregisterListener(this);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (lightSensor != null){
+            sensorManager.registerListener(this, lightSensor, Sensor.TYPE_LIGHT);
+        }
         if (!executeOnResume){ // This prevents the program from running on resume when it launches
             executeOnResume = true;
             return;
@@ -84,5 +103,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == tvAuthorizedSmileys){
             tvAuthorizedSmileys.setText(String.valueOf(gameThread.getNewRandomNumber()));
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        Sensor sensor = sensorEvent.sensor;
+        if (sensor.getType() == Sensor.TYPE_LIGHT){
+            lux = sensorEvent.values[0];
+            if (lux > 150) mainLayout.setBackgroundResource(R.drawable.light_background);
+            else if (lux <= 150) mainLayout.setBackgroundResource(R.drawable.dark_background);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+        // Redundant
     }
 }

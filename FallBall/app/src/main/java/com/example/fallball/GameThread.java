@@ -26,7 +26,7 @@ import java.util.Random;
 public class GameThread extends Thread {
 
     private final int[] explosionAnimation = {R.drawable.explode1, R.drawable.explode2, R.drawable.explode3, R.drawable.explode4, R.drawable.explode5, R.drawable.explode6, R.drawable.explode7, R.drawable.explode8};
-    private final ArrayList<SmileyRow> smileyRows;
+    public static final ArrayList<SmileyRow> smileyRows = new ArrayList<>();
     private final TextView tvAuthorizedSmileys;
     private final RelativeLayout rowsLayout;
     private final ImageView borderView;
@@ -39,12 +39,12 @@ public class GameThread extends Thread {
     private int currentAuthorizedNumber;
     private int timesToChangeNumber;
     private boolean createMoreRows;
+    public static int remainingHearts = 3;
 
     public GameThread(RelativeLayout rowsLayout, Context context, ImageView borderView, TextView tvAuthorizedSmileys, TextView tvPoints, ImageView[] hearts){
         this.rowsLayout = rowsLayout;
         this.handler = new Handler();
         this.createMoreRows = true;
-        this.smileyRows = new ArrayList<>();
         this.context = context;
         this.timesToChangeNumber = 3;
         this.borderView = borderView;
@@ -66,9 +66,9 @@ public class GameThread extends Thread {
         while (true){
             if (this.createMoreRows){
                 handler.post(() -> {
-                    SmileyRow smileyRow = new SmileyRow(this.context);
+                    SmileyRow smileyRow = new SmileyRow(this.context, this.hearts);
                     this.rowsLayout.addView(smileyRow);
-                    this.smileyRows.add(smileyRow);
+                    smileyRows.add(smileyRow);
                     checkRowPass();
                 });
             }
@@ -81,14 +81,14 @@ public class GameThread extends Thread {
     }
 
     public void pauseGame(){
-        for (SmileyRow row: this.smileyRows){
+        for (SmileyRow row: smileyRows){
             row.pauseAnimation();
         }
         this.createMoreRows = false;
     }
 
     public void resumeGame(){
-        for (SmileyRow row: this.smileyRows){
+        for (SmileyRow row: smileyRows){
             row.resumeAnimation();
         }
         this.createMoreRows = true;
@@ -106,38 +106,34 @@ public class GameThread extends Thread {
     }
 
     private void checkRowPass(){
-        if (this.smileyRows.get(0).getY() >= this.borderView.getY() && this.smileyRows.size() != 1){
-            if (!this.smileyRows.get(0).hasSmileys() && this.currentAuthorizedNumber != 0)
+        if (smileyRows.get(0).getY() >= this.borderView.getY() && smileyRows.size() != 1){
+            if (!smileyRows.get(0).hasSmileys() && this.currentAuthorizedNumber != 0)
                 return;
-            boolean valid = this.smileyRows.get(0).checkSmileyNumber(this.currentAuthorizedNumber);
+            boolean valid = smileyRows.get(0).checkSmileyNumber(this.currentAuthorizedNumber);
             this.timesToChangeNumber = 3;
             this.tvAuthorizedSmileys.setText(String.valueOf(this.random.nextInt(9)));
             if (valid) this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) + 1));
             else{
                 this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) - 1));
-                for (int i = 2; i>=0; i--){
-                    if (this.hearts[i] != null){
-                        this.initializeHeartAnimation(R.drawable.heart_explode_animation, i);
-                        this.hearts[i] = null;
-                        this.initializeHeartAnimation(R.drawable.heart_beat_animation, -1);
-                        if (i == 0){
-                            this.pauseGame();
-                            new AlertDialog.Builder(this.context)
-                                    .setTitle("Game Over")
-                                    .setMessage("Start Over?")
-                                    .setCancelable(false)
-                                    // Specifying a listener allows you to take an action before dismissing the dialog.
-                                    // The dialog is automatically dismissed when a dialog button is clicked.
-                                    .setPositiveButton(android.R.string.yes, (dialog, which) -> this.context.startActivity(this.restartIntent))
-                                    .setNegativeButton(android.R.string.no, (dialog, which) -> this.rowsLayout.addView(this.createGameOverMessage()))
-                                                // A null listener allows the button to dismiss the dialog and take no further action.
-                                    .setIcon(android.R.drawable.ic_dialog_alert).show();
-                        }
-                        break;
-                    }
+                this.initializeHeartAnimation(R.drawable.heart_explode_animation, remainingHearts -1);
+                this.hearts[remainingHearts -1] = null;
+                this.initializeHeartAnimation(R.drawable.heart_beat_animation, -1);
+                remainingHearts--;
+                if (remainingHearts == 0){
+                    this.pauseGame();
+                    new AlertDialog.Builder(this.context)
+                            .setTitle("Game Over")
+                            .setMessage("Start Over?")
+                            .setCancelable(false)
+                            // Specifying a listener allows you to take an action before dismissing the dialog.
+                            // The dialog is automatically dismissed when a dialog button is clicked.
+                            .setPositiveButton(android.R.string.yes, (dialog, which) -> this.context.startActivity(this.restartIntent))
+                            .setNegativeButton(android.R.string.no, (dialog, which) -> this.rowsLayout.addView(this.createGameOverMessage()))
+                            // A null listener allows the button to dismiss the dialog and take no further action.
+                            .setIcon(android.R.drawable.ic_dialog_alert).show();
                 }
             }
-            this.smileyRows.remove(0);
+            smileyRows.remove(0);
         }
     }
 
@@ -155,7 +151,7 @@ public class GameThread extends Thread {
         return gameOverMessage;
     }
 
-    private void initializeHeartAnimation(int id, int index){
+    public void initializeHeartAnimation(int id, int index){
         // If the index is valid (>=0) then run the animation on a specific heart, else, run it on all hearts
         if (index != -1){
             this.hearts[index].setBackgroundResource(id);

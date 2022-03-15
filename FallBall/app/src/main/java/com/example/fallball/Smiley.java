@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 public class Smiley extends androidx.appcompat.widget.AppCompatImageView {
 
-    public static int[] images = {R.drawable.regular_face, R.drawable.empty, R.drawable.frozen_face, R.drawable.guard_face, R.drawable.happy_face, R.drawable.joker_face, R.drawable.king_face, R.drawable.lock_face, R.drawable.plus_bomb_face, R.drawable.plus_bomb_face, R.drawable.princess_face, R.drawable.down_face, R.drawable.row_bomb_face, R.drawable.sad_face, R.drawable.shock_face, R.drawable.sick_face, R.drawable.up_face};
+    public static int[] images = {R.drawable.regular_face, R.drawable.sick_face, R.drawable.row_bomb_face, R.drawable.up_face};
     private int type;
     private int indexInRow;
 
@@ -15,7 +15,12 @@ public class Smiley extends androidx.appcompat.widget.AppCompatImageView {
         super(context);
         this.type = type;
         this.indexInRow = indexInRow;
-        this.setBackgroundResource(R.drawable.yellowoval); // Set the smiley's background
+        switch (type){
+            case 0: this.setBackgroundResource(R.drawable.yellowoval);
+            case 1: this.setBackgroundResource(R.drawable.redoval);
+            case 2: this.setBackgroundResource(R.drawable.blackoval);
+            case 3: this.setBackgroundResource(R.drawable.yellowoval);
+        }
         this.setImageResource(images[type]); // Set the smiley's face
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(Utils.dpToPx(context,40), Utils.dpToPx(context,40));
