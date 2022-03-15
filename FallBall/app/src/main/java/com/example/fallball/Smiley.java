@@ -15,12 +15,9 @@ public class Smiley extends androidx.appcompat.widget.AppCompatImageView {
         super(context);
         this.type = type;
         this.indexInRow = indexInRow;
-        switch (type){
-            case 0: this.setBackgroundResource(R.drawable.yellowoval);
-            case 1: this.setBackgroundResource(R.drawable.redoval);
-            case 2: this.setBackgroundResource(R.drawable.blackoval);
-            case 3: this.setBackgroundResource(R.drawable.yellowoval);
-        }
+        if (type == 0 || type == 3) this.setBackgroundResource(R.drawable.yellowoval);
+        else if (type == 1) this.setBackgroundResource(R.drawable.redoval);
+        else if (type == 2) this.setBackgroundResource(R.drawable.blackoval);
         this.setImageResource(images[type]); // Set the smiley's face
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(Utils.dpToPx(context,40), Utils.dpToPx(context,40));

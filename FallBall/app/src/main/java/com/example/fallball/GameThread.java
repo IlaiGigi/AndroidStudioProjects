@@ -107,12 +107,10 @@ public class GameThread extends Thread {
 
     private void checkRowPass(){
         if (smileyRows.get(0).getY() >= this.borderView.getY() && smileyRows.size() != 1){
-            if (!smileyRows.get(0).hasSmileys() && this.currentAuthorizedNumber != 0)
-                return;
             boolean valid = smileyRows.get(0).checkSmileyNumber(this.currentAuthorizedNumber);
             this.timesToChangeNumber = 3;
             this.tvAuthorizedSmileys.setText(String.valueOf(this.random.nextInt(9)));
-            if (valid) this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) + 1));
+            if (valid) this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) + smileyRows.get(0).getSmileysNum()));
             else{
                 this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) - 1));
                 this.initializeHeartAnimation(R.drawable.heart_explode_animation, remainingHearts -1);
