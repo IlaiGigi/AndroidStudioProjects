@@ -52,7 +52,7 @@ public class GameThread extends Thread {
         this.tvPoints = tvPoints;
         this.hearts = hearts;
         this.random = new Random();
-        this.currentAuthorizedNumber = this.random.nextInt(9);
+        this.currentAuthorizedNumber = this.random.nextInt(8) + 1;
         this.tvAuthorizedSmileys.setText(String.valueOf(this.currentAuthorizedNumber));
         this.restartIntent = new Intent(context, MainActivity.class);
         this.initializeHeartAnimation(R.drawable.heart_beat_animation, -1);
@@ -100,7 +100,7 @@ public class GameThread extends Thread {
             return this.currentAuthorizedNumber;
         }
         this.timesToChangeNumber--;
-        int num = this.random.nextInt(9);
+        int num = this.random.nextInt(8) + 1;
         this.currentAuthorizedNumber = num;
         return num;
     }
@@ -109,7 +109,7 @@ public class GameThread extends Thread {
         if (smileyRows.get(0).getY() >= this.borderView.getY() && smileyRows.size() != 1){
             boolean valid = smileyRows.get(0).checkSmileyNumber(this.currentAuthorizedNumber);
             this.timesToChangeNumber = 3;
-            this.tvAuthorizedSmileys.setText(String.valueOf(this.random.nextInt(9)));
+            this.tvAuthorizedSmileys.setText(String.valueOf(this.random.nextInt(8) + 1));
             if (valid) this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) + smileyRows.get(0).getSmileysNum()));
             else{
                 this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) - 1));
@@ -149,7 +149,7 @@ public class GameThread extends Thread {
         return gameOverMessage;
     }
 
-    public void initializeHeartAnimation(int id, int index){
+    private void initializeHeartAnimation(int id, int index){
         // If the index is valid (>=0) then run the animation on a specific heart, else, run it on all hearts
         if (index != -1){
             this.hearts[index].setBackgroundResource(id);

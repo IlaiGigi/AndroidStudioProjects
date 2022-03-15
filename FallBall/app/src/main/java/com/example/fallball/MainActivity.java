@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Sensor sensor = sensorEvent.sensor;
         if (sensor.getType() == Sensor.TYPE_LIGHT){
             lux = sensorEvent.values[0];
-            if (lux > 150) mainLayout.setBackgroundResource(R.drawable.light_background);
-            else if (lux <= 150) mainLayout.setBackgroundResource(R.drawable.dark_background);
+            if (lux > 200) mainLayout.setBackgroundResource(R.drawable.light_background);
+            else mainLayout.setBackgroundResource(R.drawable.dark_background);
         }
     }
 
