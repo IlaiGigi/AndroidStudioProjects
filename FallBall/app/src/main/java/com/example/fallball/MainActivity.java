@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainLayout = findViewById(R.id.main_layout);
         tvAuthorizedSmileys = findViewById(R.id.authorizedSmileys);
         borderView = findViewById(R.id.border);
-        borderView.measure(0,0);
         tvPoints = findViewById(R.id.points);
         hearts[0] = findViewById(R.id.heart1);
         hearts[1] = findViewById(R.id.heart2);
