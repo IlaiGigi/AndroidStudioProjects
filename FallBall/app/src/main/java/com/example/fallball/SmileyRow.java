@@ -46,7 +46,7 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         this.takenIndexes = new ArrayList<>();
         this.hearts = hearts;
 
-        this.animator = ValueAnimator.ofInt(50, Utils.getScreenSizeDp(context).getHeight() - 100); // Leave space at the top, iterate to the bottom of the screen minus the size of the menu bar
+        this.animator = ValueAnimator.ofInt(50, Utils.getScreenSizeDp(context).getHeight() - 260); // Leave space at the top, iterate to the bottom of the screen minus the size of the menu bar
         this.animator.setInterpolator(new LinearInterpolator()); // Set the of the animation to be constant
         this.animator.setDuration(1000L * (Utils.getScreenSizeDp(context).getHeight() / 52)); // Way (OUM - dps) / speed (OUM - 52 dps/s) = time (UOM - sec), multiply by 1000 to cast to milliseconds
 
@@ -162,15 +162,7 @@ public class SmileyRow extends RelativeLayout implements View.OnClickListener {
         if (this.smileysNum == 0) return true;
         boolean cond = false;
         if (this.smileysNum == authorizedNumber) cond = true;
-        new CountDownTimer(300, 1000) {
-            @Override
-            public void onTick(long l) {
-            }
-            @Override
-            public void onFinish() {
-                ((ViewGroup)getParent()).removeView(getSmileyRow());
-            }
-        }.start();
+        ((ViewGroup)getParent()).removeView(getSmileyRow());
         return cond;
     }
 

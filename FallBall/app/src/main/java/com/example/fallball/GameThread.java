@@ -107,20 +107,11 @@ public class GameThread extends Thread {
     }
 
     private void checkRowPass(){
-        if (remainingHearts == 0){ // This needs to run constantly, in case the hearts dropped within an external class
+        if (remainingHearts == 0){
             this.pauseGame();
-            new AlertDialog.Builder(this.context)
-                    .setTitle("Game Over")
-                    .setMessage("Start Over?")
-                    .setCancelable(false)
-                    // Specifying a listener allows you to take an action before dismissing the dialog.
-                    // The dialog is automatically dismissed when a dialog button is clicked.
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> this.context.startActivity(this.restartIntent))
-                    .setNegativeButton(android.R.string.no, (dialog, which) -> this.rowsLayout.addView(this.createGameOverMessage()))
-                    // A null listener allows the button to dismiss the dialog and take no further action.
-                    .setIcon(android.R.drawable.ic_dialog_alert).show();
-            }
-        if (smileyRows.get(0).getY() >= this.borderView.getY() && smileyRows.size() != 1){
+            Utils.createGameOverDialog(context);
+        }
+        if (smileyRows.get(0).getY() >= this.borderView.getY() - Utils.dpToPx(context, 50) && smileyRows.size() != 1){
             boolean valid = smileyRows.get(0).checkSmileyNumber(this.currentAuthorizedNumber);
             this.timesToChangeNumber = 3;
             this.tvAuthorizedSmileys.setText(String.valueOf(this.random.nextInt(8) + 1));
@@ -130,24 +121,9 @@ public class GameThread extends Thread {
                 this.initializeHeartAnimation(R.drawable.heart_explode_animation, remainingHearts -1);
                 this.hearts[remainingHearts -1] = null;
                 remainingHearts--;
-
             }
             smileyRows.remove(0);
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private TextView createGameOverMessage(){
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.topMargin = Utils.getScreenSizeDp(this.context).getHeight() / 2 + 150;
-        params.leftMargin = Utils.getScreenSizeDp(this.context).getWidth() / 2 - 150;
-        TextView gameOverMessage = new TextView(this.context);
-        gameOverMessage.setText("Game Over");
-        gameOverMessage.setTextSize(0, 200);
-        gameOverMessage.setTextColor(Color.RED);
-        gameOverMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        gameOverMessage.setLayoutParams(params);
-        return gameOverMessage;
     }
 
     private void initializeHeartAnimation(int id, int index){

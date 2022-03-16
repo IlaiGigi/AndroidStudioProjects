@@ -3,8 +3,14 @@ package com.example.fallball;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.util.Size;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 abstract class Utils {
 
@@ -28,5 +34,19 @@ abstract class Utils {
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
         return new Size(width, height);
+    }
+
+    public static void createGameOverDialog(Context context){
+        Intent restartIntent = new Intent(context, MainActivity.class);
+        new AlertDialog.Builder(context)
+                .setTitle("Game Over")
+                .setMessage("Start Over?")
+                .setCancelable(false)
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> context.startActivity(restartIntent))
+                .setNegativeButton(android.R.string.no, (dialog, which) -> dialog.cancel())
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setIcon(android.R.drawable.ic_dialog_alert).show();
     }
 }
