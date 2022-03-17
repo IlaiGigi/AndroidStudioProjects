@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -18,10 +19,12 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
+        Utils.context = this;
         hearts = new ImageView[3];
 
         mainLayout = findViewById(R.id.main_layout);
@@ -72,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         serviceIntent = new Intent(this, CitizensStatusService.class);
         serviceIntent.putExtra("Call", "InnerGameCall");
-        startForegroundService(serviceIntent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -91,24 +94,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         if (lightSensor != null) sensorManager.registerListener(this, lightSensor, Sensor.TYPE_LIGHT);
+        startForegroundService(serviceIntent);
         if (!executeOnResume){ // This prevents the program from running on resume when it launches
             executeOnResume = true;
             return;
         }
-        createAlertDialog("Resume Game");
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void createAlertDialog(String title){
-        new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setCancelable(false)
-                // Specifying a listener allows you to take an action before dismissing the dialog.
-                // The dialog is automatically dismissed when a dialog button is clicked.
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> resumeBatch())
-                // A null listener allows the button to dismiss the dialog and take no further action.
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        createPauseDialog(this);
     }
 
     @Override
@@ -134,9 +125,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void resumeBatch(){
-        gameThread.resumeGame();
-        serviceIntent.putExtra("Call", "InnerGameCall");
-        startForegroundService(serviceIntent);
+    public void createPauseDialog(Context context){
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.pause_dialog, null);
+        final AlertDialog alertD = new AlertDialog.Builder(context).create();
+        alertD.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageButton ibResume = promptView.findViewById(R.id.ibResume);
+        ibResume.setOnClickListener(view -> {
+            gameThread.resumeGame();
+            serviceIntent.putExtra("Call", "InnerGameCall");
+            startForegroundService(serviceIntent);
+            alertD.cancel();
+        });
+        alertD.setView(promptView);
+        alertD.setCancelable(false);
+        alertD.show();
     }
 }

@@ -5,11 +5,16 @@
       <map>
         <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/blackoval.xml" value="0.275" />
         <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/blueoval.xml" value="0.275" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/dialog_bg.xml" value="0.2682291666666667" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/greenrectangle.xml" value="0.2682291666666667" />
         <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/king_smiley.xml" value="0.1648148148148148" />
         <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/redoval.xml" value="0.275" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/redrectangle.xml" value="0.2682291666666667" />
         <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/try1.xml" value="0.21927083333333333" />
         <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/drawable/yellowoval.xml" value="0.275" />
         <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/layout/activity_main.xml" value="0.2625" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/layout/game_over_dialog.xml" value="0.2520833333333333" />
+        <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/layout/pause_dialog.xml" value="0.2520833333333333" />
         <entry key="..\:/Users/ilaig/Desktop/Projects/Android Studio/FallBall/app/src/main/res/layout/startup_screen_layout.xml" value="0.3333333333333333" />
       </map>
     </option>

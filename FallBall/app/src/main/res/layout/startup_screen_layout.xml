@@ -16,6 +16,7 @@
         android:layout_centerHorizontal="true">
 
         <TextView
+            android:fontFamily="@font/sanf_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="50sp"
@@ -24,6 +25,7 @@
 
 
         <TextView
+            android:fontFamily="@font/sanf_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="50sp"
@@ -31,6 +33,7 @@
             android:text="a"/>
 
         <TextView
+            android:fontFamily="@font/sanf_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="50sp"
@@ -38,6 +41,7 @@
             android:text="l"/>
 
         <TextView
+            android:fontFamily="@font/sanf_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="50sp"
@@ -53,6 +57,7 @@
 
 
         <TextView
+            android:fontFamily="@font/sanf_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="50sp"
@@ -60,6 +65,7 @@
             android:text="B"/>
 
         <TextView
+            android:fontFamily="@font/sanf_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="50sp"
@@ -67,6 +73,7 @@
             android:text="a"/>
 
         <TextView
+            android:fontFamily="@font/sanf_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="50sp"
@@ -74,6 +81,7 @@
             android:text="l"/>
 
         <TextView
+            android:fontFamily="@font/sanf_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="50sp"
@@ -174,15 +182,16 @@
         android:layout_marginTop="300dp"/>
 
     <TextView
+        android:fontFamily="@font/sanf_font"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textColor="@color/black"
-        android:textAllCaps="false"
-        android:text="Start Game"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="300dp"
-        android:clickable="false"/>
+        android:layout_marginTop="305dp"
+        android:clickable="false"
+        android:text="Start Game"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="35sp" />
 
     <ImageButton
         android:id="@+id/ibAboutUs"
@@ -193,22 +202,24 @@
         android:layout_marginTop="400dp"/>
 
     <TextView
+        android:fontFamily="@font/sanf_font"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="35sp"
         android:textColor="@color/black"
         android:textAllCaps="false"
         android:text="About Us"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="405dp"
         android:clickable="false"/>
 
     <TextView
+        android:fontFamily="@font/sanf_font"
         android:visibility="invisible"
         android:id="@+id/tvAboutUs"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:textColor="@color/black"
         android:layout_marginTop="470dp"
         android:layout_centerHorizontal="true"

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -21,14 +22,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 public class GameThread extends Thread {
 
-    private final int[] explosionAnimation = {R.drawable.explode1, R.drawable.explode2, R.drawable.explode3, R.drawable.explode4, R.drawable.explode5, R.drawable.explode6, R.drawable.explode7, R.drawable.explode8};
     public static final ArrayList<SmileyRow> smileyRows = new ArrayList<>();
+    private final int SLEEP_INTERVAL = 2000;
     private final TextView tvAuthorizedSmileys;
     private final RelativeLayout rowsLayout;
     private final ImageView borderView;
@@ -41,6 +44,8 @@ public class GameThread extends Thread {
     private int timesToChangeNumber;
     private boolean createMoreRows;
     public static int remainingHearts = 3;
+    public static int points = 0;
+    public static boolean run = true;
 
     public GameThread(RelativeLayout rowsLayout, Context context, ImageView borderView, TextView tvAuthorizedSmileys, TextView tvPoints, ImageView[] hearts){
         this.rowsLayout = rowsLayout;
@@ -61,10 +66,11 @@ public class GameThread extends Thread {
         this.start();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void run() {
         super.run();
-        while (true){
+        while (run){
             if (this.createMoreRows){
                 handler.post(() -> {
                     SmileyRow smileyRow = new SmileyRow(this.context, this.hearts);
@@ -74,7 +80,7 @@ public class GameThread extends Thread {
                 });
             }
             try {
-                Thread.sleep(2500);
+                Thread.sleep(SLEEP_INTERVAL);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -106,14 +112,20 @@ public class GameThread extends Thread {
         return num;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void checkRowPass(){
-        if (smileyRows.get(0).getY() >= this.borderView.getY() - Utils.dpToPx(context, 50) && smileyRows.size() != 1 && remainingHearts != 0){
+        if (smileyRows.get(0).getY() >= this.borderView.getY() - Utils.dpToPx(context, 50) && smileyRows.size() != 1){
+            assert remainingHearts != 0;
             boolean valid = smileyRows.get(0).checkSmileyNumber(this.currentAuthorizedNumber);
             this.timesToChangeNumber = 3;
             this.tvAuthorizedSmileys.setText(String.valueOf(this.random.nextInt(8) + 1));
-            if (valid) this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) + smileyRows.get(0).getSmileysNum()));
+            if (valid){
+                points += smileyRows.get(0).getSmileysNum();
+                this.tvPoints.setText(String.valueOf(points));
+            }
             else{
-                this.tvPoints.setText(String.valueOf(Integer.parseInt(this.tvPoints.getText().toString()) - 1));
+                points--;
+                this.tvPoints.setText(String.valueOf(points));
                 this.initializeHeartAnimation(R.drawable.heart_explode_animation, remainingHearts -1);
                 this.hearts[remainingHearts -1] = null;
                 remainingHearts--;
@@ -122,8 +134,8 @@ public class GameThread extends Thread {
         }
         if (remainingHearts == 0){
             this.pauseGame();
-            this.interrupt();
-            Utils.createGameOverDialog(context); // This is causing a bootlopp TODO: BUGFIX
+            run = false;
+            Utils.createGameOverDialog(context);
         }
     }
 

@@ -5,14 +5,20 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Size;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+
 abstract class Utils {
+
+    public static Context context;
 
     public static int dpToPx(Context context,int dp) {
         // Get the screen's density scale
@@ -36,17 +42,23 @@ abstract class Utils {
         return new Size(width, height);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void createGameOverDialog(Context context){
         Intent restartIntent = new Intent(context, MainActivity.class);
-        new AlertDialog.Builder(context)
-                .setTitle("Game Over")
-                .setMessage("Start Over?")
-                .setCancelable(false)
-                // Specifying a listener allows you to take an action before dismissing the dialog.
-                // The dialog is automatically dismissed when a dialog button is clicked.
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> context.startActivity(restartIntent))
-                .setNegativeButton(android.R.string.no, (dialog, which) -> dialog.cancel())
-                // A null listener allows the button to dismiss the dialog and take no further action.
-                .setIcon(android.R.drawable.ic_dialog_alert).show();
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.game_over_dialog, null);
+        final AlertDialog alertD = new AlertDialog.Builder(context).create();
+        alertD.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageButton ibRestart = promptView.findViewById(R.id.ibRestart);
+        ibRestart.setOnClickListener(view -> {
+            context.startActivity(restartIntent);
+            GameThread.remainingHearts = 3;
+            GameThread.points = 0;
+        });
+        TextView tvPoints = promptView.findViewById(R.id.tvPoints);
+        tvPoints.setText("Points: "+GameThread.points);
+        alertD.setView(promptView);
+        alertD.setCancelable(false);
+        alertD.show();
     }
 }
