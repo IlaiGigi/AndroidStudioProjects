@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hearts[1] = findViewById(R.id.heart2);
         hearts[2] = findViewById(R.id.heart3);
 
-        gameThread = new GameThread(mainLayout, this, borderView, tvAuthorizedSmileys, tvPoints, hearts);
+        gameThread = new GameThread(mainLayout,this, borderView, tvAuthorizedSmileys, tvPoints, hearts);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);

@@ -1,5 +1,6 @@
 package com.example.fallball;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -24,7 +25,7 @@ public class CitizensStatusService extends Service implements Runnable{
     @Override
     public void onCreate() {
         super.onCreate();
-        maxTime = 15 * 60; // 15 minutes * 60 seconds per minute
+        maxTime = 150; // 15 minutes * 60 seconds per minute
         currentTime = maxTime;
         createNotificationChannel();
         statusBarNotification = new NotificationCompat.Builder(this, "CHANNEL_ID")
@@ -64,28 +65,29 @@ public class CitizensStatusService extends Service implements Runnable{
     }
 
     private void stopStatusBarNotificationUpdateThread(){
-        statusBarUpdateThread.stop();
+        statusBarUpdateThread.interrupt();
     }
 
     @Override
     public void run() {
         while (true){
             try {
-                Thread.sleep(30 * 1000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             if (currentTime >= 0 && currentTime <= maxTime) currentTime += 30 * state;
             else{
                 if (currentTime < 0){
-                    Utils.createGameOverDialog(getApplicationContext());
+                    currentTime = 1;
+//                    Utils.createGameOverDialog((Activity) getApplicationContext());
                     statusBarNotification.setContentTitle("Energy Depleted");
                 }
-                else statusBarNotification.setContentTitle("Energy Full");
-                this.stopSelf();
-                statusBarUpdateThread.stop();
-                startForeground(1, statusBarNotification.build());
-                break;
+                else{
+                    currentTime = maxTime - 1;
+                    statusBarNotification.setContentTitle("Energy Full");
+                }
+                stopStatusBarNotificationUpdateThread();
             }
             statusBarNotification.setProgress(maxTime, currentTime, false);
             startForeground(1, statusBarNotification.build());

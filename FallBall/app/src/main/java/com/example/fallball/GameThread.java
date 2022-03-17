@@ -1,6 +1,7 @@
 package com.example.fallball;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +32,6 @@ public class GameThread extends Thread {
     private final TextView tvAuthorizedSmileys;
     private final RelativeLayout rowsLayout;
     private final ImageView borderView;
-    private final Intent restartIntent;
     private final ImageView[] hearts;
     private final TextView tvPoints;
     private final Context context;
@@ -55,8 +55,8 @@ public class GameThread extends Thread {
         this.random = new Random();
         this.currentAuthorizedNumber = this.random.nextInt(8) + 1;
         this.tvAuthorizedSmileys.setText(String.valueOf(this.currentAuthorizedNumber));
-        this.restartIntent = new Intent(context, MainActivity.class);
         this.initializeHeartAnimation(R.drawable.heart_beat_animation, -1);
+
 
         this.start();
     }
@@ -74,7 +74,7 @@ public class GameThread extends Thread {
                 });
             }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(2500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -107,11 +107,7 @@ public class GameThread extends Thread {
     }
 
     private void checkRowPass(){
-        if (remainingHearts == 0){
-            this.pauseGame();
-            Utils.createGameOverDialog(context);
-        }
-        if (smileyRows.get(0).getY() >= this.borderView.getY() - Utils.dpToPx(context, 50) && smileyRows.size() != 1){
+        if (smileyRows.get(0).getY() >= this.borderView.getY() - Utils.dpToPx(context, 50) && smileyRows.size() != 1 && remainingHearts != 0){
             boolean valid = smileyRows.get(0).checkSmileyNumber(this.currentAuthorizedNumber);
             this.timesToChangeNumber = 3;
             this.tvAuthorizedSmileys.setText(String.valueOf(this.random.nextInt(8) + 1));
@@ -123,6 +119,11 @@ public class GameThread extends Thread {
                 remainingHearts--;
             }
             smileyRows.remove(0);
+        }
+        if (remainingHearts == 0){
+            this.pauseGame();
+            this.interrupt();
+            Utils.createGameOverDialog(context); // This is causing a bootlopp TODO: BUGFIX
         }
     }
 
