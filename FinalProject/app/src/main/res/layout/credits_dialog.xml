@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/dialog_bg">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:text="שם המחבר: עילי גיגי.\nפרויקט זה הוכן במסגרת מגמת הנדסת תוכנה בהנחיית המורה רועי אמיגה בסביבת הפיתוח אנרואיד סטודיו.\nשנת לימוד: תשפא - 2022.\n\nפרויקט זה מהווה אבן דרך משמעותית עבורי ונוצר למטרות לימוד ופיתוח."
+        android:textAlignment="center"
+        android:fontFamily="@font/calibri"/>
+
+
+</RelativeLayout>
