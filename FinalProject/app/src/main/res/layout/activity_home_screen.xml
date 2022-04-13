@@ -50,11 +50,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
-        android:background="@drawable/ic_copyright"
-=======
-        android:background="@drawable/c1"
->>>>>>> origin/master
+        android:src="@drawable/ic_copyright"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
