@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/personal_area"
+        android:title="איזור אישי"
+        android:icon="@drawable/ic_person_white"/>
+
+    <item
+        android:id="@+id/achievements"
+        android:title="הישגים"
+        android:icon="@drawable/ic_achievements"/>
+
+    <item
+        android:id="@+id/play"
+        android:title="שחק"
+        android:icon="@drawable/ic_play"/>
+
+</menu>

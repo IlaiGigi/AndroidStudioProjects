@@ -54,19 +54,37 @@
             android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <CheckBox
+        android:id="@+id/cbRememberMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etPassword"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_toLeftOf="@id/cbRememberMe"
+        android:layout_below="@id/etPassword"
+        android:text="זכור אותי"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/calibri"/>
+
     <ImageButton
         android:id="@+id/ibSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="310dp"
+        android:layout_marginTop="345dp"
         android:background="@drawable/green_rect" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="355dp"
         android:clickable="false"
         android:elevation="50dp"
         android:fontFamily="@font/calibri"
