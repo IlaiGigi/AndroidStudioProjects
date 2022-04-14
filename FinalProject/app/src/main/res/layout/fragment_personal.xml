@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PersonalFragment">
+
+    <TextView
+        android:id="@+id/tvPersonalInfoHeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:fontFamily="@font/calibri"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="האיזור האישי"
+        android:textStyle="bold"
+        />
+
+    <RelativeLayout
+        android:id="@+id/personalInfoLayout"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/tvPersonalInfoHeadline"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/info_border">
+
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_person" />
+
+        <TextView
+            android:id="@+id/tvNameInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/ivAvatar"
+            android:fontFamily="@font/calibri"
+            android:text="Username"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/tvSignOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:fontFamily="@font/calibri"
+            android:text="התנתק"
+            android:textColor="#0194FF"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/soundToggleLayout"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/personalInfoLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/info_border">
+
+        <Switch
+            android:id="@+id/switchToggleSound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="35dp"
+            android:fontFamily="@font/calibri"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:text="  צליל"
+            android:textSize="15sp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/soundToggleLayout"
+        android:textSize="30sp"
+        android:fontFamily="@font/calibri"
+        android:textColor="@color/black"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:text="הזמנת חברים"
+        android:layout_marginRight="15dp"/>
+
+    <RelativeLayout
+        android:id="@+id/inviteFriendsLayout"
+        android:layout_width="400dp"
+        android:layout_height="320dp"
+        android:layout_below="@id/soundToggleLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/info_border">
+
+        <ImageView
+            android:id="@+id/ivFriends"
+            android:layout_marginTop="10dp"
+            android:layout_width="280dp"
+            android:layout_height="130dp"
+            android:background="@drawable/friends_connected"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/tvShareInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivFriends"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/calibri"
+            android:text="שתף את האפליקציה עם חבר\n וזכה ב - 200 מטבעות!        "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="190dp"
+            android:background="@drawable/coin"/>
+
+        <Button
+            android:id="@+id/btShareGame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvShareInstructions"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/calibri"
+            android:text="שתף"
+            android:textSize="30sp"
+            android:textAlignment="center"/>
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
