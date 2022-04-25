@@ -5,13 +5,289 @@
     android:layout_height="match_parent"
     tools:context=".AchievementFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:textSize="30sp"
-        android:textColor="@color/black"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Achievement Menu" />
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="10dp"
+        android:fontFamily="@font/calibri"
+        android:text="הישגים"
+        android:textColor="@color/black"
+        android:textSize="35dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/CoinDisplayLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/coin_display_bg"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/coin" />
+
+        <TextView
+            android:id="@+id/tvAchievementCoinDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:paddingLeft="5dp"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="620dp"
+        android:layout_below="@id/CoinDisplayLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/achievementborder"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/achievement1Layout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:tag="unclaimed">
+
+            <TextView
+                android:id="@+id/tvAchievement1Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/calibri"
+                android:text="משחק קבוצתי"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/tvAchievement1Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="45dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/calibri"
+                android:text="שתף את המשחק עם חבר"
+                android:textColor="@color/gray"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tvAchievement1Reward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvAchievement1Description"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/calibri"
+                android:text="פרס: 200"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_below="@id/tvAchievement1Description"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="7dp"
+                android:layout_toLeftOf="@id/tvAchievement1Reward"
+                android:src="@drawable/coin" />
+
+            <ImageButton
+                android:id="@+id/tvAchievement1ClaimReward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/blue_rect"
+                android:clickable="false"/>
+
+            <TextView
+                android:id="@+id/tvAchievement1RewardPercentage"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:clickable="false"
+                android:fontFamily="@font/calibri"
+                android:tag="1"
+                android:text="0%"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/achievement2Layout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:tag="unclaimed">
+
+            <TextView
+                android:id="@+id/tvAchievement2Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/calibri"
+                android:text="אין שני לו"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/tvAchievement2Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="45dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/calibri"
+                android:text="השלם את כל התשחצים הרגילים"
+                android:textColor="@color/gray"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tvAchievement2Reward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvAchievement2Description"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/calibri"
+                android:text="פרס: 500"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_below="@id/tvAchievement2Description"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="7dp"
+                android:layout_toLeftOf="@id/tvAchievement2Reward"
+                android:src="@drawable/coin" />
+
+            <ImageButton
+                android:id="@+id/tvAchievement2ClaimReward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/blue_rect"
+                android:clickable="false" />
+
+            <TextView
+                android:id="@+id/tvAchievement2RewardPercentage"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:clickable="false"
+                android:fontFamily="@font/calibri"
+                android:text="0%"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                android:tag="3"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/achievement3Layout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:tag="unclaimed">
+
+            <TextView
+                android:id="@+id/tvAchievement3Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/calibri"
+                android:text="הילדה הכי יפה בגן"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/tvAchievement3Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="45dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/calibri"
+                android:text="השלם את כל התשחצים לילדים"
+                android:textColor="@color/gray"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tvAchievement3Reward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvAchievement3Description"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/calibri"
+                android:text="פרס: 500"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_below="@id/tvAchievement3Description"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="7dp"
+                android:layout_toLeftOf="@id/tvAchievement3Reward"
+                android:src="@drawable/coin" />
+
+            <ImageButton
+                android:id="@+id/tvAchievement3ClaimReward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/blue_rect"
+                android:clickable="false" />
+
+            <TextView
+                android:id="@+id/tvAchievement3RewardPercentage"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:clickable="false"
+                android:fontFamily="@font/calibri"
+                android:text="0%"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                android:tag="3"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
 
 </RelativeLayout>

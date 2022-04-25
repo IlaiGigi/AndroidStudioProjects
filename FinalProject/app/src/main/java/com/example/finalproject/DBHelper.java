@@ -18,7 +18,8 @@ public class DBHelper extends SQLiteOpenHelper {
     final String USER_USERNAMES = "usernames";
     final String USER_PASSWORDS = "passwords";
     final String USER_COINS = "coins";
-    final String[] USER_COLUMNS = {USER_USERNAMES, USER_PASSWORDS, USER_COINS};
+    final String USER_SHARES = "shares";
+    final String[] USER_COLUMNS = {USER_USERNAMES, USER_PASSWORDS, USER_COINS, USER_SHARES};
 
     public DBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, "MyDB3.db", factory, version);
@@ -30,7 +31,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "create table " + USER_TABLE +
                         " (" + USER_USERNAMES + " text," +
                         " " + USER_PASSWORDS + " text," +
-                        " " + USER_COINS + " text)";
+                        " " + USER_COINS + " text," +
+                        " " + USER_SHARES + " text)";
         Log.d("DBTEST", createUsersTableQuery);
         sqLiteDatabase.execSQL(createUsersTableQuery.toString());
     }
@@ -45,6 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(USER_USERNAMES, user.getUsername());
         contentValues.put(USER_PASSWORDS, user.getPassword());
         contentValues.put(USER_COINS, user.getCoins());
+        contentValues.put(USER_SHARES, user.getShares());
         sqLiteDatabase.insert(USER_TABLE, null, contentValues);
     }
     public User getUser(String userName){
@@ -58,7 +61,8 @@ public class DBHelper extends SQLiteOpenHelper {
         String username = cursor.getString((int)cursor.getColumnIndex(USER_USERNAMES));
         String password = cursor.getString((int)cursor.getColumnIndex(USER_PASSWORDS));
         int coins = cursor.getInt((int)cursor.getColumnIndex(USER_COINS));
-        return new User(username, password, coins);
+        int shares = cursor.getInt((int)cursor.getColumnIndex(USER_SHARES));
+        return new User(username, password, coins, shares);
     }
     public void deleteUser(String username){
         String where = USER_USERNAMES + "='" + username+"'";

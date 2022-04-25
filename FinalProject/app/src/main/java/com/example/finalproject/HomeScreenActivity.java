@@ -111,7 +111,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                 if (aUsername.equals("") || aUsername.contains(" ") || aPassword1.equals("") || aPassword1.contains(" ") || aPassword2.equals("") || aPassword2.contains(" ") || !aPassword1.equals(aPassword2))
                     Toast.makeText(this, "Error, Check credentials and try again", Toast.LENGTH_LONG);
                 else {
-                    dbHelper.insertNewUser(new User(aUsername, aPassword1, 0)); // All users are initialized with 0 coins
+                    dbHelper.insertNewUser(new User(aUsername, aPassword1, 0, 0)); // All users are initialized with 0 coins
                     alertD.cancel();
                 }
             });

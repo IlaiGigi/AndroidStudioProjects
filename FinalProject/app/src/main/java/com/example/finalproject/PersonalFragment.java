@@ -1,5 +1,6 @@
 package com.example.finalproject;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -28,6 +30,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     Button btShareGame;
 
     Switch switchToggleSound;
+
+    DBHelper dbHelper;
 
     public PersonalFragment() {
         // Required empty public constructor
@@ -57,6 +61,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         switchToggleSound = requireView().findViewById(R.id.switchToggleSound);
         switchToggleSound.setOnCheckedChangeListener(this);
         switchToggleSound.setChecked(true);
+
+        dbHelper = new DBHelper(getContext(), null, null, 1);
+
     }
 
     @Override
@@ -66,7 +73,24 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
             startActivity(new Intent(getActivity(), HomeScreenActivity.class));
         }
         else if (view == btShareGame){
-            // Implement game sharing using cellular messages
+            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getShares() == 1)
+                Toast.makeText(requireActivity(),"כבר שיתפת את המשחק!", Toast.LENGTH_SHORT).show();
+            String textMessage = "הצטרף אליי והורד את אפליקציית 'תשחץ נא'! שם המשתמש שלי: " + Utils.getDataFromSharedPreferences(sp, "username", null);
+            // Create the text message with a string.
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, textMessage);
+            sendIntent.setType("text/plain");
+            // Try to invoke the intent.
+            try {
+                startActivity(sendIntent);
+                User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+                user.setShares(1);
+                dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+                dbHelper.insertNewUser(user);
+            } catch (ActivityNotFoundException e) {
+            // Define what your app should do if no activity can handle the intent.
+            }
         }
     }
 
