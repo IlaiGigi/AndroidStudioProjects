@@ -110,7 +110,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/blue_rect"
-                android:clickable="false"/>
+                android:clickable="false" />
 
             <TextView
                 android:id="@+id/tvAchievement1RewardPercentage"
@@ -134,6 +134,13 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:tag="unclaimed">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/bottom_borderline" />
 
             <TextView
                 android:id="@+id/tvAchievement2Name"
@@ -198,11 +205,11 @@
                 android:layout_marginLeft="10dp"
                 android:clickable="false"
                 android:fontFamily="@font/calibri"
+                android:tag="3"
                 android:text="0%"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="30dp"
-                android:tag="3"/>
+                android:textSize="30dp" />
 
         </RelativeLayout>
 
@@ -212,6 +219,13 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:tag="unclaimed">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/bottom_borderline" />
 
             <TextView
                 android:id="@+id/tvAchievement3Name"
@@ -276,11 +290,11 @@
                 android:layout_marginLeft="10dp"
                 android:clickable="false"
                 android:fontFamily="@font/calibri"
+                android:tag="3"
                 android:text="0%"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="30dp"
-                android:tag="3"/>
+                android:textSize="30dp" />
 
         </RelativeLayout>
 

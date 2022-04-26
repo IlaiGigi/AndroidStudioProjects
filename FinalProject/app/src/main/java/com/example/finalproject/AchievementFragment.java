@@ -1,6 +1,8 @@
 package com.example.finalproject;
 
+import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -79,12 +82,21 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
             if (achievement1Layout.getTag().equals("claimed"))
                 return;
             User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+            ValueAnimator animator = ValueAnimator.ofInt(user.getCoins(), user.getCoins() + 200);
             user.setCoins(user.getCoins() + 200);
             dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
             dbHelper.insertNewUser(user);
-            tvAchievementCoinDisplay.setText(String.valueOf(user.getCoins()));
             tvAchievement1RewardPercentage.setText("הושלם");
             achievement1Layout.setTag("claimed");
+            MediaPlayer mediaPlayer = MediaPlayer.create(requireContext(), R.raw.coin_sound);
+            mediaPlayer.start();
+            animator.setInterpolator(new LinearInterpolator());
+            animator.setDuration(1500);
+            animator.addUpdateListener(valueAnimator -> {
+                int val = (int)valueAnimator.getAnimatedValue();
+                tvAchievementCoinDisplay.setText(String.valueOf(val));
+            });
+            animator.start();
         }
     }
 }
