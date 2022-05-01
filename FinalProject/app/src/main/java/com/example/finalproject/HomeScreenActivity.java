@@ -1,13 +1,20 @@
 package com.example.finalproject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.hardware.biometrics.BiometricPrompt;
+import android.hardware.fingerprint.FingerprintManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.view.LayoutInflater;
@@ -23,6 +30,8 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.concurrent.Executor;
+
 public class HomeScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
     DBHelper dbHelper;
@@ -33,6 +42,9 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
 
     SharedPreferences sp;
 
+    boolean isFingerprintScannerAvailable;
+
+    BiometricPrompt.PromptInfo promptInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +62,18 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         btCredits.setOnClickListener(this);
 
         sp = Utils.defineSharedPreferences(this, "mainRoot");
+
+        FingerprintManager fingerprintManager = (FingerprintManager) this.getSystemService(Context.FINGERPRINT_SERVICE);
+        if (!fingerprintManager.isHardwareDetected()) {
+            isFingerprintScannerAvailable = false;
+        } else if (!fingerprintManager.hasEnrolledFingerprints()) {
+            isFingerprintScannerAvailable = false;
+        } else {
+            isFingerprintScannerAvailable = true;
+        }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void onClick(View view) {
         if (view == btSignIn){
@@ -89,9 +111,41 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
             }
             // "Remember me" login
             else {
+                Executor executor = ContextCompat.getMainExecutor(this);
+                BiometricPrompt biometricPrompt = new BiometricPrompt(HomeScreenActivity.this,
+                        executor, new BiometricPrompt.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationError(int errorCode,
+                                                      @NonNull CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+                        Utils.insertDataToSharedPreferences(sp, "rememberMe", "unchecked");
+                    }
+
+                    @Override
+                    public void onAuthenticationSucceeded(
+                            @NonNull BiometricPrompt.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+                        Toast.makeText(getApplicationContext(),
+                                "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(HomeScreenActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onAuthenticationFailed() {
+                        super.onAuthenticationFailed();
+                        Toast.makeText(getApplicationContext(), "Authentication failed",
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+                promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                        .setTitle("Biometric login for my app")
+                        .setSubtitle("Log in using your biometric credential")
+                        .setNegativeButtonText("Log into a different account")
+                        .build();
+                biometricPrompt.authenticate(promptInfo);
                 // Using last login's sp data (sp.username) - no need to overwrite
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
             }
         }
         else if (view == btRegister){
@@ -129,4 +183,6 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
             alertD.show();
         }
     }
+
+
 }

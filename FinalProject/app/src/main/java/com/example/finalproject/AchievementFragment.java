@@ -67,27 +67,29 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
 
         tvAchievementCoinDisplay.setText(String.valueOf(currentUser.getCoins()));
 
-        tvAchievement1RewardPercentage.setText(Math.round(100* (shareProgression / Integer.parseInt(tvAchievement1RewardPercentage.getTag().toString()))) + "%");
+        tvAchievement1RewardPercentage.setText(Math.abs(Math.round(100* (shareProgression / Integer.parseInt(tvAchievement1RewardPercentage.getTag().toString())))) + "%");
 
-        if (Math.round(100* (shareProgression / Integer.parseInt(tvAchievement1RewardPercentage.getTag().toString()))) == 100){
+        if (Math.round(Math.abs(100* (shareProgression / Integer.parseInt(tvAchievement1RewardPercentage.getTag().toString())))) == 100){
             ibAchievement1ClaimReward.setClickable(true);
             ibAchievement1ClaimReward.setBackgroundResource(R.drawable.green_rect);
-            Log.d("yosi", "invoked");
+            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getShares() == -1)
+                tvAchievement1RewardPercentage.setText("הושלם");
         }
     }
 
     @Override
     public void onClick(View view) {
+        // Remember that an achievement's completion is indicated as -(num of occurrences to complete achievement) in the database
         if (view == ibAchievement1ClaimReward){
-            if (achievement1Layout.getTag().equals("claimed"))
+            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getShares() == -1)
                 return;
             User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
             ValueAnimator animator = ValueAnimator.ofInt(user.getCoins(), user.getCoins() + 200);
             user.setCoins(user.getCoins() + 200);
+            user.setShares(-1);
             dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
             dbHelper.insertNewUser(user);
             tvAchievement1RewardPercentage.setText("הושלם");
-            achievement1Layout.setTag("claimed");
             MediaPlayer mediaPlayer = MediaPlayer.create(requireContext(), R.raw.coin_sound);
             mediaPlayer.start();
             animator.setInterpolator(new LinearInterpolator());
