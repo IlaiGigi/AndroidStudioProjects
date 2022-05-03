@@ -140,7 +140,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                     }
                 });
                 promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                        .setTitle("Biometric login for my app")
+                        .setTitle("Log in by fingerprint")
                         .setSubtitle("Log in using your biometric credential")
                         .setNegativeButtonText("Log into a different account")
                         .build();

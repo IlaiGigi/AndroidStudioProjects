@@ -3,15 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlayFragment">
+    tools:context=".PlayFragment"
+    android:background="#E4E4E4">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:textSize="30sp"
-        android:textColor="@color/black"
-        android:layout_centerInParent="true"
+        android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play Menu" />
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="20dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:id="@+id/CoinDisplayLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/coin_display_bg"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/coin" />
+
+        <TextView
+            android:id="@+id/tvPlayCoinDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:paddingLeft="5dp"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvUsername"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:text="בחירת מצב משחק"
+        android:layout_marginTop="35dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/calibri"/>
+
 
 </RelativeLayout>
