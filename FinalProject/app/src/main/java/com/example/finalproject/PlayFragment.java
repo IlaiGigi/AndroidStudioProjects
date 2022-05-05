@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,10 @@ public class PlayFragment extends Fragment {
 
     TextView tvCoinDisplay;
     TextView tvUsername;
+    TextView tvHeadline;
+    TextView tvRegularMode;
+    TextView tvKidsMode;
+    TextView tvMultiplayerMode;
 
     DBHelper dbHelper;
 
@@ -38,6 +45,10 @@ public class PlayFragment extends Fragment {
 
         tvCoinDisplay = requireView().findViewById(R.id.tvPlayCoinDisplay);
         tvUsername = requireView().findViewById(R.id.tvUsername);
+        tvHeadline = requireView().findViewById(R.id.tvPlayHeadline);
+        tvRegularMode = requireView().findViewById(R.id.tvRegularMode);
+        tvKidsMode = requireView().findViewById(R.id.tvKidsMode);
+        tvMultiplayerMode = requireView().findViewById(R.id.tvMultiplayerMode);
 
         dbHelper = new DBHelper(getContext(), null, null, 1);
 
@@ -45,5 +56,9 @@ public class PlayFragment extends Fragment {
 
         tvUsername.setText(Utils.getDataFromSharedPreferences(sp, "username", null));
         tvCoinDisplay.setText(String.valueOf(dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getCoins()));
+
+        SpannableString content = new SpannableString("בחירת מצב משחק");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        tvHeadline.setText(content);
     }
 }

@@ -51,6 +51,8 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
+        Utils.changeNotificationBarColor(this, R.color.purple_700);
+
         dbHelper = new DBHelper(this, null, null, 1);
 
         btSignIn = findViewById(R.id.btSignIn);

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Utils.changeNotificationBarColor(this, R.color.purple_700);
 
         bottomNavigationView = findViewById(R.id.bottomNavBar);
 

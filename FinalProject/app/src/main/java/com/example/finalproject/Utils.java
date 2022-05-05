@@ -12,12 +12,15 @@ import android.util.DisplayMetrics;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
 abstract class Utils {
+
     public static int dpToPx(Context context,int dp) {
         // Get the screen's density scale
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -43,13 +46,26 @@ abstract class Utils {
     public static SharedPreferences defineSharedPreferences(Context context, String name){
         return context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
+
     public static String getDataFromSharedPreferences(SharedPreferences sp, String key, String defaultValue){
         return sp.getString(key, defaultValue); // To switch between output types, change all instances of 'String' to desired type
     }
+
     public static void insertDataToSharedPreferences(SharedPreferences sp, String key, String data){
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, data);
         editor.commit();
         // To switch between input types, change all instances of 'String' to desired type (excluding 'key')
+    }
+
+    public static String getEmojiByUnicode(int unicode){
+        return new String(Character.toChars(unicode));
+    }
+
+    public static void changeNotificationBarColor(Activity activity, int color){
+        Window window = activity.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(color);
     }
 }

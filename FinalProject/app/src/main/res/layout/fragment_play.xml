@@ -46,15 +46,80 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tvPlayHeadline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvUsername"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:fontFamily="@font/calibri"
         android:textColor="@color/black"
         android:textSize="30sp"
-        android:text="בחירת מצב משחק"
-        android:layout_marginTop="35dp"
+        android:textStyle="bold"/>
+
+    <ImageButton
+        android:id="@+id/ibRegularMode"
+        android:layout_width="150dp"
+        android:layout_height="90dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="225dp"
+        android:background="@drawable/button_shadow_selector_blue" />
+
+    <TextView
+        android:id="@+id/tvRegularMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="83dp"
+        android:layout_marginTop="245dp"
+        android:clickable="false"
+        android:fontFamily="@font/calibri"
+        android:text="ילדים"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+    <ImageButton
+        android:id="@+id/ibKidsMode"
+        android:layout_width="150dp"
+        android:layout_height="90dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="225dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/button_shadow_selector_green" />
+
+    <TextView
+        android:id="@+id/tvKidsMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="245dp"
+        android:layout_marginRight="92dp"
+        android:clickable="false"
+        android:fontFamily="@font/calibri"
+        android:text="רגיל"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+    <ImageButton
+        android:id="@+id/ibMultiplayerMode"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
         android:layout_centerHorizontal="true"
-        android:fontFamily="@font/calibri"/>
+        android:layout_marginTop="370dp"
+        android:background="@drawable/button_shadow_selector_red" />
+
+    <TextView
+        android:id="@+id/tvMultiplayerMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="388dp"
+        android:clickable="false"
+        android:fontFamily="@font/calibri"
+        android:text="רב משתתפים"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+
 
 
 </RelativeLayout>
