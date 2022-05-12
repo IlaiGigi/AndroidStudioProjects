@@ -19,6 +19,12 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 abstract class Utils {
 
     public static int dpToPx(Context context,int dp) {
@@ -67,5 +73,42 @@ abstract class Utils {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(color);
+    }
+
+    public static File createFile(String fileName){
+        return new File(fileName);
+    }
+
+    public static void writeToFile(File file, String text){
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write((text + System.lineSeparator()).getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String readFromFile(File file, int readLength){
+        byte[] fileContent;
+        if (readLength == -1){
+            // -1 means no specified length, return all the content in the file
+            fileContent = new byte[(int) file.length()];
+        }
+        else
+            fileContent = new byte[readLength];
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            fis.read(fileContent);
+            fis.close();
+            return new String(fileContent);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null; // In the case of an error, return null
     }
 }

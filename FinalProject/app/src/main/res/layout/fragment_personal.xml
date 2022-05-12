@@ -144,8 +144,8 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/calibri"
             android:text="שתף"
-            android:textSize="30sp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:textSize="30sp"/>
 
 
     </RelativeLayout>

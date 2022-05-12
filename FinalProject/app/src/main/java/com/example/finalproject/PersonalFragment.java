@@ -73,8 +73,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
             startActivity(new Intent(getActivity(), HomeScreenActivity.class));
         }
         else if (view == btShareGame){
-            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getShares() == 1)
+            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getShares() == 1){
                 Toast.makeText(requireActivity(),"כבר שיתפת את המשחק!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             String textMessage = "הצטרף אליי והורד את אפליקציית 'תשחץ נא'! שם המשתמש שלי: " + Utils.getDataFromSharedPreferences(sp, "username", null);
             // Create the text message with a string.
             Intent sendIntent = new Intent();

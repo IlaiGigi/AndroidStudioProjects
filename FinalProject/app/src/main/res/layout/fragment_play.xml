@@ -58,7 +58,7 @@
         android:textStyle="bold"/>
 
     <ImageButton
-        android:id="@+id/ibRegularMode"
+        android:id="@+id/ibKidsMode"
         android:layout_width="150dp"
         android:layout_height="90dp"
         android:layout_marginLeft="40dp"
@@ -78,7 +78,7 @@
         android:textSize="30sp" />
 
     <ImageButton
-        android:id="@+id/ibKidsMode"
+        android:id="@+id/ibRegularMode"
         android:layout_width="150dp"
         android:layout_height="90dp"
         android:layout_alignParentRight="true"
