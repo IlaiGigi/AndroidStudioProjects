@@ -8,52 +8,50 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 public class KidsTile extends androidx.appcompat.widget.AppCompatImageView {
 
-    private static final int[] ansOptions = {R.string.blue, R.string.green, R.string.black, R.string.white, R.string.red, R.string.orange, R.string.pink, R.string.purple, R.string.yellow};; // Options for the answers - load into dialog
-    private static final int[] recIds = {R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound,};
-    private final ArrayList<String> options;
+    public static final int[] ansOptions = {R.string.blue, R.string.green, R.string.black, R.string.white, R.string.red, R.string.orange, R.string.pink, R.string.purple, R.string.yellow}; // Options for the answers - load into dialog
+    public static final int[] colorOptions = {R.color.blue, R.color.green, R.color.black, R.color.white, R.color.red, R.color.orange, R.color.pink, R.color.purple, R.color.yellow};
+    public static final int[] recIds = {R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound,};
+    private final ArrayList<Integer> options;
     private final int resourceIndex; // Resource index in the const arrays
-    private final int color; // Color to switch to after getting the right answer
     private final Point index; // Index of the tile in the 9x9 square
     private boolean isSolved;
 
-    public KidsTile(Context context, int aResourceIndex, int aColor, Point aIndex) {
+    public KidsTile(Context context, Point aIndex) {
         super(context);
 
         setLayoutParams(new LinearLayout.LayoutParams(KidsBoard.BOARD_WIDTH_PX/KidsBoard.COLS_NUM, KidsBoard.BOARD_HEIGHT_PX/KidsBoard.ROWS_NUM));
 
-        resourceIndex = aResourceIndex;
-        color = aColor;
+        resourceIndex = new Random().nextInt(9);
         index = aIndex;
         isSolved = false;
         options = new ArrayList<>();
-        options.add(context.getString(ansOptions[resourceIndex]));
         setBackgroundResource(R.drawable.button_shadow_selector_cream);
 
-        while (options.size() != 3){
+        while (options.size() != 2){
             Random random = new Random();
             int randNum = random.nextInt(9);
-            if (!options.contains(context.getString(ansOptions[randNum])))
-                options.add(context.getString(ansOptions[randNum]));
+            if (randNum != resourceIndex && !options.contains(randNum))
+                options.add(randNum);
         }
     }
 
     // Getters
     public int getResourceIndex() {return resourceIndex;}
-    public int getColor() {return color;}
     public Point getIndex() {return index;}
-    public boolean isCompleted() {return isSolved;}
-    public ArrayList<String> getOptions() {return options;}
+    public boolean isSolved() {return isSolved;}
+    public ArrayList<Integer> getOptions() {return options;}
 
     // Setters
     public void setIsSolved(boolean state) {isSolved = state;}
 
-    public static KidsTile initializeTile(Context context, int resourceIndex, int color, Point index){
-        return new KidsTile(context, resourceIndex, color, index);
+    public static KidsTile initializeTile(Context context, Point index){
+        return new KidsTile(context, index);
     }
 }

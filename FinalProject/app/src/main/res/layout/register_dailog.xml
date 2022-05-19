@@ -10,13 +10,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textColor="@color/black"
         android:layout_centerHorizontal="true"
+        android:fontFamily="@font/calibri"
         android:paddingTop="30dp"
         android:paddingBottom="30dp"
-        android:fontFamily="@font/calibri"
-        android:text="יצירת משתמש"/>
+        android:text="יצירת משתמש"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

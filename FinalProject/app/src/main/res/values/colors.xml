@@ -12,7 +12,7 @@
     <color name="red">#be1800</color>
     <color name="dark_red">#711100</color>
     <color name="inner_blue">#deb501</color>
-    <color name="mid_blue">#2388d2</color>
+    <color name="blue">#2388d2</color>
     <color name="outer_blue">#9de3f3</color>
     <color name="green">#18ED18</color>
     <color name="cyan">#00FFFF</color>
@@ -22,6 +22,8 @@
     <color name="faded_green">#9BED9F</color>
     <color name="faded_blue">#74BBEF</color>
     <color name="faded_red">#EF968A</color>
+    <color name="cream">#FFFDD0</color>
+    <color name="purple">#FFBB86FC</color>
 
 
 </resources>

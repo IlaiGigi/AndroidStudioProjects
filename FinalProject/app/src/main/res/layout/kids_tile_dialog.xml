@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/kids_tile_dialog_bg">
+
+    <RelativeLayout
+        android:id="@+id/mediaPlayerBarLayout"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/cream_border">
+
+        <ImageView
+            android:clickable="false"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/white_square"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"/>
+
+        <ImageView
+            android:id="@+id/ivPlayRecording"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_play_circle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="30sp"
+            android:fontFamily="@font/calibri"
+            android:textColor="@color/black"
+            android:layout_alignParentRight="true"
+            android:text="הפעל הקלטה"
+            android:layout_marginRight="20dp"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mediaPlayerBarLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/calibri"
+        android:text="איזה צבע נאמר בהקלטה?"
+        android:textColor="@color/black"
+        android:textSize="27sp" />
+
+    <ImageView
+        android:id="@+id/ivOpt1"
+        android:layout_width="270dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/tvQuestion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/button_shadow_selector_red"
+        app:tint="@color/black" />
+
+    <ImageView
+        android:id="@+id/ivOpt2"
+        android:layout_width="270dp"
+        android:layout_height="100dp"
+        android:src="@drawable/button_shadow_selector_red"
+        app:tint="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivOpt1"
+        android:layout_marginTop="30dp"/>
+
+    <ImageView
+        android:id="@+id/ivOpt3"
+        android:layout_width="270dp"
+        android:layout_height="100dp"
+        android:src="@drawable/button_shadow_selector_red"
+        app:tint="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivOpt2"
+        android:layout_marginTop="30dp"/>
+
+</RelativeLayout>

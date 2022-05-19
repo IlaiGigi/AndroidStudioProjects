@@ -22,7 +22,7 @@ public class TestActivity extends AppCompatActivity {
 
         for (int i=0; i<3; i++){
             for (int j=0; j<3; j++){
-                board.addTile(new KidsTile(this, 0, Color.RED, new Point(i, j)));
+                board.addTile(KidsTile.initializeTile(this, new Point(i, j)));
             }
         }
         board.loadTiles();
