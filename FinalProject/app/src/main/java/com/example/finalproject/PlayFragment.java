@@ -136,7 +136,41 @@ public class PlayFragment extends Fragment implements View.OnClickListener{
             alertD.getWindow().setLayout(Utils.dpToPx(requireActivity(), 400), Utils.dpToPx(requireActivity(), 500));
         }
         else if (view == ibKidsMode){
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            View promptView = layoutInflater.inflate(R.layout.kids_menu_layout, null);
+            final AlertDialog alertD = new AlertDialog.Builder(getActivity()).create();
 
+            // Set all buttons to their corresponding functions
+            ImageButton ibStartLevel1 = promptView.findViewById(R.id.ibStartLevel1);
+            ImageButton ibStartLevel2 = promptView.findViewById(R.id.ibStartLevel2);
+            ImageButton ibStartLevel3 = promptView.findViewById(R.id.ibStartLevel3);
+            ibStartLevel1.setOnClickListener(view1 -> {
+                // Start level 1
+                startActivity(new Intent(requireActivity(), TestActivity.class));
+            });
+            ibStartLevel2.setOnClickListener(view1 -> {
+                // Start level 2
+            });
+            ibStartLevel3.setOnClickListener(view1 -> {
+                // Start level 3
+            });
+
+            // String progressData = Utils.readFromFile(regularModeProgress, -1); // Fetch all data from the file
+            // Set all progress bars to display the progression of each level
+            ProgressBar pbLevel1 = promptView.findViewById(R.id.pbLevel1);
+            TextView tvLevel1Progress = promptView.findViewById(R.id.tvLevel1Progress);
+
+            ProgressBar pbLevel2 = promptView.findViewById(R.id.pbLevel2);
+            TextView tvLevel2Progress = promptView.findViewById(R.id.tvLevel2Progress);
+
+            ProgressBar pbLevel3 = promptView.findViewById(R.id.pbLevel3);
+            TextView tvLevel3Progress = promptView.findViewById(R.id.tvLevel3Progress);
+
+            alertD.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            alertD.setView(promptView);
+            alertD.setCancelable(true);
+            alertD.show();
+            alertD.getWindow().setLayout(Utils.dpToPx(requireActivity(), 400), Utils.dpToPx(requireActivity(), 500));
         }
         else if (view == ibMultiplayerMode){
 

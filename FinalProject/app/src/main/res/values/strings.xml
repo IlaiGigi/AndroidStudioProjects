@@ -2,4 +2,13 @@
     <string name="app_name">תשחץ נא</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="blue">כחול</string>
+    <string name="yellow">צהוב</string>
+    <string name="green">ירוק</string>
+    <string name="red">אדום</string>
+    <string name="pink">ורוד</string>
+    <string name="purple">סגול</string>
+    <string name="black">שחור</string>
+    <string name="white">לבן</string>
+    <string name="orange">כתום</string>
 </resources>
