@@ -58,12 +58,11 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         btShareGame = requireView().findViewById(R.id.btShareGame);
         btShareGame.setOnClickListener(this);
 
-        switchToggleSound = requireView().findViewById(R.id.switchToggleSound);
-        switchToggleSound.setOnCheckedChangeListener(this);
-        switchToggleSound.setChecked(true);
-
         dbHelper = new DBHelper(getContext(), null, null, 1);
 
+        switchToggleSound = requireView().findViewById(R.id.switchToggleSound);
+        switchToggleSound.setOnCheckedChangeListener(this);
+        switchToggleSound.setChecked(dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound());
     }
 
     @Override
@@ -100,10 +99,16 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (compoundButton.getId() == R.id.switchToggleSound){
             if (switchToggleSound.isChecked()){
-                // Toggle volume on
+                User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+                user.setSound(true);
+                dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+                dbHelper.insertNewUser(user);
             }
             else {
-                // Toggle volume off
+                User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+                user.setSound(false);
+                dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+                dbHelper.insertNewUser(user);
             }
         }
     }

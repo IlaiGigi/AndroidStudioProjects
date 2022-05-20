@@ -90,8 +90,10 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
             dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
             dbHelper.insertNewUser(user);
             tvAchievement1RewardPercentage.setText("הושלם");
-            MediaPlayer mediaPlayer = MediaPlayer.create(requireContext(), R.raw.coin_sound);
-            mediaPlayer.start();
+            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound()){
+                MediaPlayer mediaPlayer = MediaPlayer.create(requireContext(), R.raw.coin_sound);
+                mediaPlayer.start();
+            }
             animator.setInterpolator(new LinearInterpolator());
             animator.setDuration(1500);
             animator.addUpdateListener(valueAnimator -> {

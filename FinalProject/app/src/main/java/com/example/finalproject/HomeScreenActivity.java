@@ -80,7 +80,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         if (view == btSignIn){
             // Normal login
-            if (Utils.getDataFromSharedPreferences(sp, "rememberMe", null) == null || Utils.getDataFromSharedPreferences(sp, "rememberMe", null).equals("unchecked")){
+            if (!sp.getBoolean("rememberMe", false)){
                 LayoutInflater layoutInflater = LayoutInflater.from(this);
                 View promptView = layoutInflater.inflate(R.layout.sign_in_dialog, null);
                 final AlertDialog alertD = new AlertDialog.Builder(this).create();
@@ -98,10 +98,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                         Toast.makeText(this, "Incorrect Username or Password", Toast.LENGTH_LONG).show();
                     else {
                         Utils.insertDataToSharedPreferences(sp, "username", aUsername);
-                        if (cbRememberMe.isChecked())
-                            Utils.insertDataToSharedPreferences(sp, "rememberMe", "checked");
-                        else
-                            Utils.insertDataToSharedPreferences(sp, "rememberMe", "unchecked");
+                        sp.edit().putBoolean("rememberMe", cbRememberMe.isChecked()).commit();
                         // Forward to next activity
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
@@ -120,7 +117,8 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                     public void onAuthenticationError(int errorCode,
                                                       @NonNull CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
-                        Utils.insertDataToSharedPreferences(sp, "rememberMe", "unchecked");
+                        sp.edit().putBoolean("rememberMe", false).commit();
+                        btSignIn.performClick();
                     }
 
                     @Override
@@ -165,9 +163,15 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                 String aPassword1 = etPassword.getEditText().getText().toString();
                 String aPassword2 = etReEnterPassword.getEditText().getText().toString();
                 if (aUsername.equals("") || aUsername.contains(" ") || aPassword1.equals("") || aPassword1.contains(" ") || aPassword2.equals("") || aPassword2.contains(" ") || !aPassword1.equals(aPassword2))
-                    Toast.makeText(this, "Error, Check credentials and try again", Toast.LENGTH_LONG);
+                    Toast.makeText(this, "Error, Check credentials and try again", Toast.LENGTH_LONG).show();
+                if (aUsername.length() > 15)
+                    Toast.makeText(this, "Error, Username cannot be longer than 15 characters", Toast.LENGTH_LONG).show();
+                if (aPassword1.length() < 6)
+                    Toast.makeText(this, "Error, Password must be longer than 6 characters", Toast.LENGTH_LONG).show();
+                if (dbHelper.getUser(aUsername) != null)
+                    Toast.makeText(this, "Error, Username already exists, try a different one", Toast.LENGTH_LONG).show();
                 else {
-                    dbHelper.insertNewUser(new User(aUsername, aPassword1, 0, 0)); // All users are initialized with 0 coins
+                    dbHelper.insertNewUser(new User(aUsername, aPassword1, 0, 0, true)); // All users are initialized with 0 coins
                     alertD.cancel();
                 }
             });

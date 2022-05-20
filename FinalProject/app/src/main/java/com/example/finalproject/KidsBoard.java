@@ -29,6 +29,8 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
     private KidsTile[][] tiles; // 3x3 2d array
     private LinearLayout[] rows;
     private final Size boardSize;
+    private final DBHelper dbHelper;
+    private final SharedPreferences sp;
 
     public KidsBoard(Context context){
         super(context);
@@ -48,6 +50,10 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
             rows[i].setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, BOARD_HEIGHT_PX / 3));
             addView(rows[i]);
         }
+
+        dbHelper = new DBHelper(getContext(), null, null, 1);
+
+        sp = Utils.defineSharedPreferences(context, "mainRoot");
     }
 
     // Getters
@@ -93,8 +99,10 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         // Correct option
         ivs[num].setOnClickListener(view1 -> {
             // Play "correct" sound effect
-            MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.check_mark_sound_effect);
-            mediaPlayer.start();
+            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound()){
+                MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.coin_sound);
+                mediaPlayer.start();
+            }
             tile.setIsSolved(true);
             tile.setBackgroundColor(getResources().getColor(KidsTile.colorOptions[tile.getResourceIndex()]));
             alertD.cancel();
@@ -151,8 +159,11 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
         dbHelper.insertNewUser(user);
 
-        MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.level_completed_sound_effect);
-        mediaPlayer.start();
+        if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound()){
+            MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.level_completed_sound_effect);
+            mediaPlayer.start();
+        }
+
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View v = inflater.inflate(R.layout.level_completed_dialog, null);
         final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
