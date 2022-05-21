@@ -78,13 +78,13 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
 
         int num = new Random().nextInt(3); // Decide upon the correct option
 
-        ivs[num].setColorFilter(getResources().getColor(KidsTile.colorOptions[tile.getResourceIndex()]));
+        ivs[num].setColorFilter(getResources().getColor(KidsTile.colorResources[tile.getResourceIndex()]));
 
         int startFrom = 0;
         int[] invalidIndexes = new int[2];
         for (int i=0; i<3; i++){
             if (i != num){
-                ivs[i].setColorFilter(getResources().getColor(KidsTile.colorOptions[tile.getOptions().get(startFrom)]));
+                ivs[i].setColorFilter(getResources().getColor(KidsTile.colorResources[tile.getOptions().get(startFrom)]));
                 invalidIndexes[startFrom] = i;
                 startFrom++;
             }
@@ -92,7 +92,7 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
 
         ivPlayRecording.setOnClickListener(view1 -> {
             // Play the recording
-            MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.coin_sound);
+            MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), KidsTile.audioResources[tile.getResourceIndex()]);
             mediaPlayer.start();
         });
 
@@ -104,7 +104,7 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
                 mediaPlayer.start();
             }
             tile.setIsSolved(true);
-            tile.setBackgroundColor(getResources().getColor(KidsTile.colorOptions[tile.getResourceIndex()]));
+            tile.setBackgroundColor(getResources().getColor(KidsTile.colorResources[tile.getResourceIndex()]));
             alertD.cancel();
             checkForCompletion();
         });

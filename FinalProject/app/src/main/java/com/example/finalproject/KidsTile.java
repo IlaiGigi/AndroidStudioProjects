@@ -15,9 +15,9 @@ import java.util.Random;
 
 public class KidsTile extends androidx.appcompat.widget.AppCompatImageView {
 
-    public static final int[] ansOptions = {R.string.blue, R.string.green, R.string.black, R.string.white, R.string.red, R.string.orange, R.string.pink, R.string.purple, R.string.yellow}; // Options for the answers - load into dialog
-    public static final int[] colorOptions = {R.color.blue, R.color.green, R.color.black, R.color.white, R.color.red, R.color.orange, R.color.pink, R.color.purple, R.color.yellow};
-    public static final int[] recIds = {R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound, R.raw.coin_sound,};
+    public static final int[] ansResources = {R.string.blue, R.string.green, R.string.black, R.string.white, R.string.red, R.string.orange, R.string.pink, R.string.purple, R.string.yellow}; // Options for the answers - load into dialog
+    public static final int[] colorResources = {R.color.blue, R.color.green, R.color.black, R.color.white, R.color.red, R.color.orange, R.color.pink, R.color.purple, R.color.yellow};
+    public static final int[] audioResources = {R.raw.blue_rec, R.raw.green_rec, R.raw.black_rec, R.raw.white_rec, R.raw.red_rec, R.raw.orange_rec, R.raw.pink_rec, R.raw.purple_rec, R.raw.yellow_rec,};
     private final ArrayList<Integer> options;
     private final int resourceIndex; // Resource index in the const arrays
     private final Point index; // Index of the tile in the 9x9 square
