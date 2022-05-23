@@ -33,7 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         " (" + USER_USERNAMES + " text," +
                         " " + USER_PASSWORDS + " text," +
                         " " + USER_COINS + " text," +
-                        " " + USER_SHARES + " text," +
+                        " " + USER_SHARES + " number," +
                         " " + USER_SOUND + " number)";
         Log.d("DBTEST", createUsersTableQuery);
         sqLiteDatabase.execSQL(createUsersTableQuery.toString());

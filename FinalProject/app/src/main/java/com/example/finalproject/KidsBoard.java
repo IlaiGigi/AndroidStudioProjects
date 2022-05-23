@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 
@@ -187,9 +192,18 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
 
         ImageButton ibGoBackToLevelSelection = v.findViewById(R.id.ibGoBackToLevelSelection);
         ImageView ivLevelCompleted = v.findViewById(R.id.ivLevelCompleted);
+        ProgressBar pbLevelCompleted = v.findViewById(R.id.pbLevelCompleted);
+        TextView tvSaveToGallery = v.findViewById(R.id.tvSaveToGallery);
 
-        RetrieveBitmap retrieveBitmap = new RetrieveBitmap(ivLevelCompleted);
+        RetrieveBitmap retrieveBitmap = new RetrieveBitmap(ivLevelCompleted, pbLevelCompleted, tvSaveToGallery);
         retrieveBitmap.execute("https://random.imagecdn.app/300/420");
+
+        tvSaveToGallery.setOnClickListener(view -> {
+            // Save the image to gallery
+            Bitmap bitmap = ((BitmapDrawable) ivLevelCompleted.getDrawable()).getBitmap();
+            MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitmap, String.valueOf(System.currentTimeMillis()), null);
+            Toast.makeText(getContext(), "Image saved to gallery", Toast.LENGTH_SHORT).show();
+        });
 
         ibGoBackToLevelSelection.setOnClickListener(view2 -> {getContext().startActivity(new Intent(getContext(), MainActivity.class));});
 
@@ -198,4 +212,5 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         dialog.setCancelable(true);
         dialog.show();
     }
+
 }

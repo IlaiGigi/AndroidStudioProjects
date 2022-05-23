@@ -4,19 +4,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -52,6 +56,9 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_home_screen);
 
         Utils.changeNotificationBarColor(this, R.color.purple_700);
+
+        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
 
         dbHelper = new DBHelper(this, null, null, 1);
 
@@ -190,5 +197,32 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    public boolean permissionGranted(String permission)
+    {
+        // Check if the app is api 23 or above
+        // If so, must ask for permission.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(permission) ==
+                    PackageManager.PERMISSION_GRANTED)
+            {
+                Log.d("Permissions", "permission granted");
+                return true;
+            }
+            Log.d("Permissions", "Permission was not granted");
+            return false;
+        }
+        // Permission is automatically granted on sdk<23 upon installation
+        Log.d("Permissions", "permission granted");
+        return true;
+    }
 
+    public boolean requestPermission(String permission)
+    {
+        if (permissionGranted(permission))
+            return true;
+        // Ask for permission
+        ActivityCompat.requestPermissions(this, new String[]{permission}, 1);
+        return false;
+    }
 }
