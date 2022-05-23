@@ -16,13 +16,9 @@ import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 
@@ -146,13 +142,21 @@ public class PlayFragment extends Fragment implements View.OnClickListener{
             ImageButton ibStartLevel3 = promptView.findViewById(R.id.ibStartLevel3);
             ibStartLevel1.setOnClickListener(view1 -> {
                 // Start level 1
-                startActivity(new Intent(requireActivity(), TestActivity.class));
+                Intent intent = new Intent(requireActivity(), KidsGameActivity.class);
+                intent.putExtra("levelIdentifier", 1);
+                startActivity(intent);
             });
             ibStartLevel2.setOnClickListener(view1 -> {
                 // Start level 2
+                Intent intent = new Intent(requireActivity(), KidsGameActivity.class);
+                intent.putExtra("levelIdentifier", 2);
+                startActivity(intent);
             });
             ibStartLevel3.setOnClickListener(view1 -> {
                 // Start level 3
+                Intent intent = new Intent(requireActivity(), KidsGameActivity.class);
+                intent.putExtra("levelIdentifier", 3);
+                startActivity(intent);
             });
 
             // String progressData = Utils.readFromFile(regularModeProgress, -1); // Fetch all data from the file

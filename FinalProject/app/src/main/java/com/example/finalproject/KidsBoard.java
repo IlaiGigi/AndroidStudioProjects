@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -18,10 +20,21 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Random;
 
 public class KidsBoard extends LinearLayout implements View.OnClickListener{
 
+    private static final int[][] level1ResourceIndexes = {{1,3,8},{0,7,5},{6,4,2}};
+    private static final int[][] level2ResourceIndexes = {{0,7,1},{1,3,8},{2,5,4}};
+    private static final int[][] level3ResourceIndexes = {{7,2,5},{6,7,0},{1,3,4}};
+    public static final int[][][] levelResourceIndexes = {level1ResourceIndexes, level2ResourceIndexes, level3ResourceIndexes};
     public static final int BOARD_WIDTH_PX = 1050; // = 400dp
     public static final int BOARD_HEIGHT_PX = 1050; // = 400dp
     public static final int ROWS_NUM = 3;
@@ -106,7 +119,11 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
             tile.setIsSolved(true);
             tile.setBackgroundColor(getResources().getColor(KidsTile.colorResources[tile.getResourceIndex()]));
             alertD.cancel();
-            checkForCompletion();
+            try {
+                checkForCompletion();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         // Incorrect options
@@ -144,7 +161,7 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         }
     }
 
-    public void checkForCompletion(){
+    public void checkForCompletion() throws IOException {
         for (int i=0; i<ROWS_NUM; i++){
             for (int j=0; j<COLS_NUM; j++){
                 if (!tiles[i][j].isSolved())
@@ -169,6 +186,11 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
 
         ImageButton ibGoBackToLevelSelection = v.findViewById(R.id.ibGoBackToLevelSelection);
+        ImageView ivLevelCompleted = v.findViewById(R.id.ivLevelCompleted);
+
+        RetrieveBitmap retrieveBitmap = new RetrieveBitmap(ivLevelCompleted);
+        retrieveBitmap.execute("https://random.imagecdn.app/300/420");
+
         ibGoBackToLevelSelection.setOnClickListener(view2 -> {getContext().startActivity(new Intent(getContext(), MainActivity.class));});
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

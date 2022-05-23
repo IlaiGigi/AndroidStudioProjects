@@ -23,12 +23,12 @@ public class KidsTile extends androidx.appcompat.widget.AppCompatImageView {
     private final Point index; // Index of the tile in the 9x9 square
     private boolean isSolved;
 
-    public KidsTile(Context context, Point aIndex) {
+    public KidsTile(Context context, Point aIndex, int aResourceIndex) {
         super(context);
 
         setLayoutParams(new LinearLayout.LayoutParams(KidsBoard.BOARD_WIDTH_PX/KidsBoard.COLS_NUM, KidsBoard.BOARD_HEIGHT_PX/KidsBoard.ROWS_NUM));
 
-        resourceIndex = new Random().nextInt(9);
+        resourceIndex = aResourceIndex;
         index = aIndex;
         isSolved = false;
         options = new ArrayList<>();
@@ -51,7 +51,7 @@ public class KidsTile extends androidx.appcompat.widget.AppCompatImageView {
     // Setters
     public void setIsSolved(boolean state) {isSolved = state;}
 
-    public static KidsTile initializeTile(Context context, Point index){
-        return new KidsTile(context, index);
+    public static KidsTile initializeTile(Context context, Point index, int resourceIndex){
+        return new KidsTile(context, index, resourceIndex);
     }
 }

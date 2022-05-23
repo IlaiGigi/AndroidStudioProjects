@@ -7,7 +7,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
 
-public class TestActivity extends AppCompatActivity {
+public class KidsGameActivity extends AppCompatActivity {
 
     RelativeLayout testLayout;
 
@@ -20,9 +20,11 @@ public class TestActivity extends AppCompatActivity {
 
         KidsBoard board = new KidsBoard(this);
 
+        int levelIdentifier = getIntent().getIntExtra("levelIdentifier", 0);
+
         for (int i=0; i<3; i++){
             for (int j=0; j<3; j++){
-                board.addTile(KidsTile.initializeTile(this, new Point(i, j)));
+                board.addTile(KidsTile.initializeTile(this, new Point(i, j), KidsBoard.levelResourceIndexes[levelIdentifier][i][j]));
             }
         }
         board.loadTiles();

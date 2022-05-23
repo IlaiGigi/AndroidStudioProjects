@@ -19,11 +19,13 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 abstract class Utils {
 
@@ -110,5 +112,19 @@ abstract class Utils {
             e.printStackTrace();
         }
         return null; // In the case of an error, return null
+    }
+
+    public static ByteArrayOutputStream readStream(InputStream is) {
+        try {
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            int i = is.read();
+            while(i != -1) {
+                bo.write(i);
+                i = is.read();
+            }
+            return bo;
+        } catch (IOException e) {
+            return null;
+        }
     }
 }
