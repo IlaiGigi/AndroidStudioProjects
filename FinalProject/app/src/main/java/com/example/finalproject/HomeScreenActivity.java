@@ -87,7 +87,8 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         if (view == btSignIn){
             // Normal login
-            if (!sp.getBoolean("rememberMe", false)){
+            boolean state = sp.getBoolean("rememberMe", false);
+            if (state == false){
                 LayoutInflater layoutInflater = LayoutInflater.from(this);
                 View promptView = layoutInflater.inflate(R.layout.sign_in_dialog, null);
                 final AlertDialog alertD = new AlertDialog.Builder(this).create();
@@ -180,6 +181,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                 else {
                     dbHelper.insertNewUser(new User(aUsername, aPassword1, 0, 0, true)); // All users are initialized with 0 coins
                     alertD.cancel();
+                    Toast.makeText(this, "נרשמת בהצלחה", Toast.LENGTH_LONG).show();
                 }
             });
             alertD.setView(promptView);

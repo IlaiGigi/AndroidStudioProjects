@@ -174,10 +174,14 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
             }
         }
 
+        // Update coin count
         SharedPreferences sp = Utils.defineSharedPreferences(getContext(), "mainRoot");
         DBHelper dbHelper = new DBHelper(getContext(), null, null, 1);
         User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
         user.setCoins(user.getCoins() + 200);
+
+        // Update achievement handler
+
         dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
         dbHelper.insertNewUser(user);
 
@@ -212,5 +216,4 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         dialog.setCancelable(true);
         dialog.show();
     }
-
 }

@@ -66,10 +66,6 @@ abstract class Utils {
         // To switch between input types, change all instances of 'String' to desired type (excluding 'key')
     }
 
-    public static String getEmojiByUnicode(int unicode){
-        return new String(Character.toChars(unicode));
-    }
-
     public static void changeNotificationBarColor(Activity activity, int color){
         Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

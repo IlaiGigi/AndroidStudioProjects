@@ -68,7 +68,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onClick(View view) {
         if (view == tvSignOut){
-            Utils.insertDataToSharedPreferences(sp, "rememberMe", "unchecked");
+            sp.edit().putBoolean("rememberme", false).commit();
             startActivity(new Intent(getActivity(), HomeScreenActivity.class));
         }
         else if (view == btShareGame){

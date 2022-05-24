@@ -20,6 +20,9 @@ public class DBHelper extends SQLiteOpenHelper {
     final String USER_COINS = "coins";
     final String USER_SHARES = "shares";
     final String USER_SOUND = "sound";
+    final String USER_LEVEL1KIDS = "level1Kids";
+    final String USER_LEVEL2KIDS = "level2Kids";
+    final String USER_LEVEL3KIDS = "level3Kids";
     final String[] USER_COLUMNS = {USER_USERNAMES, USER_PASSWORDS, USER_COINS, USER_SHARES, USER_SOUND};
 
     public DBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
@@ -32,9 +35,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 "create table " + USER_TABLE +
                         " (" + USER_USERNAMES + " text," +
                         " " + USER_PASSWORDS + " text," +
-                        " " + USER_COINS + " text," +
+                        " " + USER_COINS + " number," +
                         " " + USER_SHARES + " number," +
-                        " " + USER_SOUND + " number)";
+                        " " + USER_SOUND + " number," +
+                        " " + USER_LEVEL1KIDS + " number," +
+                        " " + USER_LEVEL2KIDS + " number," +
+                        " " + USER_LEVEL3KIDS + " number)";
         Log.d("DBTEST", createUsersTableQuery);
         sqLiteDatabase.execSQL(createUsersTableQuery.toString());
     }

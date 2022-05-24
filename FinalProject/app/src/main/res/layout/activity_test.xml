@@ -7,4 +7,16 @@
     tools:context=".KidsGameActivity"
     android:id="@+id/testLayout">
 
+    <TextView
+        android:id="@+id/tvHeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:fontFamily="@font/calibri"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textStyle="bold"
+        android:text="שלב"/>
+
 </RelativeLayout>

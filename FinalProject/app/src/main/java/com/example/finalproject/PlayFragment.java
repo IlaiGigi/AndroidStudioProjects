@@ -144,18 +144,21 @@ public class PlayFragment extends Fragment implements View.OnClickListener{
                 // Start level 1
                 Intent intent = new Intent(requireActivity(), KidsGameActivity.class);
                 intent.putExtra("levelIdentifier", 1);
+                sp.edit().putInt("levelIdentifier", 1).apply();
                 startActivity(intent);
             });
             ibStartLevel2.setOnClickListener(view1 -> {
                 // Start level 2
                 Intent intent = new Intent(requireActivity(), KidsGameActivity.class);
                 intent.putExtra("levelIdentifier", 2);
+                sp.edit().putInt("levelIdentifier", 2).apply();
                 startActivity(intent);
             });
             ibStartLevel3.setOnClickListener(view1 -> {
                 // Start level 3
                 Intent intent = new Intent(requireActivity(), KidsGameActivity.class);
                 intent.putExtra("levelIdentifier", 3);
+                sp.edit().putInt("levelIdentifier", 3).apply();
                 startActivity(intent);
             });
 

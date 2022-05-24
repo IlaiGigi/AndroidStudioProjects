@@ -22,9 +22,9 @@ import android.widget.Toast;
 
 public class AchievementFragment extends Fragment implements View.OnClickListener{
 
-    ImageButton ibAchievement1ClaimReward;
+    ImageButton ibAchievement1ClaimReward, ibAchievement2ClaimReward;
 
-    TextView tvAchievement1RewardPercentage, tvAchievementCoinDisplay;
+    TextView tvAchievement1RewardPercentage, tvAchievement2RewardPercentage, tvAchievementCoinDisplay;
 
     DBHelper dbHelper;
 
@@ -52,10 +52,13 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
         tvAchievementCoinDisplay = requireView().findViewById(R.id.tvAchievementCoinDisplay);
 
         ibAchievement1ClaimReward = requireView().findViewById(R.id.tvAchievement1ClaimReward);
+        ibAchievement2ClaimReward = requireView().findViewById(R.id.tvAchievement2ClaimReward);
 
         ibAchievement1ClaimReward.setOnClickListener(this);
+        ibAchievement2ClaimReward.setOnClickListener(this);
 
         tvAchievement1RewardPercentage = requireView().findViewById(R.id.tvAchievement1RewardPercentage);
+        tvAchievement2RewardPercentage = requireView().findViewById(R.id.tvAchievement2RewardPercentage);
 
         dbHelper = new DBHelper(getContext(), null, null, 1);
 
@@ -66,8 +69,6 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
         int shareProgression = currentUser.getShares();
 
         tvAchievementCoinDisplay.setText(String.valueOf(currentUser.getCoins()));
-
-        tvAchievement1RewardPercentage.setText(Math.abs(Math.round(100* (shareProgression / Integer.parseInt(tvAchievement1RewardPercentage.getTag().toString())))) + "%");
 
         if (Math.round(Math.abs(100* (shareProgression / Integer.parseInt(tvAchievement1RewardPercentage.getTag().toString())))) == 100){
             ibAchievement1ClaimReward.setClickable(true);
@@ -81,8 +82,10 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         // Remember that an achievement's completion is indicated as -(num of occurrences to complete achievement) in the database
         if (view == ibAchievement1ClaimReward){
-            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getShares() == -1)
+            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getShares() == -1){
+                Toast.makeText(requireContext(), "כבר הושלם", Toast.LENGTH_SHORT).show();
                 return;
+            }
             User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
             ValueAnimator animator = ValueAnimator.ofInt(user.getCoins(), user.getCoins() + 200);
             user.setCoins(user.getCoins() + 200);
