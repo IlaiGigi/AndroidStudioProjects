@@ -206,7 +206,7 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
             // Save the image to gallery
             Bitmap bitmap = ((BitmapDrawable) ivLevelCompleted.getDrawable()).getBitmap();
             MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitmap, String.valueOf(System.currentTimeMillis()), null);
-            Toast.makeText(getContext(), "Image saved to gallery", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "התמונה נשמרה בהצלחה לגלריה", Toast.LENGTH_SHORT).show();
         });
 
         ibGoBackToLevelSelection.setOnClickListener(view2 -> {getContext().startActivity(new Intent(getContext(), MainActivity.class));});

@@ -103,7 +103,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                     String aPassword = etPassword.getEditText().getText().toString();
                     User user = dbHelper.getUser(aUsername);
                     if (aUsername.equals("") || aPassword.equals("") || user == null || !user.getPassword().equals(aPassword))
-                        Toast.makeText(this, "Incorrect Username or Password", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "שם משתמש או סיסמה לא נכונים", Toast.LENGTH_LONG).show();
                     else {
                         Utils.insertDataToSharedPreferences(sp, "username", aUsername);
                         sp.edit().putBoolean("rememberMe", cbRememberMe.isChecked()).commit();
@@ -134,7 +134,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                             @NonNull BiometricPrompt.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
                         Toast.makeText(getApplicationContext(),
-                                "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+                                "ההתחברות בוצעה!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(HomeScreenActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
@@ -142,15 +142,15 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onAuthenticationFailed() {
                         super.onAuthenticationFailed();
-                        Toast.makeText(getApplicationContext(), "Authentication failed",
+                        Toast.makeText(getApplicationContext(), "ההחברות כשלה",
                                 Toast.LENGTH_SHORT)
                                 .show();
                     }
                 });
                 promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                        .setTitle("Log in by fingerprint")
-                        .setSubtitle("Log in using your biometric credential")
-                        .setNegativeButtonText("Log into a different account")
+                        .setTitle("התחבר באמצעות תביעת אצבע")
+                        .setSubtitle("התחבר בעזרת הזדהות ביומטרית")
+                        .setNegativeButtonText("התחבר למשתמש אחר")
                         .build();
                 biometricPrompt.authenticate(promptInfo);
                 // Using last login's sp data (sp.username) - no need to overwrite
@@ -171,13 +171,13 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                 String aPassword1 = etPassword.getEditText().getText().toString();
                 String aPassword2 = etReEnterPassword.getEditText().getText().toString();
                 if (aUsername.equals("") || aUsername.contains(" ") || aPassword1.equals("") || aPassword1.contains(" ") || aPassword2.equals("") || aPassword2.contains(" ") || !aPassword1.equals(aPassword2))
-                    Toast.makeText(this, "Error, Check credentials and try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "שגיאה, בדוק את התוכן שוב", Toast.LENGTH_LONG).show();
                 if (aUsername.length() > 15)
-                    Toast.makeText(this, "Error, Username cannot be longer than 15 characters", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "שם המשתמש צריך להיות קצר מ-16 תווים", Toast.LENGTH_LONG).show();
                 if (aPassword1.length() < 6)
-                    Toast.makeText(this, "Error, Password must be longer than 6 characters", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "הסיסמה צריכה להיות ארוכה מ-5 תווים", Toast.LENGTH_LONG).show();
                 if (dbHelper.getUser(aUsername) != null)
-                    Toast.makeText(this, "Error, Username already exists, try a different one", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "שם המשתמש שניסית תפוס, נסה אחד אחר", Toast.LENGTH_LONG).show();
                 else {
                     dbHelper.insertNewUser(new User(aUsername, aPassword1, 0, 0, true)); // All users are initialized with 0 coins
                     alertD.cancel();
