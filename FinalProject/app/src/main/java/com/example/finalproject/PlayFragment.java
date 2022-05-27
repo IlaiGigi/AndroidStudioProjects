@@ -105,7 +105,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener{
             ImageButton ibStartLevel2 = promptView.findViewById(R.id.ibStartLevel2);
             ImageButton ibStartLevel3 = promptView.findViewById(R.id.ibStartLevel3);
             ibStartLevel1.setOnClickListener(view1 -> {
-                // Start level 1
+                startActivity(new Intent(requireActivity(), ClassicGameActivity.class));
             });
             ibStartLevel2.setOnClickListener(view1 -> {
                 // Start level 2
