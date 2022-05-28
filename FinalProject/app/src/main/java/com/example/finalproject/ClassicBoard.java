@@ -14,7 +14,7 @@ public class ClassicBoard extends LinearLayout {
 
     private final Size size;
     private int levelIdentifier;
-    private LinearLayout[] rows;
+    public LinearLayout[] rows;
 
     // Definition: 0 = definition box with text, 1 = answer box, -1 = empty definition box
     public static final int[][] level1Layout =
@@ -36,9 +36,9 @@ public class ClassicBoard extends LinearLayout {
                     {1, 1, 1, -1, -1}
             };
 
-    public static final String[] level1StringResources = {"שף ידוע (3,4)", "לוגו", "בראוזר", "פלוגות המחץ", "למעני/קניין", "תרסיס", "אביון", "עיר בארץ (2,3)", "מתבייש", "מארבע האימהות/עשירית האחוז", "לחם המדבר", "עיר בהולנד", "ועידה", "מחפיסת הקלפים", "שמחה", "הכין בדים", "מידה של בגדים", "חבל ארץ בגרמניה"};
+    public static final String[] level1StringResources = {"שף ידוע (3,4) ↓", "לוגו↶", "בראוזר↶", "פלוגות המחץ ←", "למעני←/קניין↓", "תרסיס ↲", "אביון ↓", "עיר בארץ (2,3) ↓", "מתבייש ↰", "מארבע האימהות←/עשירית האחוז↓", "לחם המדבר ←", "עיר בהולנד ↓", "ועידה ↓", "מחפיסת הקלפים ←", "שמחה ↓", "הכין בדים ↓", "מידה של בגדים←", "חבל ארץ בגרמניה←"};
 
-    private static final int[][][] levelLayouts = {level1Layout};
+    public static final int[][][] levelLayouts = {level1Layout};
 
     public ClassicBoard(Context context, int aLevelIdentifier) {
         super(context);
@@ -64,14 +64,14 @@ public class ClassicBoard extends LinearLayout {
         for (int i = 0; i < size.getHeight(); i++) {
             for (int j = 0; j < size.getWidth(); j++) {
                 if (levelLayouts[levelIdentifier - 1][i][j] == 0) {
-                    ClassicTextTile textTile = ClassicTextTile.getInstance(context, new Point(i, j), level1StringResources[stringResourceIndex]);
+                    ClassicTextTile textTile = ClassicTextTile.getInstance(context, new Point(j, i), level1StringResources[stringResourceIndex]);
                     rows[i].addView(textTile);
                     stringResourceIndex++;
                 } else if (levelLayouts[levelIdentifier - 1][i][j] == 1) {
-                    ClassicEditTile editTile = ClassicEditTile.getInstance(context, new Point(i, j));
+                    ClassicEditTile editTile = ClassicEditTile.getInstance(context, levelIdentifier, rows, new Point(j, i));
                     rows[i].addView(editTile);
                 } else if (levelLayouts[levelIdentifier - 1][i][j] == -1) {
-                    ClassicTextTile textTile = ClassicTextTile.getInstance(context, new Point(i, j), "");
+                    ClassicTextTile textTile = ClassicTextTile.getInstance(context, new Point(j, i), "");
                     rows[i].addView(textTile);
                 }
             }

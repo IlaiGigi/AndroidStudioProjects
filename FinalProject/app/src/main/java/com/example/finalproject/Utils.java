@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -122,5 +123,15 @@ abstract class Utils {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    public static int getChildrenViews(ViewGroup parent){
+        int count = parent.getChildCount();
+        for (int i=0;i<parent.getChildCount();i++){
+            if (parent.getChildAt(i) instanceof ViewGroup){
+                count+=getChildrenViews((ViewGroup) parent.getChildAt(i));
+            }
+        }
+        return count;
     }
 }
