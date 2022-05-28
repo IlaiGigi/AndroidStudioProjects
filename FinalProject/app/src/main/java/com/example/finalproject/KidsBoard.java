@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +26,7 @@ import android.widget.Toast;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Random;
 
 public class KidsBoard extends LinearLayout implements View.OnClickListener{
@@ -179,11 +174,11 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         DBHelper dbHelper = new DBHelper(getContext(), null, null, 1);
         User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
         user.setCoins(user.getCoins() + 200);
+        dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+        dbHelper.insertNewUser(user);
 
         // Update achievement handler
 
-        dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-        dbHelper.insertNewUser(user);
 
         if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound()){
             MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.level_completed_sound_effect);
@@ -191,7 +186,7 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         }
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        View v = inflater.inflate(R.layout.level_completed_dialog, null);
+        View v = inflater.inflate(R.layout.kids_level_completed_dialog, null);
         final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
 
         ImageButton ibGoBackToLevelSelection = v.findViewById(R.id.ibGoBackToLevelSelection);
@@ -209,7 +204,10 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
             Toast.makeText(getContext(), "התמונה נשמרה בהצלחה לגלריה", Toast.LENGTH_SHORT).show();
         });
 
-        ibGoBackToLevelSelection.setOnClickListener(view2 -> {getContext().startActivity(new Intent(getContext(), MainActivity.class));});
+        ibGoBackToLevelSelection.setOnClickListener(view2 -> {
+            dialog.dismiss();
+            getContext().startActivity(new Intent(getContext(), MainActivity.class));
+        });
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setView(v);

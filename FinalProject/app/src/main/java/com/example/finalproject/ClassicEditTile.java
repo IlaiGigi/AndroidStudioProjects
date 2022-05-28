@@ -1,15 +1,26 @@
 package com.example.finalproject;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.inputmethodservice.Keyboard;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -63,9 +74,43 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
 
         content = text.toString(); // Update the content of the edit text
-        // Check for game completion
 
         if (lengthAfter != 0){
+            if (checkForCompletion()){
+                // Dismiss the keyboard
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindowToken(), 0);
+                clearFocus();
+
+                // Update coin count
+                SharedPreferences sp = Utils.defineSharedPreferences(getContext(), "mainRoot");
+                DBHelper dbHelper = new DBHelper(getContext(), null, null, 1);
+                User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+                user.setCoins(user.getCoins() + 200);
+                dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+                dbHelper.insertNewUser(user);
+
+                // Display game over dialog & play level completed sound
+                if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound()){
+                    MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.level_completed_sound_effect);
+                    mediaPlayer.start();
+                }
+
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                View v = inflater.inflate(R.layout.classic_level_completed_dialog, null);
+                final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+
+                ImageButton ibGoBackToLevelSelection = v.findViewById(R.id.ibGoBackToLevelSelection);
+                ibGoBackToLevelSelection.setOnClickListener(v1 -> {
+                    dialog.dismiss();
+                    getContext().startActivity(new Intent(getContext(), MainActivity.class));
+                });
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.setView(v);
+                dialog.setCancelable(true);
+                dialog.show();
+            }
             // Move to the next tile
             if (orientation == HORIZONTAL) {
                 // Move left
@@ -84,8 +129,8 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         }
     }
 
-    private void validateAnswer(int levelIdentifier){
-        // Check final answer from the static implementation of the board
+    private boolean validateAnswer(int count){
+        return content.equals(ClassicBoard.levelAns[levelIdentifier - 1].charAt(ClassicBoard.levelAns[levelIdentifier - 1].length() - count - 1) + "");
     }
 
     public Point getIndexInBoard() {
@@ -166,6 +211,23 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
                 rows[j].getChildAt(indexInBoard.x).setBackgroundResource(R.drawable.classic_edit_tile_background);
             } else break;
         }
+    }
+
+    public boolean checkForCompletion(){
+        int count = 0;
+        for (int i=0; i<rows.length; i++){
+            for (int j=0; j<Utils.getChildrenViews(rows[i]); j++){
+                if (levelLayout[i][j] == 1){
+                    // If the tile of type EditTile, than check it's content
+                    ClassicEditTile tile = (ClassicEditTile) rows[i].getChildAt(j);
+                    if (!tile.validateAnswer(count)){
+                        // If the tile's content is not the same as the resource answer, return false, else continue
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     @Override

@@ -36,9 +36,15 @@ public class ClassicBoard extends LinearLayout {
                     {1, 1, 1, -1, -1}
             };
 
-    public static final String[] level1StringResources = {"שף ידוע (3,4) ↓", "לוגו↶", "בראוזר↶", "פלוגות המחץ ←", "למעני←/קניין↓", "תרסיס ↲", "אביון ↓", "עיר בארץ (2,3) ↓", "מתבייש ↰", "מארבע האימהות←/עשירית האחוז↓", "לחם המדבר ←", "עיר בהולנד ↓", "ועידה ↓", "מחפיסת הקלפים ←", "שמחה ↓", "הכין בדים ↓", "מידה של בגדים←", "חבל ארץ בגרמניה←"};
+    private static final String[] level1StringResources = {"שף ידוע (3,4) ↓", "לוגו↶", "בראוזר↶", "פלוגות המחץ ←", "למעני←/קניין↓", "תרסיס ↲", "אביון ↓", "עיר בארץ (2,3) ↓", "מתבייש ↰", "מארבע האימהות←/עשירית האחוז↓", "לחם המדבר ←", "עיר בהולנד ↓", "ועידה ↓", "מחפיסת הקלפים ←", "שמחה ↓", "הכין בדים ↓", "מידה של בגדים←", "חבל ארץ בגרמניה←"};
+
+    private static final String level1Ans = "סדחמלפילדיירפסמלכנכודהרשלנמפתירוקגולוננמזנינגראלרורסנג";
+
+    public static final String[] levelAns = {level1Ans}; // The answers are in hebrew so we check from finish to start to overrule the reversal
 
     public static final int[][][] levelLayouts = {level1Layout};
+
+    private static final String[][] levelStringResources = {level1StringResources};
 
     public ClassicBoard(Context context, int aLevelIdentifier) {
         super(context);
@@ -64,7 +70,7 @@ public class ClassicBoard extends LinearLayout {
         for (int i = 0; i < size.getHeight(); i++) {
             for (int j = 0; j < size.getWidth(); j++) {
                 if (levelLayouts[levelIdentifier - 1][i][j] == 0) {
-                    ClassicTextTile textTile = ClassicTextTile.getInstance(context, new Point(j, i), level1StringResources[stringResourceIndex]);
+                    ClassicTextTile textTile = ClassicTextTile.getInstance(context, new Point(j, i), levelStringResources[levelIdentifier - 1][stringResourceIndex]);
                     rows[i].addView(textTile);
                     stringResourceIndex++;
                 } else if (levelLayouts[levelIdentifier - 1][i][j] == 1) {
