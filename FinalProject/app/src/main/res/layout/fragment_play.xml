@@ -99,26 +99,6 @@
         android:textColor="@color/black"
         android:textSize="30sp" />
 
-    <ImageButton
-        android:id="@+id/ibMultiplayerMode"
-        android:layout_width="350dp"
-        android:layout_height="80dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="370dp"
-        android:background="@drawable/button_shadow_selector_red" />
-
-    <TextView
-        android:id="@+id/tvMultiplayerMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="388dp"
-        android:clickable="false"
-        android:fontFamily="@font/calibri"
-        android:text="רב משתתפים"
-        android:textColor="@color/black"
-        android:textSize="30sp" />
-
 
 
 

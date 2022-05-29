@@ -15,6 +15,7 @@ import android.media.MediaPlayer;
 import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.ActionMode;
+import android.view.ActionMode.Callback;
 
 public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText implements View.OnLongClickListener {
 
@@ -67,6 +68,8 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         setTextAlignment(TEXT_ALIGNMENT_CENTER);
         setTextColor(getResources().getColor(R.color.black));
         setText(content);
+
+        // Disallow to copy the content of the edit text
     }
 
     @Override
@@ -115,15 +118,19 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
             if (orientation == HORIZONTAL) {
                 // Move left
                 if (indexInBoard.x > 0) {
-                    ClassicEditTile nextTile = (ClassicEditTile) rows[indexInBoard.y].getChildAt(indexInBoard.x - 1);
-                    nextTile.setOrientation(HORIZONTAL);
-                    rows[indexInBoard.y].getChildAt(indexInBoard.x - 1).requestFocus();
+                    if (levelLayout[indexInBoard.y][indexInBoard.x - 1] == 1) {
+                        ClassicEditTile nextTile = (ClassicEditTile) rows[indexInBoard.y].getChildAt(indexInBoard.x - 1);
+                        nextTile.setOrientation(HORIZONTAL);
+                        rows[indexInBoard.y].getChildAt(indexInBoard.x - 1).requestFocus();
+                    }
                 }
             } else {
                 if (indexInBoard.y < rows.length - 1) {
-                    ClassicEditTile nextTile = (ClassicEditTile) rows[indexInBoard.y + 1].getChildAt(indexInBoard.x);
-                    nextTile.setOrientation(VERTICAL);
-                    rows[indexInBoard.y + 1].getChildAt(indexInBoard.x).requestFocus();
+                    if (levelLayout[indexInBoard.y + 1][indexInBoard.x] == 1) {
+                        ClassicEditTile nextTile = (ClassicEditTile) rows[indexInBoard.y + 1].getChildAt(indexInBoard.x);
+                        nextTile.setOrientation(VERTICAL);
+                        rows[indexInBoard.y + 1].getChildAt(indexInBoard.x).requestFocus();
+                    }
                 }
             }
         }
@@ -213,7 +220,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         }
     }
 
-    public boolean checkForCompletion(){
+    private boolean checkForCompletion(){
         int count = 0;
         for (int i=0; i<rows.length; i++){
             for (int j=0; j<Utils.getChildrenViews(rows[i]); j++){

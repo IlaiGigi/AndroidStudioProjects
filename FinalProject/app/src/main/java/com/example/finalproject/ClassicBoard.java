@@ -12,12 +12,7 @@ import android.widget.RelativeLayout;
 
 public class ClassicBoard extends LinearLayout {
 
-    private final Size size;
-    private int levelIdentifier;
-    public LinearLayout[] rows;
-
-    // Definition: 0 = definition box with text, 1 = answer box, -1 = empty definition box
-    public static final int[][] level1Layout =
+    private static final int[][] level1Layout =
             {
                     {0, 1, 0, 1, 0},
                     {1, 1, 1, 1, 0},
@@ -46,14 +41,20 @@ public class ClassicBoard extends LinearLayout {
 
     private static final String[][] levelStringResources = {level1StringResources};
 
+    private final Size size;
+    private int levelIdentifier;
+    private LinearLayout[] rows;
+
+    // Definition: 0 = definition box with text, 1 = answer box, -1 = empty definition box
+
     public ClassicBoard(Context context, int aLevelIdentifier) {
         super(context);
-
-        setOrientation(VERTICAL);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         setLayoutParams(params);
+
+        setOrientation(VERTICAL);
 
         levelIdentifier = aLevelIdentifier;
         size = new Size(levelLayouts[levelIdentifier - 1][0].length, levelLayouts[levelIdentifier - 1].length);
@@ -63,22 +64,23 @@ public class ClassicBoard extends LinearLayout {
         for (int i=0; i<size.getHeight(); i++) {
             rows[i] = new LinearLayout(context);
             rows[i].setOrientation(HORIZONTAL);
+            rows[i].setBaselineAligned(false);
             addView(rows[i]);
         }
 
         int stringResourceIndex = 0;
         for (int i = 0; i < size.getHeight(); i++) {
             for (int j = 0; j < size.getWidth(); j++) {
-                if (levelLayouts[levelIdentifier - 1][i][j] == 0) {
+               if (levelLayouts[levelIdentifier - 1][i][j] == 0) {
                     ClassicTextTile textTile = ClassicTextTile.getInstance(context, new Point(j, i), levelStringResources[levelIdentifier - 1][stringResourceIndex]);
                     rows[i].addView(textTile);
                     stringResourceIndex++;
-                } else if (levelLayouts[levelIdentifier - 1][i][j] == 1) {
-                    ClassicEditTile editTile = ClassicEditTile.getInstance(context, levelIdentifier, rows, new Point(j, i));
+               } else if (levelLayouts[levelIdentifier - 1][i][j] == 1) {
+                  ClassicEditTile editTile = ClassicEditTile.getInstance(context, levelIdentifier, rows, new Point(j, i));
                     rows[i].addView(editTile);
-                } else if (levelLayouts[levelIdentifier - 1][i][j] == -1) {
+               } else if (levelLayouts[levelIdentifier - 1][i][j] == -1) {
                     ClassicTextTile textTile = ClassicTextTile.getInstance(context, new Point(j, i), "");
-                    rows[i].addView(textTile);
+                   rows[i].addView(textTile);
                 }
             }
         }

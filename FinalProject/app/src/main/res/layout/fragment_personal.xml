@@ -145,7 +145,8 @@
             android:fontFamily="@font/calibri"
             android:text="שתף"
             android:textAlignment="center"
-            android:textSize="30sp"/>
+            android:textSize="30sp"
+            android:background="@color/purple_200"/>
 
 
     </RelativeLayout>

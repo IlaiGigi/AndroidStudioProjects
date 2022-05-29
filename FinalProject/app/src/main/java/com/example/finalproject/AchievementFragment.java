@@ -52,13 +52,13 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
         tvAchievementCoinDisplay = requireView().findViewById(R.id.tvAchievementCoinDisplay);
 
         ibAchievement1ClaimReward = requireView().findViewById(R.id.tvAchievement1ClaimReward);
-        ibAchievement2ClaimReward = requireView().findViewById(R.id.tvAchievement2ClaimReward);
+//        ibAchievement2ClaimReward = requireView().findViewById(R.id.tvAchievement2ClaimReward);
 
         ibAchievement1ClaimReward.setOnClickListener(this);
-        ibAchievement2ClaimReward.setOnClickListener(this);
+//        ibAchievement2ClaimReward.setOnClickListener(this);
 
         tvAchievement1RewardPercentage = requireView().findViewById(R.id.tvAchievement1RewardPercentage);
-        tvAchievement2RewardPercentage = requireView().findViewById(R.id.tvAchievement2RewardPercentage);
+//        tvAchievement2RewardPercentage = requireView().findViewById(R.id.tvAchievement2RewardPercentage);
 
         dbHelper = new DBHelper(getContext(), null, null, 1);
 

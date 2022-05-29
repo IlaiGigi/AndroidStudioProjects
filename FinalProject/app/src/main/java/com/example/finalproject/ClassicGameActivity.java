@@ -5,7 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public class ClassicGameActivity extends AppCompatActivity {

@@ -59,6 +59,8 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
 
         requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+        requestPermission(Manifest.permission.READ_CONTACTS);
+        requestPermission(Manifest.permission.SEND_SMS);
 
         dbHelper = new DBHelper(this, null, null, 1);
 

@@ -4,26 +4,23 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.text.TextUtils;
 import android.util.Size;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 public class ClassicTextTile extends androidx.appcompat.widget.AppCompatTextView{
 
     private final Size size;
-    private final Point IndexInBoard;
+    private final Point indexInBoard;
     private String text;
 
     @SuppressLint("RestrictedApi")
     public ClassicTextTile(@NonNull Context context, Point aIndex, String aText) {
         super(context);
         size = new Size(131, 131); // Size of the textview in pixels = (50dp * 50dp)
-        IndexInBoard = aIndex;
+        indexInBoard = aIndex;
 
 
         // if text contains " " replace it with \n
@@ -35,9 +32,8 @@ public class ClassicTextTile extends androidx.appcompat.widget.AppCompatTextView
 
         setBackgroundResource(R.drawable.classic_text_tile_background); // Setting the background of the textview
 
-
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size.getWidth(), size.getHeight());
-        params.setMargins(1, Utils.dpToPx(context, -25), 1, 1); // Fixing rendering issue, TextTile renders at +25dp from the top, so we must decrement the excess margin
+        params.setMargins(1, 1, 1, 1); // Fixing rendering issue, TextTile renders at +25dp from the top, so we must decrement the excess margin
         setLayoutParams(params);
         setTextColor(getResources().getColor(R.color.black));
 
@@ -50,7 +46,7 @@ public class ClassicTextTile extends androidx.appcompat.widget.AppCompatTextView
     }
 
     public Point getIndexInBoard() {
-        return IndexInBoard;
+        return indexInBoard;
     }
 
     public String getText() {
