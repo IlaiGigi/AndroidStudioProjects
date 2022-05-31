@@ -68,8 +68,6 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         setTextAlignment(TEXT_ALIGNMENT_CENTER);
         setTextColor(getResources().getColor(R.color.black));
         setText(content);
-
-        // Disallow to copy the content of the edit text
     }
 
     @Override
