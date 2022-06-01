@@ -42,7 +42,6 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
     private KidsTile[][] tiles; // 3x3 2d array
     private LinearLayout[] rows;
     private final Size boardSize;
-    private final DBHelper dbHelper;
     private final SharedPreferences sp;
 
     public KidsBoard(Context context){
@@ -63,8 +62,6 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
             rows[i].setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, BOARD_HEIGHT_PX / 3));
             addView(rows[i]);
         }
-
-        dbHelper = new DBHelper(getContext(), null, null, 1);
 
         sp = Utils.defineSharedPreferences(context, "mainRoot");
     }
@@ -112,10 +109,13 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         // Correct option
         ivs[num].setOnClickListener(view1 -> {
             // Play "correct" sound effect
-            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound()){
-                MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.coin_sound);
-                mediaPlayer.start();
-            }
+            String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+            Utils.getUserFromDatabase(uuid, user -> {
+                if (user.isSound()){
+                    MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.coin_sound);
+                    mediaPlayer.start();
+                }
+            });
             tile.setIsSolved(true);
             tile.setBackgroundColor(getResources().getColor(KidsTile.colorResources[tile.getResourceIndex()]));
             alertD.cancel();

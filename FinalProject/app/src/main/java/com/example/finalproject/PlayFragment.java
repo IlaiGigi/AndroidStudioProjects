@@ -38,11 +38,7 @@ public class PlayFragment extends Fragment implements View.OnClickListener{
     ImageButton ibKidsMode;
     ImageButton ibMultiplayerMode;
 
-    DBHelper dbHelper;
-
     SharedPreferences sp;
-
-    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
     File regularModeProgress;
     File kidsModeProgress;
@@ -73,8 +69,6 @@ public class PlayFragment extends Fragment implements View.OnClickListener{
 
         ibRegularMode.setOnClickListener(this);
         ibKidsMode.setOnClickListener(this);
-
-        dbHelper = new DBHelper(getContext(), null, null, 1);
 
         sp = Utils.defineSharedPreferences(requireActivity(), "mainRoot");
 

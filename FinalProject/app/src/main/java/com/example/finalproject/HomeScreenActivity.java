@@ -44,8 +44,6 @@ import java.util.concurrent.Executor;
 
 public class HomeScreenActivity extends AppCompatActivity implements View.OnClickListener {
 
-    DBHelper dbHelper;
-
     ImageButton btSignIn;
     ImageButton btRegister;
     ImageButton btCredits;
@@ -76,8 +74,6 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
-
-        dbHelper = new DBHelper(this, null, null, 1);
 
         btSignIn = findViewById(R.id.btSignIn);
         btRegister = findViewById(R.id.btRegister);

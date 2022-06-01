@@ -47,8 +47,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
     Switch switchToggleSound;
 
-    DBHelper dbHelper;
-
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
     public PersonalFragment() {
@@ -76,8 +74,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
         btShareGame = requireView().findViewById(R.id.btShareGame);
         btShareGame.setOnClickListener(this);
-
-        dbHelper = new DBHelper(getContext(), null, null, 1);
 
         switchToggleSound = requireView().findViewById(R.id.switchToggleSound);
         switchToggleSound.setOnCheckedChangeListener(this);

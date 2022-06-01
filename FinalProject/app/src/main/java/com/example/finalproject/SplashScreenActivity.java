@@ -15,6 +15,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        Utils.changeNotificationBarColor(this, R.color.faded_blue);
+
         new Handler().postDelayed(() -> {
             // This method will be executed once the timer is over
             // Start your app main activity

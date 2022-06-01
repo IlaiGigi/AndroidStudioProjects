@@ -35,8 +35,6 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
 
     TextView tvAchievement1RewardPercentage, tvAchievement2RewardPercentage, tvAchievementCoinDisplay;
 
-    DBHelper dbHelper;
-
     SharedPreferences sp;
 
     RelativeLayout achievement1Layout;
@@ -70,8 +68,6 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
 
         tvAchievement1RewardPercentage = requireView().findViewById(R.id.tvAchievement1RewardPercentage);
 //        tvAchievement2RewardPercentage = requireView().findViewById(R.id.tvAchievement2RewardPercentage);
-
-        dbHelper = new DBHelper(getContext(), null, null, 1);
 
         sp = Utils.defineSharedPreferences(requireActivity(), "mainRoot");
 
