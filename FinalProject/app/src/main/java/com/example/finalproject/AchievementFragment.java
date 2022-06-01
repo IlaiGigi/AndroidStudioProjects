@@ -1,6 +1,7 @@
 package com.example.finalproject;
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -19,8 +20,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class AchievementFragment extends Fragment implements View.OnClickListener{
+import java.util.UUID;
+
+
+public class AchievementFragment extends Fragment implements View.OnClickListener {
 
     ImageButton ibAchievement1ClaimReward, ibAchievement2ClaimReward;
 
@@ -31,6 +40,8 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
     SharedPreferences sp;
 
     RelativeLayout achievement1Layout;
+
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
     public AchievementFragment() {
         // Required empty public constructor
@@ -64,46 +75,47 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
 
         sp = Utils.defineSharedPreferences(requireActivity(), "mainRoot");
 
-        User currentUser = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
+        String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+        Utils.getUserFromDatabase(uuid, user -> {
+            tvAchievementCoinDisplay.setText(String.valueOf(user.getCoins()));
+            if (Math.abs(user.getShares()) == 1) {
+                ibAchievement1ClaimReward.setClickable(true);
+                ibAchievement1ClaimReward.setBackgroundResource(R.drawable.green_rect);
+                if (user.getShares() == -1)
+                    tvAchievement1RewardPercentage.setText("הושלם");
+            }
+        });
 
-        int shareProgression = currentUser.getShares();
-
-        tvAchievementCoinDisplay.setText(String.valueOf(currentUser.getCoins()));
-
-        if (Math.round(Math.abs(100* (shareProgression / Integer.parseInt(tvAchievement1RewardPercentage.getTag().toString())))) == 100){
-            ibAchievement1ClaimReward.setClickable(true);
-            ibAchievement1ClaimReward.setBackgroundResource(R.drawable.green_rect);
-            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getShares() == -1)
-                tvAchievement1RewardPercentage.setText("הושלם");
-        }
     }
 
     @Override
     public void onClick(View view) {
         // Remember that an achievement's completion is indicated as -(num of occurrences to complete achievement) in the database
-        if (view == ibAchievement1ClaimReward){
-            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getShares() == -1){
-                Toast.makeText(requireContext(), "כבר הושלם", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-            ValueAnimator animator = ValueAnimator.ofInt(user.getCoins(), user.getCoins() + 200);
-            user.setCoins(user.getCoins() + 200);
-            user.setShares(-1);
-            dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-            dbHelper.insertNewUser(user);
-            tvAchievement1RewardPercentage.setText("הושלם");
-            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound()){
-                MediaPlayer mediaPlayer = MediaPlayer.create(requireContext(), R.raw.coin_sound);
-                mediaPlayer.start();
-            }
-            animator.setInterpolator(new LinearInterpolator());
-            animator.setDuration(1500);
-            animator.addUpdateListener(valueAnimator -> {
-                int val = (int)valueAnimator.getAnimatedValue();
-                tvAchievementCoinDisplay.setText(String.valueOf(val));
+        if (view == ibAchievement1ClaimReward) {
+            String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+            Utils.getUserFromDatabase(uuid, user -> {
+                if (user.getShares() == -1) {
+                    Toast.makeText(requireContext(), "כבר הושלם", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mDatabase.child(Utils.getDataFromSharedPreferences(sp, "UUID", null)).child("coins").setValue(user.getCoins() + 200);
+                mDatabase.child(Utils.getDataFromSharedPreferences(sp, "UUID", null)).child("shares").setValue(-1);
+
+                ValueAnimator animator = ValueAnimator.ofInt(user.getCoins(), user.getCoins() + 200);
+
+                tvAchievement1RewardPercentage.setText("הושלם");
+                if (user.isSound()) {
+                    MediaPlayer mediaPlayer = MediaPlayer.create(requireContext(), R.raw.coin_sound);
+                    mediaPlayer.start();
+                }
+                animator.setInterpolator(new LinearInterpolator());
+                animator.setDuration(1500);
+                animator.addUpdateListener(valueAnimator -> {
+                    int val = (int) valueAnimator.getAnimatedValue();
+                    tvAchievementCoinDisplay.setText(String.valueOf(val));
+                });
+                animator.start();
             });
-            animator.start();
         }
     }
 }

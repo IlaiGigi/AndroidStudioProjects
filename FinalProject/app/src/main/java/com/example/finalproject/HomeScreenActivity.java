@@ -33,7 +33,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.UUID;
 import java.util.concurrent.Executor;
 
 public class HomeScreenActivity extends AppCompatActivity implements View.OnClickListener {
@@ -50,6 +56,8 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
 
     BiometricPrompt.PromptInfo promptInfo;
 
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users"); // Users branch
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +65,17 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
 
         Utils.changeNotificationBarColor(this, R.color.purple_700);
 
-        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
-        requestPermission(Manifest.permission.READ_CONTACTS);
-        requestPermission(Manifest.permission.SEND_SMS);
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {
+                android.Manifest.permission.READ_CONTACTS,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.SEND_SMS,
+        };
+
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
 
         dbHelper = new DBHelper(this, null, null, 1);
 
@@ -77,20 +92,16 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         FingerprintManager fingerprintManager = (FingerprintManager) this.getSystemService(Context.FINGERPRINT_SERVICE);
         if (!fingerprintManager.isHardwareDetected()) {
             isFingerprintScannerAvailable = false;
-        } else if (!fingerprintManager.hasEnrolledFingerprints()) {
-            isFingerprintScannerAvailable = false;
-        } else {
-            isFingerprintScannerAvailable = true;
-        }
+        } else isFingerprintScannerAvailable = fingerprintManager.hasEnrolledFingerprints();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void onClick(View view) {
-        if (view == btSignIn){
+        if (view == btSignIn) {
             // Normal login
             boolean state = sp.getBoolean("rememberMe", false);
-            if (state == false){
+            if (!state) {
                 LayoutInflater layoutInflater = LayoutInflater.from(this);
                 View promptView = layoutInflater.inflate(R.layout.sign_in_dialog, null);
                 final AlertDialog alertD = new AlertDialog.Builder(this).create();
@@ -103,16 +114,34 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                     // Validate credentials with database
                     String aUsername = etUsername.getEditText().getText().toString();
                     String aPassword = etPassword.getEditText().getText().toString();
-                    User user = dbHelper.getUser(aUsername);
-                    if (aUsername.equals("") || aPassword.equals("") || user == null || !user.getPassword().equals(aPassword))
-                        Toast.makeText(this, "שם משתמש או סיסמה לא נכונים", Toast.LENGTH_LONG).show();
-                    else {
-                        Utils.insertDataToSharedPreferences(sp, "username", aUsername);
-                        sp.edit().putBoolean("rememberMe", cbRememberMe.isChecked()).commit();
-                        // Forward to next activity
-                        Intent intent = new Intent(this, MainActivity.class);
-                        startActivity(intent);
-                    }
+                    mDatabase.child(String.valueOf(UUID.nameUUIDFromBytes(aUsername.getBytes()))).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                User user = dataSnapshot.getValue(User.class);
+                                assert user != null;
+                                if (user.getPassword().equals(aPassword)) {
+                                    // Login successful
+                                    Utils.insertDataToSharedPreferences(sp, "UUID", UUID.nameUUIDFromBytes(aUsername.getBytes()).toString());
+                                    Utils.insertDataToSharedPreferences(sp, "username", aUsername);
+                                    sp.edit().putBoolean("rememberMe", cbRememberMe.isChecked()).apply();
+                                    Intent intent = new Intent(HomeScreenActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    alertD.dismiss();
+                                    finish();
+                                } else {
+                                    // Login failed
+                                    Toast.makeText(HomeScreenActivity.this, "שם משתמש או סיסמה לא נכונים", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(HomeScreenActivity.this, "המשתמש לא קיים במערכת", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 });
                 alertD.setView(promptView);
                 alertD.setCancelable(true);
@@ -127,7 +156,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                     public void onAuthenticationError(int errorCode,
                                                       @NonNull CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
-                        sp.edit().putBoolean("rememberMe", false).commit();
+                        sp.edit().putBoolean("rememberMe", false).apply();
                         btSignIn.performClick();
                     }
 
@@ -145,7 +174,7 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                     public void onAuthenticationFailed() {
                         super.onAuthenticationFailed();
                         Toast.makeText(getApplicationContext(), "ההחברות כשלה",
-                                Toast.LENGTH_SHORT)
+                                        Toast.LENGTH_SHORT)
                                 .show();
                     }
                 });
@@ -172,18 +201,31 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                 String aUsername = etUsername.getEditText().getText().toString();
                 String aPassword1 = etPassword.getEditText().getText().toString();
                 String aPassword2 = etReEnterPassword.getEditText().getText().toString();
-                if (aUsername.equals("") || aUsername.contains(" ") || aPassword1.equals("") || aPassword1.contains(" ") || aPassword2.equals("") || aPassword2.contains(" ") || !aPassword1.equals(aPassword2))
+                if (aUsername.equals("") || aUsername.contains(" ") || aPassword1.equals("") || aPassword1.contains(" ") || aPassword2.contains(" ") || !aPassword1.equals(aPassword2))
                     Toast.makeText(this, "שגיאה, בדוק את התוכן שוב", Toast.LENGTH_LONG).show();
                 if (aUsername.length() > 15)
                     Toast.makeText(this, "שם המשתמש צריך להיות קצר מ-16 תווים", Toast.LENGTH_LONG).show();
                 if (aPassword1.length() < 6)
                     Toast.makeText(this, "הסיסמה צריכה להיות ארוכה מ-5 תווים", Toast.LENGTH_LONG).show();
-                if (dbHelper.getUser(aUsername) != null)
-                    Toast.makeText(this, "שם המשתמש שניסית תפוס, נסה אחד אחר", Toast.LENGTH_LONG).show();
                 else {
-                    dbHelper.insertNewUser(new User(aUsername, aPassword1, 0, 0, true)); // All users are initialized with 0 coins
+                    mDatabase.child(String.valueOf(UUID.nameUUIDFromBytes(aUsername.getBytes()))).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.exists()){
+                                User user = new User(aUsername, aPassword1, 0, 0, true);
+                                mDatabase.child(String.valueOf(UUID.nameUUIDFromBytes(aUsername.getBytes()))).setValue(user);
+                            }
+                            else {
+                                Toast.makeText(HomeScreenActivity.this, "שם המשתמש שניסית תפוס, נסה אחד אחר", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                    });
                     alertD.cancel();
                     Toast.makeText(this, "נרשמת בהצלחה", Toast.LENGTH_LONG).show();
+                    sp.edit().putBoolean("rememberMe", false).apply();
                 }
             });
             alertD.setView(promptView);
@@ -201,32 +243,17 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    public boolean permissionGranted(String permission)
-    {
-        // Check if the app is api 23 or above
-        // If so, must ask for permission.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            if (checkSelfPermission(permission) ==
-                    PackageManager.PERMISSION_GRANTED)
-            {
-                Log.d("Permissions", "permission granted");
-                return true;
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
             }
-            Log.d("Permissions", "Permission was not granted");
-            return false;
         }
-        // Permission is automatically granted on sdk<23 upon installation
-        Log.d("Permissions", "permission granted");
         return true;
     }
 
-    public boolean requestPermission(String permission)
-    {
-        if (permissionGranted(permission))
-            return true;
-        // Ask for permission
-        ActivityCompat.requestPermissions(this, new String[]{permission}, 1);
-        return false;
-    }
+    @Override
+    public void onBackPressed() {}
 }

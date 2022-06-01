@@ -26,10 +26,17 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.Objects;
+import java.util.UUID;
 
 
-public class PersonalFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
+public class PersonalFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     SharedPreferences sp;
 
@@ -42,9 +49,12 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
     DBHelper dbHelper;
 
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
+
     public PersonalFragment() {
         // Required empty public constructor
     }
+
     // TODO: Remember to add: when logging out of the user, change sp value (key='rememberme') to unchecked.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,23 +81,25 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
         switchToggleSound = requireView().findViewById(R.id.switchToggleSound);
         switchToggleSound.setOnCheckedChangeListener(this);
-        switchToggleSound.setChecked(dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound());
+        String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+        Utils.getUserFromDatabase(uuid, user -> switchToggleSound.setChecked(user.isSound()));
     }
 
     @Override
     public void onClick(View view) {
-        if (view == tvSignOut){
-            sp.edit().putBoolean("rememberMe", false).commit();
+        if (view == tvSignOut) {
+            sp.edit().putBoolean("rememberMe", false).apply();
             startActivity(new Intent(getActivity(), HomeScreenActivity.class));
-        }
-        else if (view == btShareGame){
-            if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getShares() == -1){
-                Toast.makeText(requireActivity(),"כבר שיתפת את המשחק!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            // Open contact picker
-            final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-            startActivityForResult(pickContact, 1);
+        } else if (view == btShareGame) {
+            String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+            Utils.getUserFromDatabase(uuid, user -> {
+                if (Math.abs(user.getShares()) == 1) {
+                    Toast.makeText(requireActivity(), "כבר שיתפת את המשחק!", Toast.LENGTH_SHORT).show();
+                } else {
+                    final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    startActivityForResult(pickContact, 1);
+                }
+            });
         }
     }
 
@@ -100,8 +112,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         String textMessage = "הצטרף אליי והורד את אפליקציית 'תשחץ נא'! שם המשתמש שלי: " + Utils.getDataFromSharedPreferences(sp, "username", null);
         if (resultCode != RESULT_OK) return;
 
-        if (requestCode == 1 && data != null)
-        {
+        if (requestCode == 1 && data != null) {
             Uri contactUri = data.getData();
 
             // Specify which fields you want
@@ -110,10 +121,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
             // Perform your query - the contactUri
             // is like a "where" clause here
-            Cursor cursor = requireContext().getContentResolver()
-                    .query(contactUri, queryFields, null, null, null);
-            try
-            {
+            try (Cursor cursor = requireContext().getContentResolver()
+                    .query(contactUri, queryFields, null, null, null)) {
                 // Double-check that you
                 // actually got results
                 if (cursor.getCount() == 0) return;
@@ -122,23 +131,16 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
                 // the first row of data
                 // that is your contact's name
                 cursor.moveToFirst();
-                phoneNumber = getContactNumber(cursor.getString(0));
                 // Retrieve contact number using name
-            }
-            finally
-            {
-                cursor.close();
+                phoneNumber = getContactNumber(cursor.getString(0));
             }
         }
         // Create the text message with a string.
         try {
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(phoneNumber, null, textMessage, null, null);
-                    User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-                    user.setShares(1);
-                    user.setCoins(user.getCoins() + 200);
-                    dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-                    dbHelper.insertNewUser(user);
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(phoneNumber, null, textMessage, null, null);
+            String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+            mDatabase.child(uuid).child("shares").setValue(1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,7 +153,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         String contactId = null;
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                contactId = cursor.getString((int)cursor.getColumnIndex(ContactsContract.PhoneLookup._ID));
+                contactId = cursor.getString((int) cursor.getColumnIndex(ContactsContract.PhoneLookup._ID));
             }
             cursor.close();
         }
@@ -162,12 +164,12 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         cursor = cr.query(uri, new String[]{ContactsContract.Contacts.HAS_PHONE_NUMBER}, null, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                int hasPhoneNumber = cursor.getInt((int)cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                int hasPhoneNumber = cursor.getInt((int) cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
                 if (hasPhoneNumber == 1) {
                     Cursor phoneCursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER}, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{contactId}, null);
                     if (phoneCursor != null) {
                         if (phoneCursor.moveToFirst()) {
-                            String phoneNumber = phoneCursor.getString((int)phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            String phoneNumber = phoneCursor.getString((int) phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                             phoneCursor.close();
                             return phoneNumber;
                         }
@@ -181,19 +183,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        if (compoundButton.getId() == R.id.switchToggleSound){
-            if (switchToggleSound.isChecked()){
-                User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-                user.setSound(true);
-                dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-                dbHelper.insertNewUser(user);
-            }
-            else {
-                User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-                user.setSound(false);
-                dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-                dbHelper.insertNewUser(user);
-            }
+        if (compoundButton.getId() == R.id.switchToggleSound) {
+            String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+            mDatabase.child(uuid).child("sound").setValue(compoundButton.isChecked());
         }
     }
 }

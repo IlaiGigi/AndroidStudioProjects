@@ -23,7 +23,14 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,6 +39,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 abstract class Utils {
 
@@ -68,7 +76,7 @@ abstract class Utils {
     public static void insertDataToSharedPreferences(SharedPreferences sp, String key, String data) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, data);
-        editor.commit();
+        editor.apply();
         // To switch between input types, change all instances of 'String' to desired type (excluding 'key')
     }
 
@@ -137,5 +145,19 @@ abstract class Utils {
             }
         }
         return count;
+    }
+
+    public static void getUserFromDatabase(String uuid, MyCallback myCallback) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.child(uuid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User value = dataSnapshot.getValue(User.class);
+                myCallback.onCallback(value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 }

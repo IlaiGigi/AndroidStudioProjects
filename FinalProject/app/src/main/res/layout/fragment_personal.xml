@@ -83,7 +83,8 @@
             android:scaleY="2"
             android:text="  צליל"
             android:textSize="15sp"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:checked="true"/>
     </RelativeLayout>
 
     <TextView

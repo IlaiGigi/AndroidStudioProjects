@@ -103,4 +103,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         startActivity(new Intent(this, HomeScreenActivity.class));
     }
+
+    @Override
+    public void onBackPressed() {}
 }

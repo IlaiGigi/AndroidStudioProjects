@@ -20,6 +20,9 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.File;
 
 
@@ -38,6 +41,8 @@ public class PlayFragment extends Fragment implements View.OnClickListener{
     DBHelper dbHelper;
 
     SharedPreferences sp;
+
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
     File regularModeProgress;
     File kidsModeProgress;
@@ -75,7 +80,9 @@ public class PlayFragment extends Fragment implements View.OnClickListener{
 
         // Update dynamic views
         tvUsername.setText(Utils.getDataFromSharedPreferences(sp, "username", null));
-        tvCoinDisplay.setText(String.valueOf(dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).getCoins()));
+
+        String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+        Utils.getUserFromDatabase(uuid, user -> tvCoinDisplay.setText(String.valueOf(user.getCoins())));
 
         // Add underline to headline text
         SpannableString content = new SpannableString("בחירת מצב משחק");
