@@ -77,9 +77,9 @@ public class ClassicBoard extends LinearLayout {
                     {1, 1, 1, -1, -1}
             };
 
-    private static final String[] level3StringResources = {"קטגור ↓", "מין תוכי↶/נבחר ציבור(4,3) ↓", "אין בו פחד ↶", "רטיבות ←", "נהר בספרד←/הרס↲", "שכונה בדרום תל אביב ↓", "תפר בבגד←/מזון לבהמות↓", "מדינה בארצות הברית↓", "רשע ←", "גבול←/מהנביאים↓", "כהן מדין←", "מלאך חבלה ←/גיל בר מצווה ↓", "מאכל נוזלי ↓", "מדינה באסיה ↓", "הרים ↓", "מטעמי הגלידה ←", "סוג של יונק ←"};
+    private static final String[] level3StringResources = {"קטגור ↓", "מין תוכי↶/נבחר ציבור(4,3) ↓", "אין בו פחד ↶", "רטיבות ←", "נהר בספרד←/הרס↲", "שכונה בדרום תל אביב ↓", "תפר בבגד←/מזון לבהמות↓", "מדינה בארצות הברית↓", "רשע ←", "גבול←/מהנביאים ↓", "כהן מדין←", "מלאך חבלה ←/גיל בר מצווה ↓", "מאכל נוזלי ↓", "מדינה באסיה ↓", "הרים ↓", "מטעמי הגלידה ←", "סוג של יונק ←"};
 
-    private static final String level3Ans = "צחאמורקיצסדנוקוסבדצהרויבשאסננשידריתומודיאקקנהפויסוסטרלי";
+    private static final String level3Ans = "ללתוחלורבאבירחהעכתכנקרפסשורתידשראליממימגיריהקלינונפשלדנא";
 
     public static final String[] levelAns = {level1Ans, level2Ans, level3Ans}; // The answers are in hebrew so we check from finish to start to overrule the reversal
 
