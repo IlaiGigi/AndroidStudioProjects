@@ -93,20 +93,25 @@ public class PlayFragment extends Fragment implements View.OnClickListener{
 
             // Set all buttons to their corresponding functions
             ImageButton ibStartLevel1 = promptView.findViewById(R.id.ibStartLevel1);
+            ImageButton ibStartLevel2 = promptView.findViewById(R.id.ibStartLevel2);
+            ImageButton ibStartLevel3 = promptView.findViewById(R.id.ibStartLevel3);
 
-            /*ImageButton ibStartLevel2 = promptView.findViewById(R.id.ibStartLevel2);
-            ImageButton ibStartLevel3 = promptView.findViewById(R.id.ibStartLevel3);*/
+            Intent intent = new Intent(getActivity(), ClassicGameActivity.class);
 
             ibStartLevel1.setOnClickListener(view1 -> {
-                startActivity(new Intent(requireActivity(), ClassicGameActivity.class));
+                intent.putExtra("levelIdentifier", 1);
+                startActivity(intent);
             });
 
-            /*ibStartLevel2.setOnClickListener(view1 -> {
-                // Start level 2
+            ibStartLevel2.setOnClickListener(view1 -> {
+                intent.putExtra("levelIdentifier", 2);
+                startActivity(intent);
             });
+
             ibStartLevel3.setOnClickListener(view1 -> {
-                // Start level 3
-            });*/
+                intent.putExtra("levelIdentifier", 3);
+                startActivity(intent);
+            });
 
             // String progressData = Utils.readFromFile(regularModeProgress, -1); // Fetch all data from the file
             // Set all progress bars to display the progression of each level

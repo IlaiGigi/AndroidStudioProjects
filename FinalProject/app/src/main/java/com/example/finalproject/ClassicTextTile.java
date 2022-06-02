@@ -37,7 +37,7 @@ public class ClassicTextTile extends androidx.appcompat.widget.AppCompatTextView
         setLayoutParams(params);
         setTextColor(getResources().getColor(R.color.black));
 
-        setAutoSizeTextTypeUniformWithConfiguration(10, 30, 1, TypedValue.COMPLEX_UNIT_DIP); // This allows text size to be dynamically set depending on the text
+        setAutoSizeTextTypeUniformWithConfiguration(7, 30, 1, TypedValue.COMPLEX_UNIT_DIP); // This allows text size to be dynamically set depending on the text
         // Set text font
         Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/calibri.ttf");
         setTypeface(face);

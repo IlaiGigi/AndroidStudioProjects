@@ -26,6 +26,9 @@ import android.widget.Toast;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.IOException;
 import java.util.Random;
 
@@ -169,21 +172,21 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
             }
         }
 
-        // Update coin count
         SharedPreferences sp = Utils.defineSharedPreferences(getContext(), "mainRoot");
-        DBHelper dbHelper = new DBHelper(getContext(), null, null, 1);
-        User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-        user.setCoins(user.getCoins() + 200);
-        dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-        dbHelper.insertNewUser(user);
+        String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        Utils.getUserFromDatabase(uuid, user -> {
+            // Update coin count
+            mDatabase.child(uuid).child("coins").setValue(user.getCoins() + 200);
 
-        // Update achievement handler
+            // Play level completion sound effect based on the user's sound setting
+            if (user.isSound()){
+                MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.level_completed_sound_effect);
+                mediaPlayer.start();
+            }
+        });
 
-
-        if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound()){
-            MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.level_completed_sound_effect);
-            mediaPlayer.start();
-        }
+        // TODO: update achievement handler
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View v = inflater.inflate(R.layout.kids_level_completed_dialog, null);

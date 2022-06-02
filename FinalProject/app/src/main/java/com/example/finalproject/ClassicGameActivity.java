@@ -24,7 +24,9 @@ public class ClassicGameActivity extends AppCompatActivity {
 
         classicBoardLayout = findViewById(R.id.classicBoardLayout);
 
-        ClassicBoard board = new ClassicBoard(this, 1);
+        int levelIdentifier = getIntent().getIntExtra("levelIdentifier", 0);
+
+        ClassicBoard board = new ClassicBoard(this, levelIdentifier);
         classicBoardLayout.addView(board);
 
         // change window soft input mode to do nothing when keyboard is shown

@@ -27,7 +27,10 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import android.view.ActionMode.Callback;
 
-public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText implements View.OnLongClickListener {
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText implements View.OnClickListener {
 
     private static final int VERTICAL = 0;
     private static final int HORIZONTAL = 1;
@@ -53,7 +56,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         content = ""; // Edit text is initialized with empty string
         orientation = VERTICAL; // Edit text is initialized with vertical travel orientation
 
-        setOnLongClickListener(this);
+        setOnClickListener(this);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size.getWidth(), size.getHeight());
         params.setMargins(1,1, 1, 1);
@@ -85,18 +88,20 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
 
                 // Update coin count
                 SharedPreferences sp = Utils.defineSharedPreferences(getContext(), "mainRoot");
-                DBHelper dbHelper = new DBHelper(getContext(), null, null, 1);
-                User user = dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-                user.setCoins(user.getCoins() + 200);
-                dbHelper.deleteUser(Utils.getDataFromSharedPreferences(sp, "username", null));
-                dbHelper.insertNewUser(user);
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+                String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+                Utils.getUserFromDatabase(uuid, user -> {
+                    // Update coin count
+                    mDatabase.child(uuid).child("coins").setValue(user.getCoins() + 200);
 
-                // Display game over dialog & play level completed sound
-                if (dbHelper.getUser(Utils.getDataFromSharedPreferences(sp, "username", null)).isSound()){
-                    MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.level_completed_sound_effect);
-                    mediaPlayer.start();
-                }
+                    // Play level completion sound based of the user's sound setting
+                    if (user.isSound()){
+                        MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.level_completed_sound_effect);
+                        mediaPlayer.start();
+                    }
+                });
 
+                // Display level completed dialog
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 View v = inflater.inflate(R.layout.classic_level_completed_dialog, null);
                 final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
@@ -161,13 +166,13 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
     private void highlightRow(){
         // Travel right
         for (int j = indexInBoard.x; j < Utils.getChildrenViews(rows[indexInBoard.y]); j++) {
-            if (levelLayout[indexInBoard.y][j] == 1) {
+            if (rows[indexInBoard.y].getChildAt(j) instanceof ClassicEditTile) {
                 rows[indexInBoard.y].getChildAt(j).setBackgroundResource(R.drawable.classic_edit_tile_highlighted);
             } else break;
         }
         // Travel left
         for (int j = indexInBoard.x; j >= 0; j--) {
-            if (levelLayout[indexInBoard.y][j] == 1) {
+            if (rows[indexInBoard.y].getChildAt(j) instanceof ClassicEditTile) {
                 rows[indexInBoard.y].getChildAt(j).setBackgroundResource(R.drawable.classic_edit_tile_highlighted);
             } else break;
         }
@@ -176,13 +181,13 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
     private void highlightColumn(){
         // Travel top
         for (int j = indexInBoard.y; j < rows.length; j++) {
-            if (levelLayout[j][indexInBoard.x] == 1) {
+            if (rows[j].getChildAt(indexInBoard.x) instanceof ClassicEditTile) {
                 rows[j].getChildAt(indexInBoard.x).setBackgroundResource(R.drawable.classic_edit_tile_highlighted);
             } else break;
         }
         // Travel bottom
         for (int j = indexInBoard.y; j >= 0; j--) {
-            if (levelLayout[j][indexInBoard.x] == 1) {
+            if (rows[j].getChildAt(indexInBoard.x) instanceof ClassicEditTile) {
                 rows[j].getChildAt(indexInBoard.x).setBackgroundResource(R.drawable.classic_edit_tile_highlighted);
             } else break;
         }
@@ -191,13 +196,13 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
     private void removeHighlightRow(){
         // Travel right
         for (int j = indexInBoard.x; j < Utils.getChildrenViews(rows[indexInBoard.y]); j++) {
-            if (levelLayout[indexInBoard.y][j] == 1) {
+            if (rows[indexInBoard.y].getChildAt(j) instanceof ClassicEditTile) {
                 rows[indexInBoard.y].getChildAt(j).setBackgroundResource(R.drawable.classic_edit_tile_background);
             } else break;
         }
         // Travel left
         for (int j = indexInBoard.x; j >= 0; j--) {
-            if (levelLayout[indexInBoard.y][j] == 1) {
+            if (rows[indexInBoard.y].getChildAt(j) instanceof ClassicEditTile) {
                 rows[indexInBoard.y].getChildAt(j).setBackgroundResource(R.drawable.classic_edit_tile_background);
             } else break;
         }
@@ -206,13 +211,13 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
     private void removeHighlightColumn(){
         // Travel top
         for (int j = indexInBoard.y; j < rows.length; j++) {
-            if (levelLayout[j][indexInBoard.x] == 1) {
+            if (rows[j].getChildAt(indexInBoard.x) instanceof ClassicEditTile) {
                 rows[j].getChildAt(indexInBoard.x).setBackgroundResource(R.drawable.classic_edit_tile_background);
             } else break;
         }
         // Travel bottom
         for (int j = indexInBoard.y; j >= 0; j--) {
-            if (levelLayout[j][indexInBoard.x] == 1) {
+            if (rows[j].getChildAt(indexInBoard.x) instanceof ClassicEditTile) {
                 rows[j].getChildAt(indexInBoard.x).setBackgroundResource(R.drawable.classic_edit_tile_background);
             } else break;
         }
@@ -222,7 +227,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         int count = 0;
         for (int i=0; i<rows.length; i++){
             for (int j=0; j<Utils.getChildrenViews(rows[i]); j++){
-                if (levelLayout[i][j] == 1){
+                if (rows[i].getChildAt(j) instanceof ClassicEditTile){
                     // If the tile of type EditTile, than check it's content
                     ClassicEditTile tile = (ClassicEditTile) rows[i].getChildAt(j);
                     if (!tile.validateAnswer(count)){
@@ -259,17 +264,18 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
     }
 
     @Override
-    public boolean onLongClick(View view) {
-        // Switch orientation
-        if (orientation == HORIZONTAL) {
-            removeHighlightRow();
-            orientation = VERTICAL;
-            highlightColumn();
-        } else {
-            removeHighlightColumn();
-            orientation = HORIZONTAL;
-            highlightRow();
+    public void onClick(View view) {
+        if (isFocused()){
+            // Switch orientation
+            if (orientation == HORIZONTAL) {
+                removeHighlightRow();
+                orientation = VERTICAL;
+                highlightColumn();
+            } else {
+                removeHighlightColumn();
+                orientation = HORIZONTAL;
+                highlightRow();
+            }
         }
-        return false;
     }
 }
