@@ -23,15 +23,16 @@ public class KidsGameActivity extends AppCompatActivity {
 
         tvHeadline = findViewById(R.id.tvHeadline);
 
-        KidsBoard board = new KidsBoard(this);
-
         int levelIdentifier = getIntent().getIntExtra("levelIdentifier", 0);
+
+
+        KidsBoard board = new KidsBoard(this, levelIdentifier);
 
         tvHeadline.setText(tvHeadline.getText().toString() + " " + levelIdentifier);
 
         for (int i=0; i<3; i++){
             for (int j=0; j<3; j++){
-                board.addTile(KidsTile.initializeTile(this, new Point(i, j), KidsBoard.levelResourceIndexes[levelIdentifier][i][j]));
+                board.addTile(KidsTile.initializeTile(this, new Point(i, j), KidsBoard.levelResourceIndexes[levelIdentifier - 1][i][j]));
             }
         }
         board.loadTiles();

@@ -30,6 +30,8 @@ import android.view.ActionMode.Callback;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText implements View.OnClickListener {
 
     private static final int VERTICAL = 0;
@@ -88,7 +90,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
 
                 // Update coin count
                 SharedPreferences sp = Utils.defineSharedPreferences(getContext(), "mainRoot");
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
                 String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
                 Utils.getUserFromDatabase(uuid, user -> {
                     // Update coin count
@@ -100,6 +102,9 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
                         mediaPlayer.start();
                     }
                 });
+
+                // Update achievement handler
+                updateAchievementHandler(levelIdentifier);
 
                 // Display level completed dialog
                 LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -238,6 +243,23 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
             }
         }
         return true;
+    }
+
+    public void updateAchievementHandler(int levelIdentifier){
+        SharedPreferences sp = Utils.defineSharedPreferences(getContext(), "mainRoot");
+        String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
+        Utils.getUserFromDatabase(uuid, user -> {
+            // Update achievement handler
+            ArrayList<Integer> classicLevels = user.getClassicLevels();
+            // If the achievement has been claimed, do not update its status
+            if (classicLevels.get(levelIdentifier - 1) == -1)
+                return;
+            // Else, update achievement status
+            classicLevels.remove(levelIdentifier - 1);
+            classicLevels.add(levelIdentifier - 1, 1);
+            mDatabase.child(uuid).child("classicLevels").setValue(classicLevels);
+        });
     }
 
     @Override

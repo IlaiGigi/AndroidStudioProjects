@@ -26,14 +26,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 
 public class AchievementFragment extends Fragment implements View.OnClickListener {
 
-    ImageButton ibAchievement1ClaimReward, ibAchievement2ClaimReward;
+    ImageButton ibAchievement1ClaimReward, ibAchievement2ClaimReward, ibAchievement3ClaimReward;
 
-    TextView tvAchievement1RewardPercentage, tvAchievement2RewardPercentage, tvAchievementCoinDisplay;
+    TextView tvAchievement1RewardPercentage, tvAchievement2RewardPercentage, tvAchievement3RewardPercentage, tvAchievementCoinDisplay;
 
     SharedPreferences sp;
 
@@ -61,27 +62,17 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
         tvAchievementCoinDisplay = requireView().findViewById(R.id.tvAchievementCoinDisplay);
 
         ibAchievement1ClaimReward = requireView().findViewById(R.id.tvAchievement1ClaimReward);
-//        ibAchievement2ClaimReward = requireView().findViewById(R.id.tvAchievement2ClaimReward);
-
-        ibAchievement1ClaimReward.setOnClickListener(this);
-//        ibAchievement2ClaimReward.setOnClickListener(this);
+        ibAchievement2ClaimReward = requireView().findViewById(R.id.tvAchievement2ClaimReward);
+        ibAchievement3ClaimReward = requireView().findViewById(R.id.tvAchievement3ClaimReward);
 
         tvAchievement1RewardPercentage = requireView().findViewById(R.id.tvAchievement1RewardPercentage);
-//        tvAchievement2RewardPercentage = requireView().findViewById(R.id.tvAchievement2RewardPercentage);
+        tvAchievement2RewardPercentage = requireView().findViewById(R.id.tvAchievement2RewardPercentage);
+        tvAchievement3RewardPercentage = requireView().findViewById(R.id.tvAchievement3RewardPercentage);
 
         sp = Utils.defineSharedPreferences(requireActivity(), "mainRoot");
 
         String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
-        Utils.getUserFromDatabase(uuid, user -> {
-            tvAchievementCoinDisplay.setText(String.valueOf(user.getCoins()));
-            if (Math.abs(user.getShares()) == 1) {
-                ibAchievement1ClaimReward.setClickable(true);
-                ibAchievement1ClaimReward.setBackgroundResource(R.drawable.green_rect);
-                if (user.getShares() == -1)
-                    tvAchievement1RewardPercentage.setText("הושלם");
-            }
-        });
-
+        Utils.getUserFromDatabase(uuid, this::updateUI);
     }
 
     @Override
@@ -113,5 +104,117 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
                 animator.start();
             });
         }
+        if (view == ibAchievement2ClaimReward){
+            String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+            Utils.getUserFromDatabase(uuid, user -> {
+                if (user.getClassicLevels().contains(-1)) {
+                    Toast.makeText(requireContext(), "כבר הושלם", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mDatabase.child(Utils.getDataFromSharedPreferences(sp, "UUID", null)).child("coins").setValue(user.getCoins() + 500);
+                ArrayList<Integer> arrayList = new ArrayList<>();
+                for (int i = 0; i < user.getClassicLevels().size(); i++)
+                    arrayList.add(-1);
+                mDatabase.child(Utils.getDataFromSharedPreferences(sp, "UUID", null)).child("classicLevels").setValue(arrayList);
+
+                ValueAnimator animator = ValueAnimator.ofInt(user.getCoins(), user.getCoins() + 500);
+                tvAchievement2RewardPercentage.setText("הושלם");
+                if (user.isSound()) {
+                    MediaPlayer mediaPlayer = MediaPlayer.create(requireContext(), R.raw.coin_sound);
+                    mediaPlayer.start();
+                }
+                animator.setInterpolator(new LinearInterpolator());
+                animator.setDuration(1500);
+                animator.addUpdateListener(valueAnimator -> {
+                    int val = (int) valueAnimator.getAnimatedValue();
+                    tvAchievementCoinDisplay.setText(String.valueOf(val));
+                });
+                animator.start();
+            });
+        }
+        if (view == ibAchievement3ClaimReward){
+            String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+            Utils.getUserFromDatabase(uuid, user -> {
+                if (user.getKidsLevels().contains(-1)) {
+                    Toast.makeText(requireContext(), "כבר הושלם", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mDatabase.child(Utils.getDataFromSharedPreferences(sp, "UUID", null)).child("coins").setValue(user.getCoins() + 500);
+                ArrayList<Integer> arrayList = new ArrayList<>();
+                for (int i = 0; i < user.getKidsLevels().size(); i++)
+                    arrayList.add(-1);
+                mDatabase.child(Utils.getDataFromSharedPreferences(sp, "UUID", null)).child("kidsLevels").setValue(arrayList);
+
+                ValueAnimator animator = ValueAnimator.ofInt(user.getCoins(), user.getCoins() + 500);
+                tvAchievement3RewardPercentage.setText("הושלם");
+                if (user.isSound()) {
+                    MediaPlayer mediaPlayer = MediaPlayer.create(requireContext(), R.raw.coin_sound);
+                    mediaPlayer.start();
+                }
+                animator.setInterpolator(new LinearInterpolator());
+                animator.setDuration(1500);
+                animator.addUpdateListener(valueAnimator -> {
+                    int val = (int) valueAnimator.getAnimatedValue();
+                    tvAchievementCoinDisplay.setText(String.valueOf(val));
+                });
+                animator.start();
+            });
+        }
+    }
+
+    public void updateUI(User user) {
+        // Check first achievement
+        tvAchievementCoinDisplay.setText(String.valueOf(user.getCoins()));
+        if (Math.abs(user.getShares()) == 1) {
+            ibAchievement1ClaimReward.setOnClickListener(this);
+            ibAchievement1ClaimReward.setClickable(true);
+            ibAchievement1ClaimReward.setBackgroundResource(R.drawable.green_rect);
+            if (user.getShares() == -1)
+                tvAchievement1RewardPercentage.setText("הושלם");
+        }
+
+        // Check second achievement
+        ArrayList<Integer> classicLevels = user.getClassicLevels();
+        boolean partiallyCompleted = true;
+        boolean isCompleted = true;
+        for (int i = 0; i < classicLevels.size(); i++) {
+            if (Math.abs(classicLevels.get(i)) == 1) {
+                if (classicLevels.get(i) != -1)
+                    isCompleted = false;
+            } else{
+                isCompleted = false;
+                partiallyCompleted = false;
+            }
+        }
+        Log.d("yosi", "partiallyCompleted: " + partiallyCompleted);
+        if (partiallyCompleted) {
+            ibAchievement2ClaimReward.setOnClickListener(this);
+            ibAchievement2ClaimReward.setClickable(true);
+            ibAchievement2ClaimReward.setBackgroundResource(R.drawable.green_rect);
+        }
+        if (isCompleted)
+            tvAchievement2RewardPercentage.setText("הושלם");
+
+        // Check third achievement
+        ArrayList<Integer> kidsLevels = user.getKidsLevels();
+        partiallyCompleted = true;
+        isCompleted = true;
+        for (int i = 0; i < kidsLevels.size(); i++) {
+            if (Math.abs(kidsLevels.get(i)) == 1) {
+                if (kidsLevels.get(i) != -1)
+                    isCompleted = false;
+            } else{
+                isCompleted = false;
+                partiallyCompleted = false;
+            }
+        }
+        Log.d("yosi", "partiallyCompleted: " + partiallyCompleted);
+        if (partiallyCompleted) {
+            ibAchievement3ClaimReward.setOnClickListener(this);
+            ibAchievement3ClaimReward.setClickable(true);
+            ibAchievement3ClaimReward.setBackgroundResource(R.drawable.green_rect);
+        }
+        if (isCompleted)
+            tvAchievement3RewardPercentage.setText("הושלם");
     }
 }

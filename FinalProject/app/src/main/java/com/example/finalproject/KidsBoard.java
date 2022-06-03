@@ -30,6 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class KidsBoard extends LinearLayout implements View.OnClickListener{
@@ -46,8 +48,9 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
     private LinearLayout[] rows;
     private final Size boardSize;
     private final SharedPreferences sp;
+    private final int levelIdentifier;
 
-    public KidsBoard(Context context){
+    public KidsBoard(Context context, int aLevelIdentifier){
         super(context);
         setOrientation(VERTICAL);
 
@@ -67,6 +70,8 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         }
 
         sp = Utils.defineSharedPreferences(context, "mainRoot");
+
+        levelIdentifier = aLevelIdentifier;
     }
 
     // Getters
@@ -174,7 +179,7 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
 
         SharedPreferences sp = Utils.defineSharedPreferences(getContext(), "mainRoot");
         String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
         Utils.getUserFromDatabase(uuid, user -> {
             // Update coin count
             mDatabase.child(uuid).child("coins").setValue(user.getCoins() + 200);
@@ -186,7 +191,7 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
             }
         });
 
-        // TODO: update achievement handler
+        updateAchievementHandler(levelIdentifier);
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View v = inflater.inflate(R.layout.kids_level_completed_dialog, null);
@@ -216,5 +221,22 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
         dialog.setView(v);
         dialog.setCancelable(true);
         dialog.show();
+    }
+
+    public void updateAchievementHandler(int levelIdentifier){
+        String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
+        Utils.getUserFromDatabase(uuid, user -> {
+            // Update achievement handler
+            ArrayList<Integer> kidsLevels = user.getKidsLevels();
+            // If the achievement has been claimed, do not update its status
+            if (kidsLevels.get(levelIdentifier - 1) == -1)
+                return;
+            // Else, update achievement status
+            kidsLevels.remove(levelIdentifier - 1);
+            kidsLevels.add(levelIdentifier - 1, 1);
+            Log.d("yosi", "kidsLevels: " + kidsLevels.toString());
+            mDatabase.child(uuid).child("kidsLevels").setValue(kidsLevels);
+        });
     }
 }

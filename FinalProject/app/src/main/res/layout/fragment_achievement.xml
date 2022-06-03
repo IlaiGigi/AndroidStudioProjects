@@ -111,7 +111,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/blue_rect"
-                android:clickable="false" />
+                android:clickable="false"/>
 
             <TextView
                 android:id="@+id/tvAchievement1RewardPercentage"
@@ -128,16 +128,9 @@
                 android:textColor="@color/black"
                 android:textSize="30dp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/bottom_borderline" />
-
         </RelativeLayout>
 
-        <!--<RelativeLayout
+        <RelativeLayout
             android:id="@+id/achievement2Layout"
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -304,12 +297,8 @@
                 android:textColor="@color/black"
                 android:textSize="30dp" />
 
-        </RelativeLayout>-->
+        </RelativeLayout>
 
     </LinearLayout>
-
-
-
-
 
 </RelativeLayout>
