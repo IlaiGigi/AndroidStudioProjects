@@ -19,13 +19,11 @@ public class User {
         this.shares = shares;
         this.sound = sound;
         kidsLevels = new ArrayList<>();
-        kidsLevels.add(0);
-        kidsLevels.add(0);
-        kidsLevels.add(0);
         classicLevels = new ArrayList<>();
-        classicLevels.add(0);
-        classicLevels.add(0);
-        classicLevels.add(0);
+        for (int i=0; i<3; i++){
+            kidsLevels.add(0);
+            classicLevels.add(0);
+        }
     }
 
     public User(){}

@@ -186,7 +186,6 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
                 partiallyCompleted = false;
             }
         }
-        Log.d("yosi", "partiallyCompleted: " + partiallyCompleted);
         if (partiallyCompleted) {
             ibAchievement2ClaimReward.setOnClickListener(this);
             ibAchievement2ClaimReward.setClickable(true);
@@ -208,7 +207,6 @@ public class AchievementFragment extends Fragment implements View.OnClickListene
                 partiallyCompleted = false;
             }
         }
-        Log.d("yosi", "partiallyCompleted: " + partiallyCompleted);
         if (partiallyCompleted) {
             ibAchievement3ClaimReward.setOnClickListener(this);
             ibAchievement3ClaimReward.setClickable(true);

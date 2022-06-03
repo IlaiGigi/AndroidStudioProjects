@@ -235,7 +235,6 @@ public class KidsBoard extends LinearLayout implements View.OnClickListener{
             // Else, update achievement status
             kidsLevels.remove(levelIdentifier - 1);
             kidsLevels.add(levelIdentifier - 1, 1);
-            Log.d("yosi", "kidsLevels: " + kidsLevels.toString());
             mDatabase.child(uuid).child("kidsLevels").setValue(kidsLevels);
         });
     }
