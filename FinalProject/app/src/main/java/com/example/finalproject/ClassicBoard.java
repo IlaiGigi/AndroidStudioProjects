@@ -131,5 +131,11 @@ public class ClassicBoard extends LinearLayout {
                 }
             }
         }
+
+        // Pull progression from local filestream and update corresponding tiles
+    }
+
+    public LinearLayout[] getRows() {
+        return rows;
     }
 }

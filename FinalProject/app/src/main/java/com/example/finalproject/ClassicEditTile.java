@@ -16,6 +16,7 @@ import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
 import android.view.ActionMode;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,11 +26,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+
 import android.view.ActionMode.Callback;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText implements View.OnClickListener {
@@ -61,7 +64,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         setOnClickListener(this);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size.getWidth(), size.getHeight());
-        params.setMargins(1,1, 1, 1);
+        params.setMargins(1, 1, 1, 1);
         setLayoutParams(params);
 
         setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(1)}); // Edit text is limited to 1 character
@@ -81,8 +84,8 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
 
         content = text.toString(); // Update the content of the edit text
 
-        if (lengthAfter != 0){
-            if (checkForCompletion()){
+        if (lengthAfter != 0) {
+            if (checkForCompletion()) {
                 // Dismiss the keyboard
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindowToken(), 0);
@@ -97,7 +100,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
                     mDatabase.child(uuid).child("coins").setValue(user.getCoins() + 200);
 
                     // Play level completion sound based of the user's sound setting
-                    if (user.isSound()){
+                    if (user.isSound()) {
                         MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.level_completed_sound_effect);
                         mediaPlayer.start();
                     }
@@ -105,6 +108,11 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
 
                 // Update achievement handler
                 updateAchievementHandler(levelIdentifier);
+
+                // Clear progression file
+                String fileName = "progression_" + Utils.getDataFromSharedPreferences(sp, "username", null) + levelIdentifier;
+                File file = new File(getContext().getFilesDir(), fileName);
+                file.delete();
 
                 // Display level completed dialog
                 LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -129,7 +137,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
                     if (levelLayout[indexInBoard.y][indexInBoard.x - 1] == 1) {
                         ClassicEditTile nextTile = (ClassicEditTile) rows[indexInBoard.y].getChildAt(indexInBoard.x - 1);
                         nextTile.setOrientation(HORIZONTAL);
-                        rows[indexInBoard.y].getChildAt(indexInBoard.x - 1).requestFocus();
+                        nextTile.requestFocus();
                     }
                 }
             } else {
@@ -137,15 +145,15 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
                     if (levelLayout[indexInBoard.y + 1][indexInBoard.x] == 1) {
                         ClassicEditTile nextTile = (ClassicEditTile) rows[indexInBoard.y + 1].getChildAt(indexInBoard.x);
                         nextTile.setOrientation(VERTICAL);
-                        rows[indexInBoard.y + 1].getChildAt(indexInBoard.x).requestFocus();
+                        nextTile.requestFocus();
                     }
                 }
             }
         }
     }
 
-    private boolean validateAnswer(int count){
-        return content.equals(ClassicBoard.levelAns[levelIdentifier - 1].charAt(ClassicBoard.levelAns[levelIdentifier - 1].length() - count - 1) + "");
+    private boolean validateAnswer(int index) {
+        return content.equals(ClassicBoard.levelAns[levelIdentifier - 1].charAt(index) + "");
     }
 
     public Point getIndexInBoard() {
@@ -168,7 +176,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         return new ClassicEditTile(context, levelIdentifier, rows, aIndex);
     }
 
-    private void highlightRow(){
+    private void highlightRow() {
         // Travel right
         for (int j = indexInBoard.x; j < Utils.getChildrenViews(rows[indexInBoard.y]); j++) {
             if (rows[indexInBoard.y].getChildAt(j) instanceof ClassicEditTile) {
@@ -183,7 +191,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         }
     }
 
-    private void highlightColumn(){
+    private void highlightColumn() {
         // Travel top
         for (int j = indexInBoard.y; j < rows.length; j++) {
             if (rows[j].getChildAt(indexInBoard.x) instanceof ClassicEditTile) {
@@ -198,7 +206,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         }
     }
 
-    private void removeHighlightRow(){
+    private void removeHighlightRow() {
         // Travel right
         for (int j = indexInBoard.x; j < Utils.getChildrenViews(rows[indexInBoard.y]); j++) {
             if (rows[indexInBoard.y].getChildAt(j) instanceof ClassicEditTile) {
@@ -213,7 +221,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         }
     }
 
-    private void removeHighlightColumn(){
+    private void removeHighlightColumn() {
         // Travel top
         for (int j = indexInBoard.y; j < rows.length; j++) {
             if (rows[j].getChildAt(indexInBoard.x) instanceof ClassicEditTile) {
@@ -228,14 +236,14 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         }
     }
 
-    private boolean checkForCompletion(){
+    private boolean checkForCompletion() {
         int count = 0;
-        for (int i=0; i<rows.length; i++){
-            for (int j=0; j<Utils.getChildrenViews(rows[i]); j++){
-                if (rows[i].getChildAt(j) instanceof ClassicEditTile){
+        for (int i = 0; i < rows.length; i++) {
+            for (int j = 0; j < Utils.getChildrenViews(rows[i]); j++) {
+                if (rows[i].getChildAt(j) instanceof ClassicEditTile) {
                     // If the tile of type EditTile, than check it's content
                     ClassicEditTile tile = (ClassicEditTile) rows[i].getChildAt(j);
-                    if (!tile.validateAnswer(count)){
+                    if (!tile.validateAnswer(count)) {
                         // If the tile's content is not the same as the resource answer, return false, else continue
                         return false;
                     }
@@ -245,7 +253,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
         return true;
     }
 
-    public void updateAchievementHandler(int levelIdentifier){
+    public void updateAchievementHandler(int levelIdentifier) {
         SharedPreferences sp = Utils.defineSharedPreferences(getContext(), "mainRoot");
         String uuid = Utils.getDataFromSharedPreferences(sp, "UUID", null);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users");
@@ -265,7 +273,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
     @Override
     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        if (focused){
+        if (focused) {
             // "Select" self and highlight the corresponding row or column
             setBackgroundResource(R.drawable.classic_edit_tile_selected);
             if (orientation == HORIZONTAL) {
@@ -273,12 +281,12 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
             } else {
                 highlightColumn();
             }
-        }else
-        {
-            // "Deselect" self and remove the corresponding highlight
+        } else {
+            // "Deselect" self, remove the corresponding highlight, and reset the orientation
             setBackgroundResource(R.drawable.classic_edit_tile_background);
             if (orientation == HORIZONTAL) {
                 removeHighlightRow();
+                orientation = VERTICAL;
             } else {
                 removeHighlightColumn();
             }
@@ -287,7 +295,7 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
 
     @Override
     public void onClick(View view) {
-        if (isFocused()){
+        if (isFocused()) {
             // Switch orientation
             if (orientation == HORIZONTAL) {
                 removeHighlightRow();
@@ -299,5 +307,43 @@ public class ClassicEditTile extends androidx.appcompat.widget.AppCompatEditText
                 highlightRow();
             }
         }
+    }
+
+    // If the delete key is pressed on the keyboard, to something
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            // If the content of the tile is empty, request focus to the previous tile, else delete the content
+            if (content.isEmpty()) {
+                if (orientation == HORIZONTAL) {
+                    if (indexInBoard.x != Utils.getChildrenViews(rows[indexInBoard.y]) - 1) {
+                        // If the tile is not the first one, request focus to the previous tile
+                        if (rows[indexInBoard.y].getChildAt(indexInBoard.x + 1) instanceof ClassicEditTile) {
+                            ClassicEditTile previousTile = (ClassicEditTile) rows[indexInBoard.y].getChildAt(indexInBoard.x + 1);
+                            previousTile.setOrientation(HORIZONTAL);
+                            previousTile.requestFocus();
+                        }
+                    } else {
+                        // Do nothing
+                        return super.onKeyDown(keyCode, event);
+                    }
+                } else{
+                    if (indexInBoard.y != 0) {
+                        // If the tile is not the first one, request focus to the previous tile
+                        if (rows[indexInBoard.y - 1].getChildAt(indexInBoard.x) instanceof ClassicEditTile) {
+                            ClassicEditTile previousTile = (ClassicEditTile) rows[indexInBoard.y - 1].getChildAt(indexInBoard.x);
+                            previousTile.setOrientation(VERTICAL);
+                            previousTile.requestFocus();
+                        }
+                    } else {
+                        // Do nothing
+                        return super.onKeyDown(keyCode, event);
+                    }
+                }
+                return true;
+            }
+            return super.onKeyDown(keyCode, event);
+        }
+        return false;
     }
 }

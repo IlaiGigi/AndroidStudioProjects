@@ -199,9 +199,9 @@ public class HomeScreenActivity extends AppCompatActivity implements View.OnClic
                 String aPassword2 = etReEnterPassword.getEditText().getText().toString();
                 if (aUsername.equals("") || aUsername.contains(" ") || aPassword1.equals("") || aPassword1.contains(" ") || aPassword2.contains(" ") || !aPassword1.equals(aPassword2))
                     Toast.makeText(this, "שגיאה, בדוק את התוכן שוב", Toast.LENGTH_LONG).show();
-                if (aUsername.length() > 15)
+                else if (aUsername.length() > 15)
                     Toast.makeText(this, "שם המשתמש צריך להיות קצר מ-16 תווים", Toast.LENGTH_LONG).show();
-                if (aPassword1.length() < 6)
+                else if (aPassword1.length() < 6)
                     Toast.makeText(this, "הסיסמה צריכה להיות ארוכה מ-5 תווים", Toast.LENGTH_LONG).show();
                 else {
                     mDatabase.child(String.valueOf(UUID.nameUUIDFromBytes(aUsername.getBytes()))).addListenerForSingleValueEvent(new ValueEventListener() {

@@ -103,7 +103,9 @@ abstract class Utils {
         }
     }
 
-    public static String readFromFile(File file, int readLength) {
+    public static String readFile(File file, int readLength) {
+        if (!file.exists())
+            return null;
         byte[] fileContent;
         if (readLength == -1) {
             // -1 means no specified length, return all the content in the file
