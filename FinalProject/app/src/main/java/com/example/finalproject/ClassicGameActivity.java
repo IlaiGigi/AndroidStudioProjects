@@ -59,8 +59,10 @@ public class ClassicGameActivity extends AppCompatActivity {
                 for (int j = 0; j < Utils.getChildrenViews(row); j++) {
                     if (row.getChildAt(j) instanceof ClassicEditTile) {
                         ClassicEditTile tile = (ClassicEditTile) row.getChildAt(j);
-                        if (data.charAt(count) != ' ')
+                        if (data.charAt(count) != ' '){
                             tile.setText(String.valueOf(data.charAt(count)));
+                            tile.setSelection(tile.getText().length());
+                        }
                         count++;
                     }
                 }
